@@ -1,15 +1,10 @@
 import React from "react";
-import { Slider } from "@mui/material";
+import ReactSlider from "react-slider";
 
 function App() {
   return (
     <div className="App">
-      <Slider
-        size="small"
-        defaultValue={70}
-        aria-label="Small"
-        valueLabelDisplay="auto"
-      />
+      <ReactSlider />
     </div>
   );
 }
