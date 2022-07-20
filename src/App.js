@@ -1,26 +1,18 @@
 import React, { useState, useEffect } from "react";
 import ReactSlider from "react-slider";
+import { Button } from "react-bootstrap";
 import Slider from "./components/Slider";
+import styles from "./App.module.css";
+import InterviewQuestion from "./components/InterviewQuestion";
 
 function App() {
-  const [num, setNum] = useState(0);
-  const [num2, setNum2] = useState(0);
-  const changeNum = () => {
-    setNum((priv) => ++priv);
-    console.log(num);
-  };
-
-  useEffect(() => {
-    setNum2(num / 2);
-  }, [num, num2]);
-
-  useEffect(() => {}, []);
-
   return (
     <div className="App">
-      <ReactSlider />
-      <Slider changeNum={num} num={num} />
-      <span>{num2}</span>
+      <h1>착한 이륜차 설문조사</h1>
+      <p>설명ㅇㄹㅁㅇㄴㄹㅁㅇㄴㄹㅁㄴㅇㄹ</p>
+      <div className={styles.Title}>타이틀</div>
+      <InterviewQuestion />
+      <Button>버튼</Button>
     </div>
   );
 }

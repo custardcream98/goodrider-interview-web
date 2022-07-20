@@ -1,0 +1,13 @@
+.Qbox {
+    display: flex;
+    justify-content:space-evenly;
+}
+
+.Img {
+    /* background-color: blueviolet; */
+    width: 400px;
+    height: 200px;
+    border-color: black;
+    border-width: 1rem;
+    border-style: inset;
+}
