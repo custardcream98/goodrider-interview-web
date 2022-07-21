@@ -1,13 +1,27 @@
-import React from "react";
+import ReactSlider from "react-slider";
 import PropTypes from "prop-types";
 
-const Slider = ({ changeNum, num }) => {
-  return <button onClick={changeNum}>버튼 {num}</button>;
+const Slider = ({currentValue, setCurrentValue}) => {
+    return (
+        <div>
+            <br />
+
+            <ReactSlider
+                className="customSlider"
+                thumbClassName="customSlider-thumb"
+                trackClassName="customSlider-track"
+                min={1}
+                max={99}
+                value={currentValue}
+                onChange={(value) => setCurrentValue(value)}
+            />
+        </div>
+    );
 };
 
 Slider.propTypes = {
-  changeNum: PropTypes.func.isRequired,
-  num: PropTypes.number.isRequired,
+    currentValue: PropTypes.number.isRequired,
+    setCurrentValue: PropTypes.func.isRequired
 };
 
 export default Slider;
