@@ -1,0 +1,45 @@
+:root {
+  --mark-color: rgb(138, 148, 230);
+  --main-color-hover: rgba(129, 142, 240, 0.413);
+}
+
+.customSlider-mark {
+cursor: pointer;
+top: 6px;
+margin-left: 8px;
+right: 4px;
+width: 1.5px;
+height: 8px;
+background-color: var(--mark-color);
+}
+
+.customSlider {
+  max-width: 770px;
+  margin: auto;
+  bottom: 4px;
+}
+
+.customSlider-track.customSlider-track-0 {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: var(--mark-color);
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+.customSlider-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -14px;
+}
+
+.customSlider-thumb:hover {
+  box-shadow: 0 0 0 4px var(--main-color-hover);
+}

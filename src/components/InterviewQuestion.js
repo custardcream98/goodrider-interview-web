@@ -1,10 +1,15 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { useState } from "react";
+import { Card } from "react-bootstrap";
 import styles from "./InterviewQuestion.module.css";
+import Slider from "./Slider";
 
 const InterviewQuestion = ({ onChange, index, text }) => {
-  const onSliderChange = () => {
-    onChange(index, Date.now());
+  const [sliderValue, setSliderValue] = useState(50);
+
+  const handleValue = (val) => {
+    setSliderValue(val);
+    onChange(index, (val >=50 ? (val-50)/7 + 1 : 1 / ((50-val)/7 + 1)));
   };
 
   return (
@@ -19,7 +24,7 @@ const InterviewQuestion = ({ onChange, index, text }) => {
         <div className={styles.Img}></div>
       </Card.Body>
       <Card.Footer className="d-flex justify-content-center">
-        <Button onClick={onSliderChange}>슬라이더</Button>
+        <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
       </Card.Footer>
     </Card>
   );
