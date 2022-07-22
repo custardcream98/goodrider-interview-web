@@ -6,15 +6,15 @@ function Interview() {
   const [qArr, setQArr] = useState([
     {
       text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 0.5, // 0 <= val <= 1
+      val: 1, // 1/8 <= val <= 8
     },
     {
       text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 0.5,
+      val: 1,
     },
     {
       text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 0.5,
+      val: 1,
     },
   ]);
 
@@ -40,7 +40,6 @@ function Interview() {
         break;
       case "next":
         setCurrentlyShownQindex((priv) => ++priv);
-
         break;
     }
   };
@@ -52,6 +51,7 @@ function Interview() {
         onChange={onChange}
         index={currentlyShownQindex}
         text={qArr[currentlyShownQindex].text}
+        val={qArr[currentlyShownQindex].val}
       />
       <div className="pb-4">value: {qArr[currentlyShownQindex].val}</div>
       <div className="d-flex justify-content-center mb-4">

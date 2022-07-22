@@ -4,12 +4,12 @@ import { Card } from "react-bootstrap";
 import styles from "./InterviewQuestion.module.css";
 import Slider from "./Slider";
 
-const InterviewQuestion = ({ onChange, index, text }) => {
+const InterviewQuestion = ({ onChange, index, text, val }) => {
   const [sliderValue, setSliderValue] = useState(50);
 
   const handleValue = (val) => {
     setSliderValue(val);
-    onChange(index, (val >=50 ? (val-50)/7 + 1 : 1 / ((50-val)/7 + 1)));
+    onChange(index, (val>=50 ? (val-50)/7 + 1 : 1 / ((50-val)/7 + 1)));
   };
 
   return (
@@ -24,7 +24,7 @@ const InterviewQuestion = ({ onChange, index, text }) => {
         <div className={styles.Img}></div>
       </Card.Body>
       <Card.Footer className="d-flex justify-content-center">
-        <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
+        <Slider currentValue={sliderValue} setCurrentValue={handleValue} index={index} val={val} />
       </Card.Footer>
     </Card>
   );
