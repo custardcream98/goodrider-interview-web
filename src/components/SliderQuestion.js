@@ -4,7 +4,7 @@ import { Card } from "react-bootstrap";
 import styles from "../styles/InterviewQuestion.module.css";
 import Slider from "./Slider";
 
-const InterviewQuestion = ({ onChange, index, text, val }) => {
+const SliderQuestion = ({ onChange, index, text, val }) => {
   const [sliderValue, setSliderValue] = useState(50);
 
   const handleValue = (val) => {
@@ -34,4 +34,4 @@ const InterviewQuestion = ({ onChange, index, text, val }) => {
   );
 };
 
-export default InterviewQuestion;
+export default SliderQuestion;

@@ -9,7 +9,6 @@ import {
 import Home from "./Home";
 import Auth from "./Auth";
 import Interview from "./Interview";
-import Interview2 from "./Interview2";
 
 const AppRouter = ({ isLoggedIn }) => {
   return (
@@ -21,7 +20,6 @@ const AppRouter = ({ isLoggedIn }) => {
             <>
               <Route path="/" element={<Home />} />
               <Route path="/interview" element={<Interview />} />
-              <Route path="/Interview2" element={<Interview2 />} />
             </>
           ) : (
             <>

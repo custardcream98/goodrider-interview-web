@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MyCard from "./MyCard";
 
-function Choice({ onChange, index, text }) {
+function ChoiceQuestion({ onChange, index, text }) {
   const select = (selectedNum) => {
     onChange(index, selectedNum);
   }
@@ -20,4 +20,4 @@ function Choice({ onChange, index, text }) {
   )
 }
 
-export default Choice;
+export default ChoiceQuestion;
