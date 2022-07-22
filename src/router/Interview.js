@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import InterviewQuestion from "../components/InterviewQuestion";
 
@@ -22,11 +22,12 @@ function Interview() {
 
   const setQval = (numOfQ, val) =>
     setQArr((priv) => {
-      priv.forEach((question, index) => {
-        if (index === numOfQ) {
-          question.val = val;
-        }
-      });
+      priv[numOfQ].val = val;
+      //   .forEach((question, index) => {
+      //   if (index === numOfQ) {
+      //     question.val = val;
+      //   }
+      // });
       return [...priv];
     });
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
-import styles from "./InterviewQuestion.module.css";
+import styles from "../styles/InterviewQuestion.module.css";
 import Slider from "./Slider";
 
 const InterviewQuestion = ({ onChange, index, text, val }) => {
@@ -9,11 +9,11 @@ const InterviewQuestion = ({ onChange, index, text, val }) => {
 
   const handleValue = (val) => {
     setSliderValue(val);
-    onChange(index, (val>=50 ? (val-50)/7 + 1 : 1 / ((50-val)/7 + 1)));
+    onChange(index, val >= 50 ? (val - 50) / 7 + 1 : 1 / ((50 - val) / 7 + 1));
   };
 
   useEffect(() => {
-    setSliderValue(val>=1 ? (val-1)*7 + 50 : -(((1/val) - 1)*7) + 50);
+    setSliderValue(val >= 1 ? (val - 1) * 7 + 50 : -((1 / val - 1) * 7) + 50);
   }, [index]);
 
   return (
@@ -23,7 +23,7 @@ const InterviewQuestion = ({ onChange, index, text, val }) => {
           {index + 1}. {text}
         </Card.Title>
       </Card.Header>
-      <Card.Body className="d-flex justify-content-around ">
+      <Card.Body className="d-flex justify-content-around">
         <div className={styles.Img}></div>
         <div className={styles.Img}></div>
       </Card.Body>
