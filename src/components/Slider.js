@@ -1,13 +1,8 @@
 import ReactSlider from "react-slider";
 import PropTypes from "prop-types";
 import "./Slider.css";
-import { useEffect } from "react";
 
-const Slider = ({ currentValue, setCurrentValue, index, val }) => {
-    useEffect(() => {
-        setCurrentValue(val>=1 ? (val-1)*7 + 50 : -(((1/val) - 1)*7) + 50);
-    }, [index]);
-
+const Slider = ({ currentValue, setCurrentValue }) => {
     return (
         <div style={{ width: "100%" }}>
             <br />
