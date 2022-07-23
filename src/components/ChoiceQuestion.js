@@ -8,9 +8,7 @@ function ChoiceQuestion({ onChange, index, text }) {
 
   return (
     <>
-      <h4>
-        {text}
-      </h4>
+      <h5>{index + 1}. {text}</h5>
       <MyCard index={1} select={select} />
       <MyCard index={2} select={select} />
       <MyCard index={3} select={select} />
