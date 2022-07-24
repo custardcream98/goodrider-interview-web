@@ -1,20 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
-import InterviewQuestion from "../components/InterviewQuestion";
+import QuestionType from "../components/QuestionType";
 
 function Interview() {
   const [qArr, setQArr] = useState([
     {
+      type: 0,
       text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 0.5, // 0 <= val <= 1
+      val: 1, // 1/8 <= val <= 8
     },
     {
+      type: 0,
       text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 0.5,
+      val: 1,
     },
     {
+      type: 0,
       text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 0.5,
+      val: 1,
+    },
+    {
+      type: 1,
+      text: "다음 중 하나의 영상을 선택하세요.",
+      val: 0, // 1 ~ 5 
+    },
+    {
+      type: 1,
+      text: "다음 중 하나의 영상을 선택하세요.",
+      val: 0,
+    },
+    {
+      type: 1,
+      text: "다음 중 하나의 영상을 선택하세요.",
+      val: 0,
     },
   ]);
 
@@ -22,11 +40,12 @@ function Interview() {
 
   const setQval = (numOfQ, val) =>
     setQArr((priv) => {
-      priv.forEach((question, index) => {
-        if (index === numOfQ) {
-          question.val = val;
-        }
-      });
+      priv[numOfQ].val = val;
+      //   .forEach((question, index) => {
+      //   if (index === numOfQ) {
+      //     question.val = val;
+      //   }
+      // });
       return [...priv];
     });
 
@@ -40,7 +59,6 @@ function Interview() {
         break;
       case "next":
         setCurrentlyShownQindex((priv) => ++priv);
-
         break;
     }
   };
@@ -48,11 +66,11 @@ function Interview() {
   return (
     <>
       <h1>착한 이륜차 설문조사</h1>
-      <InterviewQuestion
-        onChange={onChange}
-        index={currentlyShownQindex}
-        text={qArr[currentlyShownQindex].text}
-      />
+        <QuestionType
+          onChange={onChange}
+          index={currentlyShownQindex}
+          qArr={qArr}
+        />
       <div className="pb-4">value: {qArr[currentlyShownQindex].val}</div>
       <div className="d-flex justify-content-center mb-4">
         <ButtonGroup>

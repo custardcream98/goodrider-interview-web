@@ -19,17 +19,22 @@ function App() {
 
   return (
 
-    <div className="App">
-      <Navbar />
-
-      <h1>착한 이륜차 설문조사</h1>
-      <p>설명ㅇㄹㅁㅇㄴㄹㅁㅇㄴㄹㅁㄴㅇㄹ</p>
-      <p>설명</p>
-      <div className={styles.Title}>타이틀</div>
-      <InterviewQuestion />
-      <Button>버튼</Button>
-    </div>
-
+    <>
+      {init ? (
+        <AppRouter isLoggedIn={isLoggedIn} />
+      ) : (
+        <div className="d-flex flex-column min-vh-100 min-vw-100">
+          <div className="d-flex flex-grow-1 justify-content-center align-items-center">
+            <Spinner as="p" animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        </div>
+      )}
+      <footer>
+        &nbsp; &copy; Univ. Of Seoul Spatial DB Lab {new Date().getFullYear()}
+      </footer>
+    </>
   );
 }
 
