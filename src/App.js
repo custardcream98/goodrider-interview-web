@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from "react";
-import ReactSlider from "react-slider";
-import { Button } from "react-bootstrap";
-import Slider from "./components/Slider";
-import styles from "./App.module.css";
-import InterviewQuestion from "./components/InterviewQuestion";
+import { Spinner } from "react-bootstrap";
+import AppRouter from "./router";
 
 import Navbar from "./components/Navigation";
 
 
 
 function App() {
+  const [init, setInit] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // 처음 로딩시 Backend로부터 token validation을 받고
+    // 통과하면 isLoggedIn = true 아니면 false로 prop 넘겨주기
+    setInit(true);
+    setIsLoggedIn(true);
+  }, []);
+
   return (
 
     <div className="App">
@@ -22,6 +29,7 @@ function App() {
       <InterviewQuestion />
       <Button>버튼</Button>
     </div>
+
   );
 }
 
