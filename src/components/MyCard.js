@@ -7,7 +7,7 @@ const MyCard = ({ index, select }) => {
   }
 
   return (
-    <Card onClick={click}>
+    <Card onClick={click} style={{height: "100%"}}>
       <Card.Header>
         <Card.Title>
           {index}

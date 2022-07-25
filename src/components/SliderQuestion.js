@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
-import styles from "../styles/InterviewQuestion.module.css";
+import styles from "../styles/SliderQuestion.module.css";
 import Slider from "./Slider";
 
 const SliderQuestion = ({ onChange, index, text, val }) => {
