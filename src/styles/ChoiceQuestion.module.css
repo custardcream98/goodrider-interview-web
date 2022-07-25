@@ -13,5 +13,6 @@
 
 .Item {
   margin: 6px;
-  height: 400px;
+  width: calc(100% - 12px);
+  aspect-ratio: 1.5/1;
 }
