@@ -7,6 +7,12 @@
   max-width: 800px;
   height: 600px;
   margin: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.Container::-webkit-scrollbar {
+  display: none;
 }
 
 .Item:hover {
