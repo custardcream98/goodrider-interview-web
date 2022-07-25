@@ -65,7 +65,6 @@ function Interview() {
 
   return (
     <>
-      <h1>착한 이륜차 설문조사</h1>
         <QuestionType
           onChange={onChange}
           index={currentlyShownQindex}

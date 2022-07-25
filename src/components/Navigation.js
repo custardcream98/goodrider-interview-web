@@ -6,7 +6,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import styles from "./Navigation.module.css";
 
 function OffcanvasExample() {
   return (
@@ -14,7 +13,7 @@ function OffcanvasExample() {
       {['md'].map((expand) => (
         <Navbar key={expand} bg="white" expand={expand} className="mb-3">
           <Container fluid>
-            <Navbar.Brand href="#">착한 이륜차 설문조사</Navbar.Brand>
+            <Navbar.Brand href="/home">착한 이륜차 설문조사</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}/>
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -28,11 +27,11 @@ function OffcanvasExample() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="me-auto">
-                  <Nav.Link href="#action1">#1</Nav.Link>
-                  <Nav.Link href="#action2">#2</Nav.Link>
-                  <Nav.Link href="#action2">#3</Nav.Link>
-                  <Nav.Link href="#action2">#4</Nav.Link>
-                  <Nav.Link href="#action2">#5</Nav.Link>
+                  <Nav.Link href="/action1">#1</Nav.Link>
+                  <Nav.Link href="/action2">#2</Nav.Link>
+                  <Nav.Link href="/action2">#3</Nav.Link>
+                  <Nav.Link href="/action2">#4</Nav.Link>
+                  <Nav.Link href="/action2">#5</Nav.Link>
                   <NavDropdown
                     title="other style"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
