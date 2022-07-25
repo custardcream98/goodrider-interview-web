@@ -11,7 +11,7 @@ const MyCard = ({ index, select, className }) => {
       <Card.Header>
         <Card.Title>{index}</Card.Title>
       </Card.Header>
-      <Card.Body className="d-flex justify-content-around ">영상</Card.Body>
+      <Card.Body>영상</Card.Body>
     </Card>
   );
 };
