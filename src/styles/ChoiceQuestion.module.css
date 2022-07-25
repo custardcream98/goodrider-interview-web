@@ -20,3 +20,12 @@
   aspect-ratio: 1.5/1;
   flex: 0 0 auto;
 }
+
+.SelectedItem {
+  margin: 6px;
+  width: calc(100% - 12px);
+  aspect-ratio: 1.5/1;
+  flex: 0 0 auto;
+  border-color: var(--main-color);
+  border-width: 6px;
+}

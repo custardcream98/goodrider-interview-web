@@ -1,13 +1,16 @@
 import { Card } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-const MyCard = ({ index, select, className }) => {
+const MyCard = ({ index, select, val, styles }) => {
   const click = () => {
     select(index);
   };
 
   return (
-    <Card onClick={click} className={className}>
+    <Card
+      onClick={click}
+      className={val === index ? styles.SelectedItem : styles.Item}
+    >
       <Card.Header>
         <Card.Title>{index}</Card.Title>
       </Card.Header>

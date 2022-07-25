@@ -5,20 +5,21 @@ import ChoiceQuestion from "../components/ChoiceQuestion";
 function QuestionType({ onChange, index, qArr }) {
   return (
     <>
-      {
-        qArr[index].type === 0
-        ? <SliderQuestion
+      {qArr[index].type === 0 ? (
+        <SliderQuestion
           onChange={onChange}
           index={index}
           text={qArr[index].text}
           val={qArr[index].val}
         />
-        : <ChoiceQuestion
+      ) : (
+        <ChoiceQuestion
           onChange={onChange}
           index={index}
           text={qArr[index].text}
+          val={qArr[index].val}
         />
-      }
+      )}
     </>
   );
 }
