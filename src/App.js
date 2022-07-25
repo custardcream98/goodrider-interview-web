@@ -27,7 +27,7 @@ function App() {
         </div>
       )}
       <footer>
-        &copy; Univ. Of Seoul Spatial DB Lab {new Date().getFullYear()}
+        &nbsp; &copy; Univ. Of Seoul Spatial DB Lab {new Date().getFullYear()}
       </footer>
     </>
   );

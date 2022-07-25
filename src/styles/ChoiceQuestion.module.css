@@ -1,0 +1,17 @@
+.Container {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+  width: 90%;
+  margin: auto;
+}
+
+.Item:hover {
+  border-color: var(--main-color-hover);
+  border-width: 6px;
+}
+
+.Item {
+  margin: 6px;
+  height: 400px;
+}
