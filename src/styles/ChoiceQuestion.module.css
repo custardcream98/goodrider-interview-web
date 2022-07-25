@@ -1,8 +1,11 @@
 .Container {
   display: flex;
-  flex-flow: column wrap;
-  justify-content: space-evenly;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  overflow-x: scroll;
   width: 90%;
+  max-width: 800px;
+  height: 600px;
   margin: auto;
 }
 
@@ -15,4 +18,5 @@
   margin: 6px;
   width: calc(100% - 12px);
   aspect-ratio: 1.5/1;
+  flex: 0 0 auto;
 }
