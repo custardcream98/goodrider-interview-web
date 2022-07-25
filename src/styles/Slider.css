@@ -1,16 +1,16 @@
 :root {
-  --mark-color: rgb(138, 148, 230);
+  --main-color: rgb(138, 148, 230);
   --main-color-hover: rgba(129, 142, 240, 0.413);
 }
 
 .customSlider-mark {
-cursor: pointer;
-top: 6px;
-margin-left: 8px;
-right: 4px;
-width: 1.5px;
-height: 8px;
-background-color: var(--mark-color);
+  cursor: pointer;
+  top: 6px;
+  margin-left: 8px;
+  right: 4px;
+  width: 1.5px;
+  height: 8px;
+  background-color: var(--main-color);
 }
 
 .customSlider {
@@ -24,7 +24,7 @@ background-color: var(--mark-color);
   height: 6px;
   cursor: pointer;
   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  background: var(--mark-color);
+  background: var(--main-color);
   border-radius: 1.3px;
   border: 0.2px solid #010101;
 }
