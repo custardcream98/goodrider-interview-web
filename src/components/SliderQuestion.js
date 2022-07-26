@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "react-bootstrap";
 import styles from "../styles/SliderQuestion.module.css";
 import Slider from "./Slider";
@@ -14,7 +14,10 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
 
   useEffect(() => {
     setSliderValue(val >= 1 ? (val - 1) * 7 + 50 : -((1 / val - 1) * 7) + 50);
+    myRef.current.scrollTop = 0;
   }, [index]);
+
+  const myRef = useRef(null);
 
   return (
     <Card>
@@ -24,7 +27,7 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        <div className={styles.Container}>
+        <div ref={myRef} className={styles.Container}>
           <div className={styles.Item}>
             <h5>1.</h5>
             <div className={styles.Img}></div>
