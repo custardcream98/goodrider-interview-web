@@ -16,13 +16,15 @@ const AppRouter = ({ isLoggedIn }) => {
     <Router basename={process.env.PUBLIC_URL}>
       
       {/* {isLoggedIn && <Navigation />} */
-      <Navbar />}
+      }
       <div className="ms-3 me-3 mt-1 mb-3">
         <Routes>
           {isLoggedIn ? (
             <>
               <Route path="/" element={<Home />} />
-              <Route path="/interview" element={<Interview />} />
+              <Route path="/interview" 
+              element={<Interview/>} 
+              />
               <Route path="/home" element={<Home />} />
             </>
           ) : (

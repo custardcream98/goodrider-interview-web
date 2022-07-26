@@ -7,7 +7,15 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-function OffcanvasExample() {
+function NavigationBar({setCurrentlyShownQindex}) {
+
+
+  const onClick = (event) => {
+    let { name } = event.target;
+        setCurrentlyShownQindex(parseInt(name.slice(1))-1);
+    //setCurrentlyShownQindex(1);
+  };
+
   return (
     <>
       {['md'].map((expand) => (
@@ -26,20 +34,13 @@ function OffcanvasExample() {
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
-                <Nav className="me-auto">
-                  <Nav.Link href="/action1">#1</Nav.Link>
-                  <Nav.Link href="/action2">#2</Nav.Link>
-                  <Nav.Link href="/action2">#3</Nav.Link>
-                  <Nav.Link href="/action2">#4</Nav.Link>
-                  <Nav.Link href="/action2">#5</Nav.Link>
-                  <NavDropdown
-                    title="other style"
-                    id={`offcanvasNavbarDropdown-expand-${expand}`}
-                  >
-                    <NavDropdown.Item href="#action3">#1</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action5">#2</NavDropdown.Item>
-                  </NavDropdown>
+                <Nav className="mr-auto mb-2 mb-lg-0">
+                  <Nav.Link href="" onClick={onClick} name="#1">#1</Nav.Link>
+                  <Nav.Link href="" onClick={onClick} name="#2">#2</Nav.Link>
+                  <Nav.Link href="" onClick={onClick} name="#3">#3</Nav.Link>
+                  <Nav.Link href="" onClick={onClick} name="#4">#4</Nav.Link>
+                  <Nav.Link href="" onClick={onClick} name="#5">#5</Nav.Link>
+                  <Nav.Link href="" onClick={onClick} name="#6">#6</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
@@ -50,4 +51,4 @@ function OffcanvasExample() {
   );
 }
 
-export default OffcanvasExample;
+export default NavigationBar;
