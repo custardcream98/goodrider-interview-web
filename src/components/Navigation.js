@@ -9,11 +9,9 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 function NavigationBar({setCurrentlyShownQindex}) {
 
-
   const onClick = (event) => {
     let { name } = event.target;
         setCurrentlyShownQindex(parseInt(name.slice(1))-1);
-    //setCurrentlyShownQindex(1);
   };
 
   return (
