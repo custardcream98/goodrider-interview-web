@@ -23,11 +23,19 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
           {index + 1}. {text}
         </Card.Title>
       </Card.Header>
-      <Card.Body className="d-flex justify-content-around">
-        <div className={styles.Img}></div>
-        <div className={styles.Img}></div>
+      <Card.Body>
+        <div className={styles.Container}>
+          <div className={styles.Item}>
+            <h5>1.</h5>
+            <div className={styles.Img}></div>
+          </div>
+          <div className={styles.Item}>
+            <h5>2.</h5>
+            <div className={styles.Img}></div>
+          </div>
+        </div>
       </Card.Body>
-      <Card.Footer className="d-flex justify-content-center">
+      <Card.Footer>
         <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
       </Card.Footer>
     </Card>

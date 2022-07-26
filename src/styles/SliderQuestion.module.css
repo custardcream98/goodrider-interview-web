@@ -1,13 +1,42 @@
-.Qbox {
+.Container {
   display: flex;
   justify-content: space-evenly;
+  max-height: 500px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.Container::-webkit-scrollbar {
+  display: none;
+}
+
+.Item {
+  margin: 6px;
+  width: calc(100% - 12px);
+}
+
+.Item:nth-child(2) {
+  text-align: right;
 }
 
 .Img {
   /* background-color: blueviolet; */
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 1.5;
   border-color: black;
-  border-width: 1rem;
+  border-width: 0.3rem;
   border-style: inset;
+  margin: auto;
+}
+
+@media screen and (max-width: 680px) {
+  .Container {
+    flex-direction: column;
+    overflow-x: scroll;
+    justify-content: flex-start;
+  }
+  .Item:nth-child(2) {
+    text-align: left;
+  }
 }

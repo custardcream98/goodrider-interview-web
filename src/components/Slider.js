@@ -5,6 +5,10 @@ import "../styles/Slider.css";
 const Slider = ({ currentValue, setCurrentValue }) => {
   return (
     <div style={{ width: "100%" }}>
+      <div style={{ maxWidth: "810px", margin: "auto" }}>
+        <h6 style={{ float: "left" }}>1번</h6>
+        <h6 style={{ float: "right" }}>2번</h6>
+      </div>
       <br />
       <ReactSlider
         className="customSlider"
