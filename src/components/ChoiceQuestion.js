@@ -15,10 +15,12 @@ function ChoiceQuestion({ onChange, index, text, val }) {
 
   return (
     <>
-      <div ref={myRef} className={styles.Container}>
+      <div style={{ width: "90%", maxWidth: "800px" }}>
         <h5>
-          {index + 1}. {text}
+          {index + 1}. {text}{" "}
         </h5>
+      </div>
+      <div ref={myRef} className={styles.Container}>
         <MyCard cardIndex={1} select={select} val={val} styles={styles} />
         <MyCard cardIndex={2} select={select} val={val} styles={styles} />
         <MyCard cardIndex={3} select={select} val={val} styles={styles} />

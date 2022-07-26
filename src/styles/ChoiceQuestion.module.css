@@ -35,3 +35,36 @@
   border-color: var(--main-color);
   border-width: 6px;
 }
+
+@media (min-aspect-ratio: 3/2) {
+  .Container {
+    width: 80%;
+  }
+}
+
+@media (min-aspect-ratio: 5/3) {
+  .Container {
+    width: 70%;
+  }
+}
+
+@media (min-aspect-ratio: 7/4) {
+  .Container {
+    width: 60%;
+  }
+}
+
+@media (min-aspect-ratio: 2/1) {
+  .Container {
+    width: 100%;
+    flex-flow: row wrap;
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+  .Item {
+    width: calc(50% - 12px);
+  }
+  .SelectedItem {
+    width: calc(50% - 12px);
+  }
+}
