@@ -1,23 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MyCard from "./MyCard";
 import styles from "../styles/ChoiceQuestion.module.css";
 
-function ChoiceQuestion({ onChange, index, text }) {
+function ChoiceQuestion({ onChange, index, text, val }) {
   const select = (selectedNum) => {
     onChange(index, selectedNum);
   };
 
+  useEffect(() => {
+    myRef.current.scrollTop = 0;
+  }, [index]);
+
+  const myRef = useRef(null);
+
   return (
     <>
-      <h5>
-        {index + 1}. {text}
-      </h5>
-      <div className={styles.Container}>
-        <MyCard index={1} select={select} className={styles.Item} />
-        <MyCard index={2} select={select} className={styles.Item} />
-        <MyCard index={3} select={select} className={styles.Item} />
-        <MyCard index={4} select={select} className={styles.Item} />
-        <MyCard index={5} select={select} className={styles.Item} />
+      <div style={{ width: "90%", maxWidth: "800px" }}>
+        <h5>
+          {index + 1}. {text}{" "}
+        </h5>
+      </div>
+      <div ref={myRef} className={styles.Container}>
+        <MyCard cardIndex={1} select={select} val={val} styles={styles} />
+        <MyCard cardIndex={2} select={select} val={val} styles={styles} />
+        <MyCard cardIndex={3} select={select} val={val} styles={styles} />
+        <MyCard cardIndex={4} select={select} val={val} styles={styles} />
+        <MyCard cardIndex={5} select={select} val={val} styles={styles} />
       </div>
     </>
   );

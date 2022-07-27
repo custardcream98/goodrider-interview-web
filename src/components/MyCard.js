@@ -1,23 +1,26 @@
 import { Card } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-const MyCard = ({ index, select, className }) => {
+const MyCard = ({ cardIndex, select, val, styles }) => {
   const click = () => {
-    select(index);
+    select(cardIndex);
   };
 
   return (
-    <Card onClick={click} className={className}>
+    <Card
+      onClick={click}
+      className={val === cardIndex ? styles.SelectedItem : styles.Item}
+    >
       <Card.Header>
-        <Card.Title>{index}</Card.Title>
+        <Card.Title>{cardIndex}</Card.Title>
       </Card.Header>
-      <Card.Body className="d-flex justify-content-around ">영상</Card.Body>
+      <Card.Body>영상</Card.Body>
     </Card>
   );
 };
 
 MyCard.propTypes = {
-  index: PropTypes.number.isRequired,
+  cardIndex: PropTypes.number.isRequired,
   select: PropTypes.func.isRequired,
 };
 
