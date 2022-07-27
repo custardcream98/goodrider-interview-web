@@ -3,7 +3,6 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   overflow-x: scroll;
-  width: 90%;
   max-width: 800px;
   height: 600px;
   margin: auto;

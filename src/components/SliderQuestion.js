@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { string } from "prop-types";
 
 const Img = styled.div`
-  width: 100%;
+  width: 95%;
   max-width: 800px;
   transform: scale(
     ${(props) =>
