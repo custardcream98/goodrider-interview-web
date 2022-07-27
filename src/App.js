@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
+import LoadingSpinner from "./components/LoadingSpinner";
 import AppRouter from "./router";
 
 function App() {
@@ -15,17 +15,7 @@ function App() {
 
   return (
     <>
-      {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} />
-      ) : (
-        <div className="d-flex flex-column min-vh-100 min-vw-100">
-          <div className="d-flex flex-grow-1 justify-content-center align-items-center">
-            <Spinner as="p" animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
-        </div>
-      )}
+      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : <LoadingSpinner />}
       <footer>
         &nbsp; &copy; Univ. Of Seoul Spatial DB Lab {new Date().getFullYear()}
       </footer>

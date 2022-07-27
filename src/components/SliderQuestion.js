@@ -4,7 +4,17 @@ import { Card } from "react-bootstrap";
 import styles from "../styles/SliderQuestion.module.css";
 import Slider from "./Slider";
 
-const SliderQuestion = ({ onChange, index, text, val }) => {
+const Img = ({ qNum, imgSrc, sliderValue }) => (
+  <div className={styles.Item}>
+    <h5>{`${qNum + 1}. `}</h5>
+    <img
+      className={sliderValue <= 50 ? styles.SelectedImg : styles.Img}
+      src={`http://localhost:3000/${imgSrc}`}
+    />
+  </div>
+);
+
+const SliderQuestion = ({ onChange, index, text, val, img }) => {
   const [sliderValue, setSliderValue] = useState(50);
 
   const handleValue = (val) => {
@@ -28,18 +38,14 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
       </Card.Header>
       <Card.Body>
         <div ref={myRef} className={styles.Container}>
-          <div className={styles.Item}>
-            <h5>1.</h5>
-            <div
-              className={sliderValue <= 50 ? styles.SelectedImg : styles.Img}
-            ></div>
-          </div>
-          <div className={styles.Item}>
-            <h5>2.</h5>
-            <div
-              className={sliderValue >= 50 ? styles.SelectedImg : styles.Img}
-            ></div>
-          </div>
+          {img.map((src, index) => (
+            <Img
+              key={src}
+              qNum={index}
+              imgSrc={src}
+              sliderValue={sliderValue}
+            />
+          ))}
         </div>
       </Card.Body>
       <Card.Footer>
