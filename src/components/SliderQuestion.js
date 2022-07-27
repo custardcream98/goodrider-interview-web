@@ -30,11 +30,15 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
         <div ref={myRef} className={styles.Container}>
           <div className={styles.Item}>
             <h5>1.</h5>
-            <div className={styles.Img}></div>
+            <div
+              className={sliderValue <= 50 ? styles.SelectedImg : styles.Img}
+            ></div>
           </div>
           <div className={styles.Item}>
             <h5>2.</h5>
-            <div className={styles.Img}></div>
+            <div
+              className={sliderValue >= 50 ? styles.SelectedImg : styles.Img}
+            ></div>
           </div>
         </div>
       </Card.Body>
