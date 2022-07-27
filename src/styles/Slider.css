@@ -1,6 +1,8 @@
 :root {
-  --main-color: rgb(138, 148, 230);
-  --main-color-hover: rgba(129, 142, 240, 0.413);
+  /* --main-color: rgb(138, 148, 230); */
+  --main-color: rgb(255, 165, 0);
+  /* --main-color-hover: rgba(129, 142, 240, 0.413); */
+  --main-color-hover: rgba(255, 165, 0, 0.413);
 }
 
 .customSlider-mark {

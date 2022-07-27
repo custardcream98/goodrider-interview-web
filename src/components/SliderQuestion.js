@@ -3,6 +3,38 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "react-bootstrap";
 import styles from "../styles/SliderQuestion.module.css";
 import Slider from "./Slider";
+import styled from "styled-components";
+import { string } from "prop-types";
+
+const Img = styled.div`
+  width: 100%;
+  max-width: 800px;
+  transform: scale(
+    ${(props) =>
+      props.position === "right" || props.sliderValue === 50
+        ? (100 + (props.sliderValue - 50) / 10) / 100
+        : (100 - (props.sliderValue - 50) / 10) / 100}
+  );
+  aspect-ratio: 1.5;
+  border-color: ${(props) =>
+    (props.position === "right") ^ (props.sliderValue < 50) ||
+    props.sliderValue === 50
+      ? "orange"
+      : "silver"};
+  border-width: ${(props) =>
+    (props.position === "right") ^ (props.sliderValue < 50) ||
+    props.sliderValue === 50
+      ? (props.sliderValue - 50 >= 0
+          ? props.sliderValue - 50
+          : 50 - props.sliderValue) /
+          7 +
+        1 +
+        "px"
+      : "1px"};
+  border-style: solid;
+  border-radius: 6px;
+  margin: auto;
+`;
 
 const SliderQuestion = ({ onChange, index, text, val }) => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -30,15 +62,11 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
         <div ref={myRef} className={styles.Container}>
           <div className={styles.Item}>
             <h5>1.</h5>
-            <div
-              className={sliderValue <= 50 ? styles.SelectedImg : styles.Img}
-            ></div>
+            <Img sliderValue={sliderValue} position="left" />
           </div>
           <div className={styles.Item}>
             <h5>2.</h5>
-            <div
-              className={sliderValue >= 50 ? styles.SelectedImg : styles.Img}
-            ></div>
+            <Img sliderValue={sliderValue} position="right" />
           </div>
         </div>
       </Card.Body>

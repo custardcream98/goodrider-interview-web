@@ -19,30 +19,6 @@
   text-align: right;
 }
 
-.Img {
-  /* background-color: blueviolet; */
-  width: 100%;
-  max-width: 800px;
-  aspect-ratio: 1.5;
-  border-color: silver;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 6px;
-  margin: auto;
-}
-
-.SelectedImg {
-  /* background-color: blueviolet; */
-  width: 100%;
-  max-width: 800px;
-  aspect-ratio: 1.5;
-  border-color: var(--main-color);
-  border-width: 6px;
-  border-style: solid;
-  border-radius: 6px;
-  margin: auto;
-}
-
 @media screen and (max-width: 680px) {
   .Container {
     flex-direction: column;
