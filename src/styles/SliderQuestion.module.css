@@ -11,8 +11,10 @@
 }
 
 .Item {
-  margin: 6px;
-  width: calc(100% - 12px);
+  margin: 8px 0px;
+  width: calc(100% - 16px);
+  position: relative;
+  bottom: 8px;
 }
 
 .Item:nth-child(2) {
@@ -24,6 +26,10 @@
     flex-direction: column;
     overflow-x: scroll;
     justify-content: flex-start;
+  }
+  .Item {
+    left: 50%;
+    transform: translateX(-50%);
   }
   .Item:nth-child(2) {
     text-align: left;

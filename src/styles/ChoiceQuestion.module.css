@@ -53,7 +53,7 @@
   }
 }
 
-@media (min-aspect-ratio: 2/1) {
+@media (min-width: 800px), (min-aspect-ratio: 2/1) {
   .Container {
     width: 100%;
     flex-flow: row wrap;
@@ -65,5 +65,14 @@
   }
   .SelectedItem {
     width: calc(50% - 12px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .Item {
+    width: calc(33% - 12px);
+  }
+  .SelectedItem {
+    width: calc(33% - 12px);
   }
 }

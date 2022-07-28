@@ -6,6 +6,10 @@ import Slider from "./Slider";
 import styled from "styled-components";
 import { string } from "prop-types";
 
+const CardBody = styled(Card.Body)`
+  padding: 0.3rem;
+`;
+
 const Img = styled.div`
   width: 95%;
   max-width: 800px;
@@ -34,6 +38,10 @@ const Img = styled.div`
   border-style: solid;
   border-radius: 6px;
   margin: auto;
+
+  @media screen and (max-width: 680px) {
+    width: 95%;
+  }
 `;
 
 const SliderQuestion = ({ onChange, index, text, val }) => {
@@ -58,7 +66,7 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
           {index + 1}. {text}
         </Card.Title>
       </Card.Header>
-      <Card.Body>
+      <CardBody>
         <div ref={myRef} className={styles.Container}>
           <div className={styles.Item}>
             <h5>1.</h5>
@@ -69,7 +77,7 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
             <Img sliderValue={sliderValue} position="right" />
           </div>
         </div>
-      </Card.Body>
+      </CardBody>
       <Card.Footer>
         <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
       </Card.Footer>
