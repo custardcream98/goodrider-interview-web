@@ -16,7 +16,7 @@ function NavigationBar({setCurrentlyShownQindex}) {
 
   return (
     <>
-      {['md'].map((expand) => (
+      {['sm'].map((expand) => (
         <Navbar key={expand} bg="white" expand={expand} className="mb-3">
           <Container fluid>
             <Navbar.Brand href="/home">착한 이륜차 설문조사</Navbar.Brand>
