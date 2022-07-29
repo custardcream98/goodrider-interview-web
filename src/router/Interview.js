@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import QuestionType from "../components/QuestionType";
+import Navbar from "../components/Navigation";
 
 function Interview() {
   const [qArr, setQArr] = useState([
@@ -60,12 +61,15 @@ function Interview() {
       case "next":
         setCurrentlyShownQindex((priv) => ++priv);
         break;
+      case "#1":
+        setCurrentlyShownQindex("0");
+        break;
     }
   };
 
   return (
     <>
-      <h1>착한 이륜차 설문조사</h1>
+      <Navbar setCurrentlyShownQindex={setCurrentlyShownQindex}/>
         <QuestionType
           onChange={onChange}
           index={currentlyShownQindex}
