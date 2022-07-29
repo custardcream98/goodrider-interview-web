@@ -23,7 +23,7 @@ function Interview() {
     {
       type: 1,
       text: "다음 중 하나의 영상을 선택하세요.",
-      val: 0, // 1 ~ 5 
+      val: 0, // 1 ~ 5
     },
     {
       type: 1,
@@ -69,12 +69,12 @@ function Interview() {
 
   return (
     <>
-      <Navbar setCurrentlyShownQindex={setCurrentlyShownQindex}/>
-        <QuestionType
-          onChange={onChange}
-          index={currentlyShownQindex}
-          qArr={qArr}
-        />
+      <Navbar setCurrentlyShownQindex={setCurrentlyShownQindex} />
+      <QuestionType
+        onChange={onChange}
+        index={currentlyShownQindex}
+        qArr={qArr}
+      />
       <div className="pb-4">value: {qArr[currentlyShownQindex].val}</div>
       <div className="d-flex justify-content-center mb-4">
         <ButtonGroup>
