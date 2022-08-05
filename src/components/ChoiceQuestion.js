@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import MyCard from "./MyCard";
+import { Card } from "react-bootstrap";
 import styles from "../styles/ChoiceQuestion.module.css";
+import Image from "./Image";
 
 function ChoiceQuestion({ onChange, index, text, val, img }) {
-  const select = (selectedNum) => {
-    onChange(index, selectedNum);
-  };
-
   useEffect(() => {
     myRef.current.scrollTop = 0;
   }, [index]);
@@ -17,15 +14,29 @@ function ChoiceQuestion({ onChange, index, text, val, img }) {
     <>
       <div style={{ width: "90%", maxWidth: "800px" }}>
         <h5>
-          {index + 1}. {text}{" "}
+          {index + 1}. {text}
         </h5>
       </div>
       <div ref={myRef} className={styles.Container}>
-        <MyCard cardIndex={1} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={2} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={3} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={4} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={5} select={select} val={val} styles={styles} />
+        {React.Children.toArray(
+          img.map((imgSrc, i) => {
+            const onClick = () => onChange(index, i + 1);
+
+            return (
+              <Card
+                onClick={onClick}
+                className={val === i + 1 ? styles.SelectedItem : styles.Item}
+              >
+                <Card.Header>
+                  <Card.Title>{i + 1}</Card.Title>
+                </Card.Header>
+                <Card.Body>
+                  <Image imgSrc={imgSrc} />
+                </Card.Body>
+              </Card>
+            );
+          })
+        )}
       </div>
     </>
   );

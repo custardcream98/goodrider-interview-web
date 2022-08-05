@@ -1,44 +1,8 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, Spinner } from "react-bootstrap";
 import styles from "../styles/SliderQuestion.module.css";
 import Slider from "./Slider";
-// import Image from "./Image";
-
-const Image = ({ qNum, imgSrc, sliderValue }) => {
-  const [loading, setLoading] = useState(true);
-
-  const imgLoaded = () => setLoading(false);
-
-  return (
-    <div className={styles.Item}>
-      <h5 className="display-block">{`${qNum + 1}. `}</h5>
-      <div className={styles.ImgBox}>
-        <Spinner
-          as="p"
-          animation="border"
-          role="status"
-          className={`${loading ? "" : "visually-hidden"}`}
-        >
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-        <img
-          className={`${loading ? "visually-hidden" : ""} ${
-            qNum === 0
-              ? sliderValue < 50
-                ? styles.SelectedImg
-                : styles.Img
-              : sliderValue > 50
-              ? styles.SelectedImg
-              : styles.Img
-          }`}
-          src={`http://localhost:3000/${imgSrc}`}
-          onLoad={imgLoaded}
-        />
-      </div>
-    </div>
-  );
-};
+import Image from "./Image";
 
 const SliderQuestion = ({ onChange, index, text, val, img }) => {
   const [sliderValue, setSliderValue] = useState(50);
@@ -65,12 +29,20 @@ const SliderQuestion = ({ onChange, index, text, val, img }) => {
       <Card.Body>
         <div ref={myRef} className={styles.Container}>
           {img.map((src, index) => (
-            <Image
-              key={src}
-              qNum={index}
-              imgSrc={src}
-              sliderValue={sliderValue}
-            />
+            <div
+              className={`${styles.Item} ${
+                index === 0
+                  ? sliderValue < 50
+                    ? styles.SelectedImg
+                    : styles.Img
+                  : sliderValue > 50
+                  ? styles.SelectedImg
+                  : styles.Img
+              }`}
+            >
+              <h5 className="display-block">{`${index + 1}. `}</h5>
+              <Image key={src} imgSrc={src} />
+            </div>
           ))}
         </div>
       </Card.Body>

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { RecoilRoot } from "recoil";
 import LoadingSpinner from "./components/LoadingSpinner";
 import AppRouter from "./router";
-
-
-
-
 
 function App() {
   const [init, setInit] = useState(false);
@@ -18,13 +15,12 @@ function App() {
   }, []);
 
   return (
-
-    <>
+    <RecoilRoot>
       {init ? <AppRouter isLoggedIn={isLoggedIn} /> : <LoadingSpinner />}
       <footer>
         &nbsp; &copy; Univ. Of Seoul Spatial DB Lab {new Date().getFullYear()}
       </footer>
-    </>
+    </RecoilRoot>
   );
 }
 

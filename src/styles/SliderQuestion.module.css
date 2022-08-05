@@ -1,7 +1,6 @@
 .Container {
   display: flex;
   justify-content: space-evenly;
-  /* max-height: 500px; */
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -20,32 +19,20 @@
 }
 
 .Img {
-  /* background-color: blueviolet; */
   width: 100%;
   max-width: 800px;
-  max-height: 400px;
-  /* aspect-ratio: 1.5; */
-  outline: 1px solid silver;
+  height: min-content;
   border-radius: 6px;
-  margin: auto;
+  padding: 6px;
 }
 
 .SelectedImg {
-  /* background-color: blueviolet; */
   width: 100%;
   max-width: 800px;
-  max-height: 400px;
-  /* aspect-ratio: 1.5; */
+
   outline: 6px solid var(--main-color);
   border-radius: 6px;
   margin: auto;
-}
-
-.ImgBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 400px;
 }
 
 @media screen and (max-width: 680px) {
