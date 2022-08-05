@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import AppRouter from "./router";
 
+
+
+
+
 function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,6 +18,7 @@ function App() {
   }, []);
 
   return (
+
     <>
       {init ? <AppRouter isLoggedIn={isLoggedIn} /> : <LoadingSpinner />}
       <footer>
