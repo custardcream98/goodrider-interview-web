@@ -5,12 +5,13 @@ import ChoiceQuestion from "../components/ChoiceQuestion";
 function QuestionType({ onChange, index, qArr }) {
   return (
     <>
-      {qArr[index].type === 0 ? (
+      {qArr[index].type === "ahp" ? (
         <SliderQuestion
           onChange={onChange}
           index={index}
           text={qArr[index].text}
           val={qArr[index].val}
+          img={qArr[index].img}
         />
       ) : (
         <ChoiceQuestion
@@ -18,6 +19,7 @@ function QuestionType({ onChange, index, qArr }) {
           index={index}
           text={qArr[index].text}
           val={qArr[index].val}
+          img={qArr[index].img}
         />
       )}
     </>

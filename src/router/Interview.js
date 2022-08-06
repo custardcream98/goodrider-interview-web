@@ -1,47 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
+import { fetchQuestions } from "../api";
+import LoadingSpinner from "../components/LoadingSpinner";
 import QuestionType from "../components/QuestionType";
 import NavigationBar from "../components/NavigationBar";
 
 function Interview() {
-  const [qArr, setQArr] = useState([
-    {
-      type: 0,
-      text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 1, // 1/8 <= val <= 8
-    },
-    {
-      type: 0,
-      text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 1,
-    },
-    {
-      type: 0,
-      text: "다음 중 더 위험해 보이는 상황쪽으로 슬라이더를 조절해주세요.",
-      val: 1,
-    },
-    {
-      type: 1,
-      text: "다음 중 하나의 영상을 선택하세요.",
-      val: 0, // 1 ~ 5
-    },
-    {
-      type: 1,
-      text: "다음 중 하나의 영상을 선택하세요.",
-      val: 0,
-    },
-    {
-      type: 1,
-      text: "다음 중 하나의 영상을 선택하세요.",
-      val: 0,
-    },
-  ]);
-
+  const [qArr, setQArr] = useState([]);
+  const [isQloaded, setIsQloaded] = useState(false);
   const [currentlyShownQindex, setCurrentlyShownQindex] = useState(0);
 
-  const setQval = (numOfQ, val) =>
+  useEffect(() => {
+    (async () => {
+      let data = await fetchQuestions();
+      data.forEach((e) => (e.type === "ahp" ? (e["val"] = 1) : (e["val"] = 0)));
+      console.log(data);
+
+      setQArr((prev) => data);
+      setIsQloaded(true);
+    })();
+  }, []);
+
+  const setQval = (indexOfQ, val) =>
     setQArr((priv) => {
-      priv[numOfQ].val = val;
+      priv[indexOfQ].val = val;
       return [...priv];
     });
 
@@ -54,43 +36,46 @@ function Interview() {
       case "next":
         setCurrentlyShownQindex((priv) => ++priv);
         break;
-      case "#1":
-        setCurrentlyShownQindex("0");
-        break;
     }
   };
 
   return (
     <>
       <NavigationBar setCurrentlyShownQindex={setCurrentlyShownQindex} />
-      <QuestionType
-        onChange={setQval}
-        index={currentlyShownQindex}
-        qArr={qArr}
-      />
-      <div className="pb-4">value: {qArr[currentlyShownQindex].val}</div>
-      <div className="d-flex justify-content-center mb-4">
-        <ButtonGroup>
-          <Button
-            variant="primary"
-            className="btn-sm"
-            onClick={onClick}
-            name="priv"
-            disabled={currentlyShownQindex === 0}
-          >
-            {"< 이전 질문"}
-          </Button>
-          <Button
-            variant="primary"
-            className="btn-sm"
-            onClick={onClick}
-            name="next"
-            disabled={currentlyShownQindex === qArr.length - 1}
-          >
-            {"다음 질문 >"}
-          </Button>
-        </ButtonGroup>
-      </div>
+      {isQloaded ? (
+        <>
+          <QuestionType
+            onChange={setQval}
+            index={currentlyShownQindex}
+            qArr={qArr}
+          />
+          <div className="pb-4">value: {qArr[currentlyShownQindex].val}</div>
+          <div className="d-flex justify-content-center mb-4">
+            <ButtonGroup>
+              <Button
+                variant="primary"
+                className="btn-sm"
+                onClick={onClick}
+                name="priv"
+                disabled={currentlyShownQindex === 0}
+              >
+                {"< 이전 질문"}
+              </Button>
+              <Button
+                variant="primary"
+                className="btn-sm"
+                onClick={onClick}
+                name="next"
+                disabled={currentlyShownQindex === qArr.length - 1}
+              >
+                {"다음 질문 >"}
+              </Button>
+            </ButtonGroup>
+          </div>
+        </>
+      ) : (
+        <LoadingSpinner />
+      )}
     </>
   );
 }

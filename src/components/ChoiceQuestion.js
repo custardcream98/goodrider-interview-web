@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styles from "../styles/ChoiceQuestion.module.css";
 import MyCard from "./MyCard";
 
-function ChoiceQuestion({ onChange, index, text, val }) {
+function ChoiceQuestion({ onChange, index, text, val, img }) {
   const select = (selectedNum) => {
     onChange(index, selectedNum);
   };
