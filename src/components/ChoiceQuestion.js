@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import styles from "../styles/ChoiceQuestion.module.css";
-import MyCard from "./MyCard";
+import Card from "./Card";
+// import { Card } from "react-bootstrap";
+// import Image from "./Image";
 
 function ChoiceQuestion({ onChange, index, text, val, img }) {
   const select = (selectedNum) => {
@@ -13,13 +15,18 @@ function ChoiceQuestion({ onChange, index, text, val, img }) {
 
   const myRef = useRef(null);
 
-  const RenderCards = (num) => {
-    const result = [];
-    for (let i = 1; i <= num; i++) {
-      result.push(
-        <MyCard cardIndex={i} select={select} val={val} styles={styles} />
+  const RenderCards = (img) => {
+    const result = img.map((imgSrc, i) => {
+      return (
+        <Card
+          cardIndex={i + 1}
+          select={select}
+          val={val}
+          styles={styles}
+          imgSrc={imgSrc}
+        />
       );
-    }
+    });
     return result;
   };
 
@@ -31,7 +38,26 @@ function ChoiceQuestion({ onChange, index, text, val, img }) {
         </h5>
       </div>
       <div ref={myRef} className={styles.Container}>
-        {RenderCards(5)}
+        {RenderCards(img)}
+        {/* {React.Children.toArray(
+          img.map((imgSrc, i) => {
+            const onClick = () => onChange(index, i + 1);
+
+            return (
+              <Card
+                onClick={onClick}
+                className={val === i + 1 ? styles.SelectedItem : styles.Item}
+              >
+                <Card.Header>
+                  <Card.Title>{i + 1}</Card.Title>
+                </Card.Header>
+                <Card.Body>
+                  <Image imgSrc={imgSrc} />
+                </Card.Body>
+              </Card>
+            );
+          })
+        )} */}
       </div>
     </>
   );

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { currentlyShownQindexAtom } from "../store/atoms";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { fetchQuestions } from "../api";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -8,7 +10,8 @@ import NavigationBar from "../components/NavigationBar";
 function Interview() {
   const [qArr, setQArr] = useState([]);
   const [isQloaded, setIsQloaded] = useState(false);
-  const [currentlyShownQindex, setCurrentlyShownQindex] = useState(0);
+  const currentlyShownQindex = useRecoilValue(currentlyShownQindexAtom);
+  const setCurrentlyShownQindex = useSetRecoilState(currentlyShownQindexAtom);
 
   useEffect(() => {
     (async () => {
