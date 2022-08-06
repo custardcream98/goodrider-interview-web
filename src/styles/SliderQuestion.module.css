@@ -1,7 +1,6 @@
 .Container {
   display: flex;
   justify-content: space-evenly;
-  /* max-height: 500px; */
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

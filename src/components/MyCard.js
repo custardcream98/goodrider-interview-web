@@ -18,7 +18,8 @@ const MyCard = ({ cardIndex, select, val, styles }) => {
   return (
     <Card
       onClick={click}
-      className={val === cardIndex ? styles.SelectedItem : styles.Item}
+      className={styles.Item}
+      id={val === cardIndex ? styles.Selected : ""}
     >
       <MyHeader>
         <Card.Title>{cardIndex}</Card.Title>

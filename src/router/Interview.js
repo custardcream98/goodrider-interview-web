@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import QuestionType from "../components/QuestionType";
-import Navbar from "../components/Navigation";
+import NavigationBar from "../components/NavigationBar";
 
 function Interview() {
   const [qArr, setQArr] = useState([
@@ -42,15 +42,8 @@ function Interview() {
   const setQval = (numOfQ, val) =>
     setQArr((priv) => {
       priv[numOfQ].val = val;
-      //   .forEach((question, index) => {
-      //   if (index === numOfQ) {
-      //     question.val = val;
-      //   }
-      // });
       return [...priv];
     });
-
-  const onChange = (index, val) => setQval(index, val);
 
   const onClick = (event) => {
     const { name } = event.target;
@@ -69,9 +62,9 @@ function Interview() {
 
   return (
     <>
-      <Navbar setCurrentlyShownQindex={setCurrentlyShownQindex} />
+      <NavigationBar setCurrentlyShownQindex={setCurrentlyShownQindex} />
       <QuestionType
-        onChange={onChange}
+        onChange={setQval}
         index={currentlyShownQindex}
         qArr={qArr}
       />

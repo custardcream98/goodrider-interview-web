@@ -2,9 +2,8 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { Card } from "react-bootstrap";
 import styles from "../styles/SliderQuestion.module.css";
-import Slider from "./Slider";
 import styled from "styled-components";
-import { string } from "prop-types";
+import Slider from "./Slider";
 
 const CardBody = styled(Card.Body)`
   padding: 0.3rem;
@@ -55,7 +54,7 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
   useEffect(() => {
     setSliderValue(val >= 1 ? (val - 1) * 7 + 50 : -((1 / val - 1) * 7) + 50);
     myRef.current.scrollTop = 0;
-  }, [index]);
+  }, [index, val]);
 
   const myRef = useRef(null);
 
