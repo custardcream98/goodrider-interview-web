@@ -9,7 +9,6 @@ import {
 import Home from "./Home";
 import Auth from "./Auth";
 import Interview from "./Interview";
-import Navbar from "../components/Navigation";
 
 const AppRouter = ({ isLoggedIn }) => {
   return (

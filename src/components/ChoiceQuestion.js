@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import MyCard from "./MyCard";
+import React, { useEffect, useRef } from "react";
 import styles from "../styles/ChoiceQuestion.module.css";
+import Card from "./Card";
+// import { Card } from "react-bootstrap";
+// import Image from "./Image";
 
-function ChoiceQuestion({ onChange, index, text, val }) {
+function ChoiceQuestion({ onChange, index, text, val, img }) {
   const select = (selectedNum) => {
     onChange(index, selectedNum);
   };
@@ -13,19 +15,49 @@ function ChoiceQuestion({ onChange, index, text, val }) {
 
   const myRef = useRef(null);
 
+  const RenderCards = (img) => {
+    const result = img.map((imgSrc, i) => {
+      return (
+        <Card
+          cardIndex={i + 1}
+          select={select}
+          val={val}
+          styles={styles}
+          imgSrc={imgSrc}
+        />
+      );
+    });
+    return result;
+  };
+
   return (
     <>
       <div style={{ width: "90%", maxWidth: "800px" }}>
         <h5>
-          {index + 1}. {text}{" "}
+          {index + 1}. {text}
         </h5>
       </div>
       <div ref={myRef} className={styles.Container}>
-        <MyCard cardIndex={1} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={2} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={3} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={4} select={select} val={val} styles={styles} />
-        <MyCard cardIndex={5} select={select} val={val} styles={styles} />
+        {RenderCards(img)}
+        {/* {React.Children.toArray(
+          img.map((imgSrc, i) => {
+            const onClick = () => onChange(index, i + 1);
+
+            return (
+              <Card
+                onClick={onClick}
+                className={val === i + 1 ? styles.SelectedItem : styles.Item}
+              >
+                <Card.Header>
+                  <Card.Title>{i + 1}</Card.Title>
+                </Card.Header>
+                <Card.Body>
+                  <Image imgSrc={imgSrc} />
+                </Card.Body>
+              </Card>
+            );
+          })
+        )} */}
       </div>
     </>
   );
