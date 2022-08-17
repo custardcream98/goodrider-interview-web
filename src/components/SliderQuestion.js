@@ -20,36 +20,36 @@ const SliderQuestion = ({ onChange, index, text, val, img }) => {
   const myRef = useRef(null);
 
   return (
-    <Card>
-      <Card.Header>
-        <Card.Title>
-          {index + 1}. {text}
-        </Card.Title>
-      </Card.Header>
-      <Card.Body>
-        <div ref={myRef} className={styles.Container}>
-          {img.map((src, index) => (
-            <div
-              className={`${styles.Item} ${
-                index === 0
-                  ? sliderValue < 50
+    <>
+      <h5>
+        {index + 1}. {text}
+      </h5>
+      <Card>
+        <Card.Body>
+          <div ref={myRef} className={styles.Container}>
+            {img.map((src, index) => (
+              <div
+                className={`${styles.Item} ${
+                  index === 0
+                    ? sliderValue < 50
+                      ? styles.SelectedImg
+                      : styles.Img
+                    : sliderValue > 50
                     ? styles.SelectedImg
                     : styles.Img
-                  : sliderValue > 50
-                  ? styles.SelectedImg
-                  : styles.Img
-              }`}
-            >
-              <h5 className="display-block">{`${index + 1}. `}</h5>
-              <Image key={src} imgSrc={src} />
-            </div>
-          ))}
-        </div>
-      </Card.Body>
-      <Card.Footer>
-        <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
-      </Card.Footer>
-    </Card>
+                }`}
+              >
+                <h5 className="display-block">{`${index + 1}. `}</h5>
+                <Image key={src} imgSrc={src} />
+              </div>
+            ))}
+          </div>
+        </Card.Body>
+        <Card.Footer>
+          <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
+        </Card.Footer>
+      </Card>
+    </>
   );
 };
 

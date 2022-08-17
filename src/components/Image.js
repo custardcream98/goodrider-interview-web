@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Spinner } from "react-bootstrap";
 import styles from "../styles/Image.module.css";
 
-const Image = ({ imgSrc }) => {
+const Image = ({ imgSrc, ...props }) => {
   const [loading, setLoading] = useState(true);
 
   const imgLoaded = () => setLoading(false);
 
   return (
-    <div className={styles.ImgBox}>
+    <div className={styles.ImgBox} {...props}>
       <Spinner
         as="p"
         animation="border"
