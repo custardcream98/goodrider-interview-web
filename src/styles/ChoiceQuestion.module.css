@@ -20,6 +20,7 @@
 }
 
 .Item {
+  pointer-events: auto;
   margin: 6px;
   width: calc(100% - 12px);
   aspect-ratio: 1.5/1;
@@ -27,12 +28,17 @@
 }
 
 .SelectedItem {
+  pointer-events: auto;
   margin: 6px;
   width: calc(100% - 12px);
   aspect-ratio: 1.5/1;
   flex: 0 0 auto;
   border-color: var(--main-color);
   border-width: 6px;
+}
+
+.ClickIgnore {
+  pointer-events: none;
 }
 
 @media (min-aspect-ratio: 3/2) {

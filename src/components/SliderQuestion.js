@@ -1,50 +1,10 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { Card } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Card, Spinner } from "react-bootstrap";
 import styles from "../styles/SliderQuestion.module.css";
 import Slider from "./Slider";
-import styled from "styled-components";
-import { string } from "prop-types";
+import Image from "./Image";
 
-const CardBody = styled(Card.Body)`
-  padding: 0.3rem;
-`;
-
-const Img = styled.div`
-  width: 95%;
-  max-width: 800px;
-  transform: scale(
-    ${(props) =>
-      props.position === "right" || props.sliderValue === 50
-        ? (100 + (props.sliderValue - 50) / 10) / 100
-        : (100 - (props.sliderValue - 50) / 10) / 100}
-  );
-  aspect-ratio: 1.5;
-  border-color: ${(props) =>
-    (props.position === "right") ^ (props.sliderValue < 50) ||
-    props.sliderValue === 50
-      ? "orange"
-      : "silver"};
-  border-width: ${(props) =>
-    (props.position === "right") ^ (props.sliderValue < 50) ||
-    props.sliderValue === 50
-      ? (props.sliderValue - 50 >= 0
-          ? props.sliderValue - 50
-          : 50 - props.sliderValue) /
-          7 +
-        1 +
-        "px"
-      : "1px"};
-  border-style: solid;
-  border-radius: 6px;
-  margin: auto;
-
-  @media screen and (max-width: 680px) {
-    width: 95%;
-  }
-`;
-
-const SliderQuestion = ({ onChange, index, text, val }) => {
+const SliderQuestion = ({ onChange, index, text, val, img }) => {
   const [sliderValue, setSliderValue] = useState(50);
 
   const handleValue = (val) => {
@@ -60,28 +20,36 @@ const SliderQuestion = ({ onChange, index, text, val }) => {
   const myRef = useRef(null);
 
   return (
-    <Card>
-      <Card.Header>
-        <Card.Title>
-          {index + 1}. {text}
-        </Card.Title>
-      </Card.Header>
-      <CardBody>
-        <div ref={myRef} className={styles.Container}>
-          <div className={styles.Item}>
-            <h5>1.</h5>
-            <Img sliderValue={sliderValue} position="left" />
+    <>
+      <h5>
+        {index + 1}. {text}
+      </h5>
+      <Card>
+        <Card.Body>
+          <div ref={myRef} className={styles.Container}>
+            {img.map((src, index) => (
+              <div
+                className={`${styles.Item} ${
+                  index === 0
+                    ? sliderValue < 50
+                      ? styles.SelectedImg
+                      : styles.Img
+                    : sliderValue > 50
+                    ? styles.SelectedImg
+                    : styles.Img
+                }`}
+              >
+                <h5 className="display-block">{`${index + 1}. `}</h5>
+                <Image key={src} imgSrc={src} />
+              </div>
+            ))}
           </div>
-          <div className={styles.Item}>
-            <h5>2.</h5>
-            <Img sliderValue={sliderValue} position="right" />
-          </div>
-        </div>
-      </CardBody>
-      <Card.Footer>
-        <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
-      </Card.Footer>
-    </Card>
+        </Card.Body>
+        <Card.Footer>
+          <Slider currentValue={sliderValue} setCurrentValue={handleValue} />
+        </Card.Footer>
+      </Card>
+    </>
   );
 };
 
