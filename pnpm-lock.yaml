@@ -6,6 +6,7 @@ specifiers:
   '@types/react-dom': ^17.0.1
   autoprefixer: ^10.4.8
   next: latest
+  next-themes: ^0.2.0
   postcss: ^8.4.16
   postcss-preset-env: ^7.8.0
   react: ^17.0.2
@@ -15,6 +16,7 @@ specifiers:
 
 dependencies:
   next: 12.2.5_sfoxds7t5ydpegc3knd667wn6m
+  next-themes: 0.2.0_pzmtmsmkyiq4foirxc7gldcjme
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
 
@@ -661,6 +663,18 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /next-themes/0.2.0_pzmtmsmkyiq4foirxc7gldcjme:
+    resolution: {integrity: sha512-myhpDL4vadBD9YDSHiewqvzorGzB03N84e+3LxCwHRlM/hiBOaW+UsKsQojQAzC7fdcJA0l2ppveXcYaVV+hxQ==}
+    peerDependencies:
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    dependencies:
+      next: 12.2.5_sfoxds7t5ydpegc3knd667wn6m
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /next/12.2.5_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-tBdjqX5XC/oFs/6gxrZhjmiq90YWizUYU6qOWAfat7zJwrwapJ+BYgX2PmiacunXMaRpeVT4vz5MSPSLgNkrpA==}
