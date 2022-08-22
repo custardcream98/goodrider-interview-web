@@ -1,23 +1,38 @@
-import { useTheme } from "next-themes";
+import storageKeys, { getStorage } from "~/utils/localStorage";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const IndexPage = () => {
-  const { theme, setTheme } = useTheme();
+const LandingPage = () => {
+  const [isEnded, setIsEnded] = useState(false);
+  const [isOnGoing, setIsOnGoing] = useState(false);
+
+  useEffect(() => {
+    setIsEnded(Boolean(getStorage(storageKeys.isEnded)));
+    setIsOnGoing(Boolean(getStorage(storageKeys.isOnGoing)));
+  }, []);
 
   return (
-    <div className="h-screen w-full bg-white dark:bg-gray-900">
-      <h1 className="text-3xl text-gray-900 dark:text-pink-500">
-        Welcome to Your App
-      </h1>
-
-      <button
-        type="button"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="text-gray-500 dark:text-gray-400"
+    <div className="h-screen w-full bg-white centering flex-col">
+      <h1
+        className="text-title-mobile md:text-title text-gray-900 font-bold md:w-2/4 w-11/12 text-center leading-normal"
+        style={{ wordBreak: "keep-all" }}
       >
-        <h1 className="text-3xl text-gray-900 dark:text-pink-500">버튼</h1>
-      </button>
+        착한 이륜차 운전자 평가 모델 관련 설문조사
+      </h1>
+      {isEnded ? (
+        <p className="mt-5 text-xl">이미 설문에 참여하셨습니다. 감사합니다.</p>
+      ) : (
+        <Link href={"/interview"}>
+          <button
+            className="py-2 px-3 mt-5 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none"
+            disabled={isOnGoing}
+          >
+            {isOnGoing ? "설문 이어하기" : "설문 시작"}
+          </button>
+        </Link>
+      )}
     </div>
   );
 };
 
-export default IndexPage;
+export default LandingPage;

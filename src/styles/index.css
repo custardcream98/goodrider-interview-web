@@ -2,4 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './reset.css'
+@import './reset.css';
+
+.centering {
+  @apply flex items-center justify-center;
+}

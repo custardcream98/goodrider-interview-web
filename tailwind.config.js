@@ -1,12 +1,26 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        "title-mobile": [
+          "2rem",
+          {
+            lineHeight: "1.5",
+          },
+        ],
+        title: [
+          "3rem",
+          {
+            lineHeight: "1.5",
+          },
+        ],
+      },
+    },
   },
   plugins: [],
-  darkMode: "class",
 };
