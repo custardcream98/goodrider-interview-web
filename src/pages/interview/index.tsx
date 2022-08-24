@@ -2,6 +2,18 @@ import React from "react";
 import { createPairs, Questions } from "~/utils/question_data";
 import SliderQuestion from "~/components/SliderQuestion";
 import Layout from "~/components/Layout";
+import styled from "styled-components";
+
+const MainCriteriaContainer = styled.div`
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #effdfa;
+  margin: 1rem auto;
+  width: 60rem;
+  @media (max-width: 400px) {
+    width: 95%;
+  }
+`;
 
 interface IProps {
   questions: Questions[];
@@ -13,10 +25,31 @@ const MainPage = ({ questions }: IProps) => {
   return (
     <Layout>
       {questions.map((lv) => (
-        <div key={lv.mainCriteria} className="p-3 m-3 bg-slate-400">
-          <h1 className="text-3xl">
-            "{lv.mainCriteria}"에 중요한 것은 무엇인가요?
+        <MainCriteriaContainer key={lv.mainCriteria}>
+          <h1
+            className="text-question-title-mobile md:text-question-title text-center"
+            style={{ wordBreak: "keep-all" }}
+          >
+            "{lv.mainCriteria}"
+            <span
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: 400,
+              }}
+            >
+              에
+            </span>
           </h1>
+          <h2
+            style={{
+              wordBreak: "keep-all",
+              textAlign: "center",
+              fontSize: "1.5rem",
+              marginBottom: "1rem",
+            }}
+          >
+            중요한 것은 무엇인가요?
+          </h2>
           {lv.pairs.map((sub) => {
             count++;
 
@@ -29,7 +62,7 @@ const MainPage = ({ questions }: IProps) => {
               />
             );
           })}
-        </div>
+        </MainCriteriaContainer>
       ))}
     </Layout>
   );

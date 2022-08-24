@@ -19,6 +19,26 @@ module.exports = {
             lineHeight: "1.5",
           },
         ],
+
+        "question-title-mobile": [
+          "2rem",
+          {
+            lineHeight: "1.2",
+            fontWeight: 600,
+            // wordBreak: "keep-all",
+          },
+        ],
+        "question-title": [
+          "3rem",
+          {
+            lineHeight: "1.2",
+            fontWeight: 600,
+            // wordBreak: "keep-all",
+          },
+        ],
+      },
+      spacing: {
+        "3px": "3px",
       },
     },
   },
