@@ -24,12 +24,12 @@ export const setStorage = (key: string, value) => localStorage.setItem(key, valu
 //   localStorage.setItem(storageKeys.answers, JSON.stringify(answers))
 // }
 
-export const getAnswer = (questionIndex: number):number|null => {
+export const getAnswer = (questionIndex: string):number|null => {
   const currentAnswers: answers = JSON.parse(getStorage(storageKeys.answers));
   
   return currentAnswers !== null ? currentAnswers[questionIndex] : null;
 }
-export const setAnswer = (questionIndex: number, value: number) => {
+export const setAnswer = (questionIndex: string, value: number) => {
   let currentAnswers:answers = JSON.parse(getStorage(storageKeys.answers)) ?? {};
   currentAnswers[questionIndex] = value;
   localStorage.setItem(storageKeys.answers, JSON.stringify(currentAnswers))
