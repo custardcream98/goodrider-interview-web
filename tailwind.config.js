@@ -25,7 +25,6 @@ module.exports = {
           {
             lineHeight: "1.2",
             fontWeight: 600,
-            // wordBreak: "keep-all",
           },
         ],
         "question-title": [
@@ -33,7 +32,6 @@ module.exports = {
           {
             lineHeight: "1.2",
             fontWeight: 600,
-            // wordBreak: "keep-all",
           },
         ],
       },
