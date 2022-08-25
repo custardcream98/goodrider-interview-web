@@ -5,7 +5,7 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { setAnswer } from "~/utils/localStorage";
 
 type Props = {
-  questionIndex: number;
+  questionIndex: string;
   initialValue?: number;
 };
 
@@ -18,8 +18,6 @@ const Wrapper = styled.div`
   margin: auto;
   align-items: center;
   justify-content: center;
-  border-radius: 500px;
-  /* background-color: #e3e3e3; */
   @media (max-width: 400px) {
     width: 306px;
     height: 66px;
@@ -32,7 +30,7 @@ interface GuideSizeProp {
 
 const Guide = styled.div<GuideSizeProp>`
   z-index: 2;
-  background-color: #d9d9d9;
+  background-color: #e5e5e5;
   border-radius: 100%;
   width: calc(10rem * ${(props) => props.size});
   height: calc(10rem * ${(props) => props.size});

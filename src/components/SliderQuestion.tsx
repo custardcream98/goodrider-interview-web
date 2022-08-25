@@ -4,7 +4,7 @@ import { getAnswer } from "~/utils/localStorage";
 import Slider from "./Slider";
 
 type Props = {
-  questionIndex: number;
+  questionIndex: string;
   subCriteria1: string;
   subCriteria2: string;
 };

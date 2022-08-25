@@ -1,69 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { createPairs, Questions } from "~/utils/question_data";
-import SliderQuestion from "~/components/SliderQuestion";
 import Layout from "~/components/Layout";
-import styled from "styled-components";
-
-const MainCriteriaContainer = styled.div`
-  padding: 1rem;
-  border-radius: 10px;
-  background-color: #effdfa;
-  margin: 1rem auto;
-  width: 60rem;
-  @media (max-width: 400px) {
-    width: 95%;
-  }
-`;
+import QuestionBundle from "~/components/QuestionBundle";
+import styles from "~/styles/mainCriteriaContainer.module.css";
+import PageBtn from "~/components/PageBtn";
 
 interface IProps {
   questions: Questions[];
 }
 
+const scrollToTop = () => {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+};
+
 const MainPage = ({ questions }: IProps) => {
-  let count = 0;
+  const [page, setPage] = useState(1);
+
+  const onPageBtnclick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { name } = event.target as HTMLButtonElement;
+
+    switch (name) {
+      case "prev":
+        if (page > 1) {
+          setPage((prev) => prev - 1);
+          scrollToTop();
+        }
+        break;
+      case "next":
+        if (page < questions.length) {
+          setPage((prev) => prev + 1);
+          scrollToTop();
+        }
+        break;
+    }
+  };
 
   return (
     <Layout>
-      {questions.map((lv) => (
-        <MainCriteriaContainer key={lv.mainCriteria}>
-          <h1
-            className="text-question-title-mobile md:text-question-title text-center"
-            style={{ wordBreak: "keep-all" }}
-          >
-            "{lv.mainCriteria}"
-            <span
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: 400,
-              }}
-            >
-              에
-            </span>
-          </h1>
-          <h2
-            style={{
-              wordBreak: "keep-all",
-              textAlign: "center",
-              fontSize: "1.5rem",
-              marginBottom: "1rem",
-            }}
-          >
-            중요한 것은 무엇인가요?
-          </h2>
-          {lv.pairs.map((sub) => {
-            count++;
-
-            return (
-              <SliderQuestion
-                key={sub.criteria1 + sub.criteria2}
-                questionIndex={count}
-                subCriteria1={sub.criteria1}
-                subCriteria2={sub.criteria2}
-              />
-            );
-          })}
-        </MainCriteriaContainer>
-      ))}
+      <div className={styles.Container}>
+        <blockquote>
+          각 질문별로 더 중요하게 고려해야 할 사항 쪽으로 가운데에 위치한{" "}
+          <strong>회색 원</strong>을 옮겨주세요!
+        </blockquote>
+      </div>
+      {
+        <QuestionBundle
+          currentPageQuestions={questions[page - 1]}
+          pageIndex={page}
+        />
+      }
+      <PageBtn
+        maxPage={questions.length}
+        currentPage={page}
+        onClick={onPageBtnclick}
+      />
     </Layout>
   );
 };
