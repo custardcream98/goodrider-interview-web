@@ -72,7 +72,7 @@ const Slider = ({ questionIndex }: Props) => {
         ? answer < 1
           ? -(1 / ((answer * 9) / range))
           : answer === 1
-          ? 1
+          ? 0
           : (answer * range) / 9
         : 0
     );
