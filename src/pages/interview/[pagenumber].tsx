@@ -21,7 +21,7 @@ const InterviewPage = ({ questions, pagenumber, maxPage }: IProps) => {
     scrollToTop();
   }, []);
   return (
-    <Layout>
+    <Layout pagenumber={pagenumber}>
       <div className={styles.quote}>
         각 질문별로 더 중요하게 고려해야 할 사항 쪽으로 가운데에 위치한{" "}
         <strong>회색 원</strong>을 옮겨주세요!
