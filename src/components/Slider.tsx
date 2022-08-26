@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useMediaQuery } from "@react-hook/media-query";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { setAnswer } from "~/utils/localStorage";
+import { getAnswer, setAnswer } from "~/utils/localStorage";
 
 type Props = {
   questionIndex: string;
-  initialValue?: number;
 };
 
 const Wrapper = styled.div`
@@ -53,12 +52,12 @@ const Handle = styled(motion.div)`
   }
 `;
 
-const Slider = ({ questionIndex, initialValue }: Props) => {
+const Slider = ({ questionIndex }: Props) => {
   const media = useMediaQuery("only screen and (min-width: 400px)");
   const range = media ? 320 : 120;
 
   const xRange = [-range, 0, range];
-  const x = useMotionValue(initialValue ?? 0);
+  const x = useMotionValue(0);
   const scale = useTransform(x, xRange, [1, 0.5, 1]);
   const colors = useTransform(x, xRange, [
     "rgb(16, 152, 43)",
@@ -67,10 +66,21 @@ const Slider = ({ questionIndex, initialValue }: Props) => {
   ]);
 
   useEffect(() => {
+    const answer = getAnswer(questionIndex);
+    x.set(
+      answer
+        ? answer < 1
+          ? -(1 / ((answer * 9) / range))
+          : answer === 1
+          ? 1
+          : (answer * range) / 9
+        : 0
+    );
+
     const unsubscribe = x.onChange((latest) => {
       const score =
         latest < -1
-          ? ((1 / latest) * range) / 9
+          ? Math.abs(((1 / latest) * range) / 9)
           : latest > 1
           ? (latest * 9) / range
           : 1;

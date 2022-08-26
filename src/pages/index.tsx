@@ -26,7 +26,7 @@ const LandingPage = () => {
             이미 설문에 참여하셨습니다. 감사합니다.
           </p>
         ) : (
-          <Link href={"/interview"}>
+          <Link href={"/interview/1"}>
             <button
               className="py-2 px-3 mt-5 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none"
               disabled={isOnGoing}

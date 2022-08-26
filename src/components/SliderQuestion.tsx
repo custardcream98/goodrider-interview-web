@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getAnswer } from "~/utils/localStorage";
 import Slider from "./Slider";
 
 type Props = {
@@ -46,19 +44,13 @@ const SliderQuestion = ({
   subCriteria1,
   subCriteria2,
 }: Props) => {
-  const [value, setValue] = useState<number>(null);
-
-  useEffect(() => {
-    setValue(getAnswer(questionIndex));
-  }, []);
-
   return (
     <div className="p-3 flex flex-col justify-center">
       <SubCriteriaContainer>
         <SubCriteria>{subCriteria1}</SubCriteria>
         <SubCriteria>{subCriteria2}</SubCriteria>
       </SubCriteriaContainer>
-      <Slider questionIndex={questionIndex} initialValue={value} />
+      <Slider questionIndex={questionIndex} />
     </div>
   );
 };

@@ -43,6 +43,7 @@ const QuestionBundle = ({ currentPageQuestions, pageIndex }: IProps) => {
 
           return (
             <SliderQuestion
+              key={`${pageIndex}-${count}`}
               questionIndex={`${pageIndex}-${count}`}
               subCriteria1={sub.criteria1}
               subCriteria2={sub.criteria2}
