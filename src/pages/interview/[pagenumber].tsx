@@ -51,7 +51,7 @@ export async function getStaticProps({ params }: Params) {
 
   return {
     props: {
-      questions: questions[pageNumber],
+      questions: questions[pageNumber - 1],
       pagenumber: pageNumber,
       maxPage: questions.length,
     },
