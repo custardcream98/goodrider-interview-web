@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPairs, Questions } from "~/utils/question_data";
 import Layout from "~/components/Layout";
 import QuestionBundle from "~/components/QuestionBundle";
@@ -36,13 +36,27 @@ const MainPage = ({ questions }: IProps) => {
     }
   };
 
+  useEffect(() => {
+    const prevBtn = document.getElementsByName("prev")[0];
+    const nextBtn = document.getElementsByName("next")[0];
+
+    if (page === 1) {
+      prevBtn.classList.add("deactivate");
+    } else {
+      prevBtn.classList.remove("deactivate");
+    }
+    if (page === questions.length) {
+      nextBtn.classList.add("deactivate");
+    } else {
+      nextBtn.classList.remove("deactivate");
+    }
+  }, [page]);
+
   return (
     <Layout>
-      <div className={styles.Container}>
-        <blockquote>
-          각 질문별로 더 중요하게 고려해야 할 사항 쪽으로 가운데에 위치한{" "}
-          <strong>회색 원</strong>을 옮겨주세요!
-        </blockquote>
+      <div className={styles.quote}>
+        각 질문별로 더 중요하게 고려해야 할 사항 쪽으로 가운데에 위치한{" "}
+        <strong>회색 원</strong>을 옮겨주세요!
       </div>
       {
         <QuestionBundle

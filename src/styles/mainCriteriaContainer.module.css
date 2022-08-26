@@ -1,18 +1,13 @@
-.Container {
+.quote {
+  border-left: 0.5rem solid #96ffe8;
+}
+
+.Container, .quote {
+  border-radius: 10px;
   background-color: #effdfa;
   width: 60rem;
   margin: 1rem auto;
   padding: 1rem;
-}
-
-.pageBtn {
-  background-color: #9b9b9b;
-  padding: 0.2rem 0.5rem; 
-  width: fit-content;
-}
-
-.Container, .pageBtn {
-  border-radius: 10px;
 }
 
 @media (max-width: 400px) {

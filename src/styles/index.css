@@ -7,3 +7,7 @@
 .centering {
   @apply flex items-center justify-center;
 }
+
+.deactivate {
+  visibility: hidden;
+}
