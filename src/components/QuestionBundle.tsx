@@ -10,7 +10,6 @@ interface IProps {
 
 const QuestionBundle = ({ currentPageQuestions, pageIndex }: IProps) => {
   let count = 0;
-  console.log(currentPageQuestions);
 
   return (
     <div className={styles.Container}>
