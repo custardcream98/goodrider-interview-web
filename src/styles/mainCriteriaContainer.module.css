@@ -11,7 +11,8 @@
 }
 
 @media (max-width: 400px) {
-  .Container {
+  .Container,
+    .quote {
     width: 95%;
   }
 }

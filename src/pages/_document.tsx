@@ -10,7 +10,7 @@ import { ServerStyleSheet } from "styled-components";
 class MyDocument extends Document {
   render() {
     return (
-      <Html className="dark">
+      <Html>
         <Head>{this.props.styles}</Head>
         <body>
           <Main />
