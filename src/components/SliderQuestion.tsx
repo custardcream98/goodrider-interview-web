@@ -7,7 +7,7 @@ type Props = {
   subCriteria2: string;
 };
 
-const SubCriteriaContainer = styled.div`
+const SubCriteriaContainer = styled.h3`
   display: flex;
   align-items: center;
   margin: auto;
@@ -45,13 +45,13 @@ const SliderQuestion = ({
   subCriteria2,
 }: Props) => {
   return (
-    <div className="p-3 flex flex-col justify-center">
+    <section className="p-3 flex flex-col justify-center">
       <SubCriteriaContainer>
         <SubCriteria>{subCriteria1}</SubCriteria>
         <SubCriteria>{subCriteria2}</SubCriteria>
       </SubCriteriaContainer>
       <Slider questionIndex={questionIndex} />
-    </div>
+    </section>
   );
 };
 

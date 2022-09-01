@@ -14,7 +14,7 @@ const LandingPage = () => {
 
   return (
     <Layout>
-      <div className="h-screen w-full bg-white centering flex-col">
+      <header className="h-screen w-full bg-white centering flex-col">
         <h1
           className="text-title-mobile md:text-title text-gray-900 font-bold md:w-2/4 w-11/12 text-center leading-normal"
           style={{ wordBreak: "keep-all" }}
@@ -27,15 +27,15 @@ const LandingPage = () => {
           </p>
         ) : (
           <Link href={"/interview/1"}>
-            <button
+            <a
+              type="button"
               className="py-2 px-3 mt-5 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none"
-              disabled={isOnGoing}
             >
               {isOnGoing ? "설문 이어하기" : "설문 시작"}
-            </button>
+            </a>
           </Link>
         )}
-      </div>
+      </header>
     </Layout>
   );
 };

@@ -7,7 +7,8 @@ interface IProps {
 
 const PageBtn = ({ maxPage, currentPage }: IProps) => {
   return (
-    <div className="flex justify-center mt-4 mb-4">
+    <section className="flex justify-center mt-4 mb-4">
+      <h2 hidden>이전 / 다음 페이지</h2>
       <Link href={`/interview/${currentPage - 1}`}>
         <button
           className={`prevBtn py-2 px-3 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none ${
@@ -17,7 +18,9 @@ const PageBtn = ({ maxPage, currentPage }: IProps) => {
           {"<"}
         </button>
       </Link>
-      <div className="py-2 px-3 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none">{`${currentPage} / ${maxPage}`}</div>
+      <div className="py-2 px-3 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none">
+        <span>{`${currentPage} / ${maxPage}`}</span>
+      </div>
       <Link href={`/interview/${currentPage + 1}`}>
         <button
           className={`prevBtn py-2 px-3 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none ${
@@ -27,7 +30,7 @@ const PageBtn = ({ maxPage, currentPage }: IProps) => {
           {">"}
         </button>
       </Link>
-    </div>
+    </section>
   );
 };
 

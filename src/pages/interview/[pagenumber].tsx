@@ -11,6 +11,17 @@ interface IProps {
   maxPage: number;
 }
 
+// const NavbarContainer = styled.div`
+// z-index: 1;
+//   margin: 0 auto;
+//   max-width: ;
+// `
+
+// const Navbar = styled.nav`
+//   width: 100%;
+
+// `
+
 const scrollToTop = () => {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
@@ -22,17 +33,29 @@ const InterviewPage = ({ questions, pagenumber, maxPage }: IProps) => {
   }, []);
   return (
     <Layout pagenumber={pagenumber}>
-      <div className={styles.quote}>
-        각 질문별로 더 중요하게 고려해야 할 사항 쪽으로 가운데에 위치한{" "}
-        <strong>회색 원</strong>을 옮겨주세요!
-      </div>
-      {
-        <QuestionBundle
-          currentPageQuestions={questions}
-          pageIndex={pagenumber}
-        />
-      }
-      <PageBtn maxPage={maxPage} currentPage={pagenumber} />
+      <header>
+        <nav>
+          <h1 className="text-nav-heading">
+            착한 이륜차 운전자 평가 모델 관련 설문조사
+          </h1>
+        </nav>
+      </header>
+      <main>
+        <section className={styles.quote}>
+          <h2 hidden>안내 문구</h2>
+          <p>
+            각 질문별로 더 중요하게 고려해야 할 사항 쪽으로 가운데에 위치한{" "}
+            <strong>회색 원</strong>을 옮겨주세요!
+          </p>
+        </section>
+        {
+          <QuestionBundle
+            currentPageQuestions={questions}
+            pageIndex={pagenumber}
+          />
+        }
+        <PageBtn maxPage={maxPage} currentPage={pagenumber} />
+      </main>
     </Layout>
   );
 };

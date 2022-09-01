@@ -12,30 +12,31 @@ const QuestionBundle = ({ currentPageQuestions, pageIndex }: IProps) => {
   let count = 0;
 
   return (
-    <div className={styles.Container}>
-      <h1
-        className="text-question-title-mobile md:text-question-title text-center"
-        style={{ wordBreak: "keep-all" }}
-      >
-        "{currentPageQuestions.mainCriteria}"
+    <section className={styles.Container}>
+      <h2>
         <span
+          className="text-question-title-mobile md:text-question-title text-center block"
+          style={{ wordBreak: "keep-all" }}
+        >
+          "{currentPageQuestions.mainCriteria}"
+          <span
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: 400,
+            }}
+          >
+            에{" "}
+          </span>
+        </span>
+        <span
+          className="block text-center mb-4"
           style={{
+            wordBreak: "keep-all",
             fontSize: "1.5rem",
-            fontWeight: 400,
           }}
         >
-          에
+          중요한 것은 무엇인가요?
         </span>
-      </h1>
-      <h2
-        style={{
-          wordBreak: "keep-all",
-          textAlign: "center",
-          fontSize: "1.5rem",
-          marginBottom: "1rem",
-        }}
-      >
-        중요한 것은 무엇인가요?
       </h2>
       {React.Children.toArray(
         currentPageQuestions.pairs.map((sub) => {
@@ -51,7 +52,7 @@ const QuestionBundle = ({ currentPageQuestions, pageIndex }: IProps) => {
           );
         })
       )}
-    </div>
+    </section>
   );
 };
 
