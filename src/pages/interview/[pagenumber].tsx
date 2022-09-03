@@ -1,26 +1,16 @@
+import { useEffect } from "react";
 import Layout from "~/components/Layout";
 import QuestionBundle from "~/components/QuestionBundle";
-import styles from "~/styles/mainCriteriaContainer.module.css";
 import PageBtn from "~/components/PageBtn";
+import Navbar from "~/components/Navbar";
 import { createPairs, Questions } from "~/utils/question_data";
-import { useEffect } from "react";
+import styles from "~/styles/mainCriteriaContainer.module.css";
 
 interface IProps {
   questions: Questions;
   pagenumber: number;
   maxPage: number;
 }
-
-// const NavbarContainer = styled.div`
-// z-index: 1;
-//   margin: 0 auto;
-//   max-width: ;
-// `
-
-// const Navbar = styled.nav`
-//   width: 100%;
-
-// `
 
 const scrollToTop = () => {
   document.body.scrollTop = 0; // For Safari
@@ -33,13 +23,8 @@ const InterviewPage = ({ questions, pagenumber, maxPage }: IProps) => {
   }, []);
   return (
     <Layout pagenumber={pagenumber}>
-      <header>
-        <nav>
-          <h1 className="text-nav-heading">
-            착한 이륜차 운전자 평가 모델 관련 설문조사
-          </h1>
-        </nav>
-      </header>
+      <Navbar maxPage={maxPage} currentPage={pagenumber} />
+
       <main>
         <section className={styles.quote}>
           <h2 hidden>안내 문구</h2>

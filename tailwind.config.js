@@ -19,7 +19,6 @@ module.exports = {
             lineHeight: "1.5",
           },
         ],
-
         "question-title-mobile": [
           "2rem",
           {
@@ -34,9 +33,38 @@ module.exports = {
             fontWeight: 600,
           },
         ],
+        "nav-heading": [
+          "1.5rem",
+          {
+            fontWeight: 600,
+          },
+        ],
+        "nav-heading-mobile": [
+          "1rem",
+          {
+            fontWeight: 600,
+          },
+        ],
+        "nav-item": [
+          "1.3rem",
+          {
+            fontWeight: 500,
+          },
+        ],
+        "nav-item-mobile": [
+          "1rem",
+          {
+            fontWeight: 500,
+          },
+        ],
       },
       spacing: {
         "3px": "3px",
+        "60rem": "60rem",
+        "95%": "95%",
+      },
+      screens: {
+        custom: "400px",
       },
     },
   },
