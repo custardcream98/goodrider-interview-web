@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Layout from "~/components/Layout";
 import QuestionBundle from "~/components/QuestionBundle";
 import PageBtn from "~/components/PageBtn";
@@ -9,6 +9,17 @@ import {
   getBehaviorQuestions,
   IBehaviorQuestion,
 } from "~/utils/score_behavior_question_data";
+import VideoQuestion from "~/components/VideoQuestion";
+import styled from "styled-components";
+
+const QuestionWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: auto;
+  max-width: 60rem;
+`;
 
 interface IProps {
   questions?: Questions;
@@ -58,8 +69,73 @@ const InterviewPage = ({
             />
           </>
         ) : (
-          // <ScoreBehaviors />
-          <div></div>
+          <>
+            <section className={styles.quote}>
+              <h2 className="ir-only">안내 문구</h2>
+              <p>
+                각 영상에 <strong>위험한 정도</strong>를 매겨주세요!
+              </p>
+              <p>1부터 10까지 위험도가 올라갑니다.</p>
+            </section>
+            <h3></h3>
+            <QuestionWrapper>
+              <div className="w-[400px]">
+                <VideoQuestion></VideoQuestion>
+                <select className="w-full" name="score" id="">
+                  {React.Children.toArray([
+                    <option value="">점수를 선택해주세요.</option>,
+                    ...Array(10)
+                      .fill(0)
+                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
+                  ])}
+                </select>
+              </div>
+              <div className="w-[400px]">
+                <VideoQuestion></VideoQuestion>
+                <select className="w-full" name="score" id="">
+                  {React.Children.toArray([
+                    <option value="">점수를 선택해주세요.</option>,
+                    ...Array(10)
+                      .fill(0)
+                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
+                  ])}
+                </select>
+              </div>
+              <div className="w-[400px]">
+                <VideoQuestion></VideoQuestion>
+                <select className="w-full" name="score" id="">
+                  {React.Children.toArray([
+                    <option value="">점수를 선택해주세요.</option>,
+                    ...Array(10)
+                      .fill(0)
+                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
+                  ])}
+                </select>
+              </div>
+              <div className="w-[400px]">
+                <VideoQuestion></VideoQuestion>
+                <select className="w-full" name="score" id="">
+                  {React.Children.toArray([
+                    <option value="">점수를 선택해주세요.</option>,
+                    ...Array(10)
+                      .fill(0)
+                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
+                  ])}
+                </select>
+              </div>
+              <div className="w-[400px]">
+                <VideoQuestion></VideoQuestion>
+                <select className="w-full" name="score" id="">
+                  {React.Children.toArray([
+                    <option value="">점수를 선택해주세요.</option>,
+                    ...Array(10)
+                      .fill(0)
+                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
+                  ])}
+                </select>
+              </div>
+            </QuestionWrapper>
+          </>
         )}
         <PageBtn
           maxPage={maxSliders + maxScoreBehaviors}

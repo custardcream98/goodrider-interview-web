@@ -1,110 +1,186 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useMediaQuery } from "@react-hook/media-query";
-import { motion, useMotionValue, useTransform } from "framer-motion";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
+
+interface Position {
+  x: number;
+}
+
+const Indicator = styled.div<Position>`
+  position: absolute;
+  top: 20px;
+  left: ${(props) => props.x.toString() + "px"};
+  width: 4px;
+  height: 30px;
+  background-color: #cdcdcd;
+  border-radius: 2px;
+  z-index: 10;
+  transform: translateX(-50%);
+`;
+
+const Wrapper = styled.div`
+  margin: auto;
+  position: relative;
+  /* z-index: 1; */
+  height: 70px;
+  width: 600px;
+  margin: auto;
+  background-color: #e5eeec;
+  border-radius: 100px;
+`;
+
+/**
+ * 로직은 아직 덜짬
+ */
 
 type Props = {
   questionIndex: string;
 };
 
-const Wrapper = styled.div`
-  z-index: 1;
+const InputRange = styled.input`
   position: relative;
-  display: flex;
-  height: 11rem;
-  width: 51rem;
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+
+  height: 100%;
+  width: 100%;
   margin: auto;
-  align-items: center;
-  justify-content: center;
+  padding: 5px;
+  background-color: transparent;
+  /* background-color: #e5eeec;
+  border-radius: 100px; */
+
+  z-index: 20;
   @media (max-width: 400px) {
     width: 306px;
     height: 66px;
   }
-`;
 
-interface GuideSizeProp {
-  size: number;
-}
+  outline: none;
+  /* opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s; */
 
-const Guide = styled.div<GuideSizeProp>`
-  z-index: 2;
-  background-color: #e5e5e5;
-  border-radius: 100%;
-  width: calc(10rem * ${(props) => props.size});
-  height: calc(10rem * ${(props) => props.size});
-  @media (max-width: 400px) {
-    width: calc(60px * ${(props) => props.size});
-    height: calc(60px * ${(props) => props.size});
-  }
-`;
+  --ThumbColor: rgb(151, 151, 151);
 
-const Handle = styled(motion.div)`
-  z-index: 3;
-  position: absolute;
-  width: 10rem;
-  height: 10rem;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
-  border-radius: 100%;
-  @media (max-width: 400px) {
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
     width: 60px;
     height: 60px;
+    background-color: var(--ThumbColor);
+    border-radius: 100%;
+    cursor: pointer;
+  }
+  &::-moz-range-thumb {
+    width: 60px;
+    height: 60px;
+    background-color: var(--ThumbColor);
+    border-radius: 100%;
+    cursor: pointer;
+  }
+
+  &:hover {
+    opacity: 1;
   }
 `;
+
+type Color = {
+  red: number;
+  green: number;
+  blue: number;
+};
+
+const green: Color = { red: 16, green: 152, blue: 43 };
+const gray: Color = { red: 151, green: 151, blue: 151 };
+const red: Color = { red: 119, green: 0, blue: 152 };
+
+function colorInterpolated(x: number): string {
+  let res = { red: 0, green: 0, blue: 0 };
+
+  Object.keys(gray).forEach((c) => {
+    const color = x <= 50 ? green : x >= 51 ? red : 0;
+    if (color === 0) return `rgb(${gray.red},${gray.green},${gray.blue})`;
+
+    const denominator = Math.abs(color[c] - gray[c]);
+    res[c] = Math.round(
+      x <= 50
+        ? (denominator * (50 - x)) / 50 + Math.min(gray[c], color[c])
+        : x >= 51
+        ? (denominator * (x - 50)) / 50 + Math.min(gray[c], color[c])
+        : gray[c]
+    );
+  });
+  console.log(`rgb(${res.red},${res.green},${res.blue})`);
+  return `rgb(${res.red},${res.green},${res.blue})`;
+}
 
 const Slider = ({ questionIndex }: Props) => {
   const media = useMediaQuery("only screen and (min-width: 400px)");
-  const range = media ? 320 : 120;
+  const range = media ? 265 : 120;
+  const handle = useRef<HTMLInputElement>(null);
 
-  const xRange = [-range, 0, range];
-  const x = useMotionValue(0);
-  const scale = useTransform(x, xRange, [1, 0.5, 1]);
-  const colors = useTransform(x, xRange, [
-    "rgb(16, 152, 43)",
-    "rgb(151, 151, 151)",
-    "rgb(119, 0, 152)",
-  ]);
+  const xRange = [0, range, 2 * range];
 
-  useEffect(() => {
-    const answer = getAnswer(questionIndex);
-    x.set(
-      answer
-        ? answer < 1
-          ? -(1 / ((answer * 9) / range))
-          : answer === 1
-          ? 0
-          : (answer * range) / 9
-        : 0
-    );
+  // const x = useMotionValue(range);
+  // const colors = useTransform(x, xRange, [
+  //   "rgb(16, 152, 43)",
+  //   "rgb(151, 151, 151)",
+  //   "rgb(119, 0, 152)",
+  // ]);
 
-    const unsubscribe = x.onChange((latest) => {
-      const score =
-        latest < -1
-          ? Math.abs(((1 / latest) * range) / 9)
-          : latest > 1
-          ? (latest * 9) / range
-          : 1;
+  // useEffect(() => {
+  //   const answer = getAnswer(questionIndex);
+  //   // x.set(
+  //   //   answer
+  //   //     ? answer < 1
+  //   //       ? -(1 / ((answer * 9) / range))
+  //   //       : answer === 1
+  //   //       ? 0
+  //   //       : (answer * range) / 9
+  //   //     : 0
+  //   // );
 
-      setAnswer(questionIndex, score);
-    });
+  //   const unsubscribe = x.onChange((latest) => {
+  //     const score =
+  //       latest < range
+  //         ? ((latest / range) * 8) / 9 + 1 / 9
+  //         : ((latest - range) / range) * 8 + 1;
 
-    return () => unsubscribe();
-  }, []);
+  //     console.log(latest);
+  //     setAnswer(questionIndex, score);
+  //   });
+
+  //   return () => unsubscribe();
+  // }, []);
+
+  // const [r, g, b] = [red/y, green/y, blue/y].map(Math.round)
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(event.target.value);
+
+    const val = parseFloat(event.target.value);
+    if (val === 50) {
+      console.log(1);
+    } else if (val < 50) {
+      console.log((1 - 1 / 9) * (val / 50) + 1 / 9);
+    } else {
+      console.log(((val - 50) / 50) * 8 + 1);
+    }
+    // handle.current.style.setProperty(
+    //   "--ThumbColor",
+    //   colorInterpolated(parseFloat(event.target.value))
+    // );
+  };
 
   return (
     <Wrapper>
-      <Handle
-        style={{ x, scale, backgroundColor: colors }}
-        drag="x"
-        dragConstraints={{ left: -range, right: range }}
-        dragElastic={0}
-        dragMomentum={false}
-      />
-      <div className="w-full flex items-center justify-between md:p-2 p-3px">
-        {React.Children.toArray(
-          [1, 0.75, 0.5, 0.75, 1].map((val) => <Guide size={val} />)
-        )}
-      </div>
+      {React.Children.toArray(
+        new Array(17).fill(0).map((_, i) => {
+          return <Indicator x={(530 * i) / 16 + 35} />;
+        })
+      )}
+      <InputRange ref={handle} type="range" step="0.1" onChange={onChange} />
     </Wrapper>
   );
 };
