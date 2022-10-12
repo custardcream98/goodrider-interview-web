@@ -1,13 +1,11 @@
-const VideoQuestion = () => {
+interface IProps {
+  videoPath: string;
+}
+
+const VideoQuestion = ({ videoPath }: IProps) => {
   return (
     <div>
-      <video
-        autoPlay
-        loop
-        muted
-        width={400}
-        src={require("../../public/videos/급가속/급가속30.mp4")}
-      ></video>
+      <video autoPlay loop muted width={400} src={videoPath}></video>
     </div>
   );
 };

@@ -23,7 +23,7 @@ const QuestionWrapper = styled.div`
 
 interface IProps {
   questions?: Questions;
-  scoreBehaviorQuestions?: IBehaviorQuestion[];
+  scoreBehaviorQuestions?: IBehaviorQuestion;
   pagenumber: number;
   maxSliders: number;
   maxScoreBehaviors: number;
@@ -77,63 +77,27 @@ const InterviewPage = ({
               </p>
               <p>1부터 10까지 위험도가 올라갑니다.</p>
             </section>
-            <h3></h3>
+            <h3 className="text-question-title-mobile md:text-question-title m-auto mb-5 w-[960px]">
+              {scoreBehaviorQuestions.question}
+            </h3>
             <QuestionWrapper>
-              <div className="w-[400px]">
-                <VideoQuestion></VideoQuestion>
-                <select className="w-full" name="score" id="">
-                  {React.Children.toArray([
-                    <option value="">점수를 선택해주세요.</option>,
-                    ...Array(10)
-                      .fill(0)
-                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
-                  ])}
-                </select>
-              </div>
-              <div className="w-[400px]">
-                <VideoQuestion></VideoQuestion>
-                <select className="w-full" name="score" id="">
-                  {React.Children.toArray([
-                    <option value="">점수를 선택해주세요.</option>,
-                    ...Array(10)
-                      .fill(0)
-                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
-                  ])}
-                </select>
-              </div>
-              <div className="w-[400px]">
-                <VideoQuestion></VideoQuestion>
-                <select className="w-full" name="score" id="">
-                  {React.Children.toArray([
-                    <option value="">점수를 선택해주세요.</option>,
-                    ...Array(10)
-                      .fill(0)
-                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
-                  ])}
-                </select>
-              </div>
-              <div className="w-[400px]">
-                <VideoQuestion></VideoQuestion>
-                <select className="w-full" name="score" id="">
-                  {React.Children.toArray([
-                    <option value="">점수를 선택해주세요.</option>,
-                    ...Array(10)
-                      .fill(0)
-                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
-                  ])}
-                </select>
-              </div>
-              <div className="w-[400px]">
-                <VideoQuestion></VideoQuestion>
-                <select className="w-full" name="score" id="">
-                  {React.Children.toArray([
-                    <option value="">점수를 선택해주세요.</option>,
-                    ...Array(10)
-                      .fill(0)
-                      .map((_, i) => <option value={i + 1}>{i + 1}</option>),
-                  ])}
-                </select>
-              </div>
+              {React.Children.toArray(
+                scoreBehaviorQuestions.selectives.map((videoPath) => (
+                  <div className="w-[400px]">
+                    <VideoQuestion videoPath={videoPath}></VideoQuestion>
+                    <select className="w-full" name="score" id="">
+                      {React.Children.toArray([
+                        <option value="">점수를 선택해주세요.</option>,
+                        ...Array(10)
+                          .fill(0)
+                          .map((_, i) => (
+                            <option value={i + 1}>{i + 1}</option>
+                          )),
+                      ])}
+                    </select>
+                  </div>
+                ))
+              )}
             </QuestionWrapper>
           </>
         )}
@@ -164,7 +128,9 @@ export async function getStaticProps({ params }: Params) {
       questions:
         pageNumber <= questions.length ? questions[pageNumber - 1] : null,
       scoreBehaviorQuestions:
-        pageNumber > questions.length ? scoreBehaviors : null,
+        pageNumber > questions.length
+          ? scoreBehaviors[pageNumber - questions.length]
+          : null,
       pagenumber: pageNumber,
       maxSliders: questions.length,
       maxScoreBehaviors: scoreBehaviors.length,

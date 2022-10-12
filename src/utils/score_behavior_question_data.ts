@@ -6,14 +6,17 @@ export interface IBehaviorQuestion {
 }
 
 const ROOT_PATH = "./public/videos/";
-const makePath = (name: string) => ROOT_PATH + "/" + name;
+const makePath = (name: string) => ROOT_PATH + name;
 
-const questionPath = fs.readdirSync(ROOT_PATH);
+const questionPath = fs
+  .readdirSync(ROOT_PATH)
+  .filter((dir) => !dir.includes("."));
 const getVideoPath = (question: string) => {
-  const videos = fs.readdirSync(makePath(question));
-  return videos.map((video) => makePath(question + "/" + video));
+  const videos = fs
+    .readdirSync(makePath(question))
+    .filter((dir) => /\.mp4$/.test(dir));
+  return videos.map((video) => "../videos/" + question + "/" + video);
 };
-const questionList = questionPath.map((path) => path);
 
 // const behaviorQuestionData: IBehaviorQuestion[] = [
 //   {
@@ -60,8 +63,9 @@ const questionList = questionPath.map((path) => path);
 
 export const getBehaviorQuestions = () => {
   let behaviorQuestionData: IBehaviorQuestion[] = [];
+  console.log(questionPath);
 
-  for (const question of questionList) {
+  for (const question of questionPath) {
     behaviorQuestionData.push({
       question,
       selectives: getVideoPath(question),
