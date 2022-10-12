@@ -12,8 +12,8 @@ const Layout = ({ children, pagenumber }: Props) => {
       <Head>
         <link rel="icon" type="image/svg" href="../icon.svg" />
         <title>
-          착한 이륜차 평가 모델 관련 설문조사
-          {pagenumber ? ` - ${pagenumber}페이지` : ""}
+          {(pagenumber ? `${pagenumber}번 문항: ` : "") +
+            "착한 이륜차 평가 모델 관련 설문조사"}
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
