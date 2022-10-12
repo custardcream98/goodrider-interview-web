@@ -129,7 +129,7 @@ export async function getStaticProps({ params }: Params) {
         pageNumber <= questions.length ? questions[pageNumber - 1] : null,
       scoreBehaviorQuestions:
         pageNumber > questions.length
-          ? scoreBehaviors[pageNumber - questions.length]
+          ? scoreBehaviors[pageNumber - (questions.length + 1)]
           : null,
       pagenumber: pageNumber,
       maxSliders: questions.length,
