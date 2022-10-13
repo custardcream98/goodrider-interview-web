@@ -4,9 +4,14 @@ interface IProps {
 
 const VideoQuestion = ({ videoPath }: IProps) => {
   return (
-    <div>
-      <video autoPlay loop muted width={400} src={videoPath}></video>
-    </div>
+    <video
+      className="rounded-lg"
+      autoPlay
+      loop
+      muted
+      width={400}
+      src={videoPath}
+    ></video>
   );
 };
 

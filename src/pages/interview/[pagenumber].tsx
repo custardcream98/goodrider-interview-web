@@ -9,17 +9,7 @@ import {
   getBehaviorQuestions,
   IBehaviorQuestion,
 } from "~/utils/score_behavior_question_data";
-import VideoQuestion from "~/components/VideoQuestion";
-import styled from "styled-components";
-
-const QuestionWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin: auto;
-  max-width: 60rem;
-`;
+import VideoQuestionBundle from "~/components/VideoQuestionBundle";
 
 interface IProps {
   questions?: Questions;
@@ -77,28 +67,11 @@ const InterviewPage = ({
               </p>
               <p>1부터 10까지 위험도가 올라갑니다.</p>
             </section>
-            <h3 className="text-question-title-mobile md:text-question-title m-auto mb-5 w-[960px]">
-              {scoreBehaviorQuestions.question}
-            </h3>
-            <QuestionWrapper>
-              {React.Children.toArray(
-                scoreBehaviorQuestions.selectives.map((videoPath) => (
-                  <div className="w-[400px]">
-                    <VideoQuestion videoPath={videoPath}></VideoQuestion>
-                    <select className="w-full" name="score" id="">
-                      {React.Children.toArray([
-                        <option value="">점수를 선택해주세요.</option>,
-                        ...Array(10)
-                          .fill(0)
-                          .map((_, i) => (
-                            <option value={i + 1}>{i + 1}</option>
-                          )),
-                      ])}
-                    </select>
-                  </div>
-                ))
-              )}
-            </QuestionWrapper>
+
+            <VideoQuestionBundle
+              pageIndex={pagenumber}
+              scoreBehaviorQuestions={scoreBehaviorQuestions}
+            ></VideoQuestionBundle>
           </>
         )}
         <PageBtn
