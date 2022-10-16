@@ -13,7 +13,7 @@ interface IProps {
   pageIndex: number;
 }
 
-const QuestionBundle = ({
+const SliderQuestionBundle = ({
   currentPageQuestions,
   descriptionImages,
   pageIndex,
@@ -58,7 +58,7 @@ const QuestionBundle = ({
   );
 };
 
-export default QuestionBundle;
+export default SliderQuestionBundle;
 
 // type Params = {
 //   params: {

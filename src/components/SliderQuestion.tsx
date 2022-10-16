@@ -45,11 +45,12 @@ const SliderQuestion = ({
   subCriteria2,
 }: Props) => {
   return (
-    <section className="mt-4 mb-14 flex flex-col justify-center p-3">
+    <section className="mt-4 mb-14 flex flex-col justify-center rounded-xl p-3">
       <SubCriteriaContainer>
         <SubCriteria>{subCriteria1}</SubCriteria>
         <SubCriteria>{subCriteria2}</SubCriteria>
       </SubCriteriaContainer>
+
       <Slider
         questionIndex={questionIndex}
         criteria1={subCriteria1}

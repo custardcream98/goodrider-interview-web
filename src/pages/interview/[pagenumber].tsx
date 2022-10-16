@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import Layout from "~/components/Layout";
-import QuestionBundle from "~/components/QuestionBundle";
+import SliderQuestionBundle from "~/components/SliderQuestionBundle";
 import PageBtn from "~/components/PageBtn";
 import Navbar from "~/components/Navbar";
 import {
@@ -79,7 +79,7 @@ const InterviewPage = ({
                   부여해주세요.
                 </p>
               </section>
-              <QuestionBundle
+              <SliderQuestionBundle
                 currentPageQuestions={questions}
                 descriptionImages={descImages}
                 pageIndex={pagenumber}
