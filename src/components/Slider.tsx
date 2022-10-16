@@ -143,6 +143,7 @@ const getDescription = (
   }
 
   const rounded = score < 1 ? Math.round(1 / score) : Math.round(score);
+
   if (score === 1) {
     return "회색 원을 옮겨주세요.";
   } else if (score < 1) {
