@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useMediaQuery } from "@react-hook/media-query";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
+import { checkPassSelector, scoreState } from "~/utils/atom";
 
 interface Position {
   x: number;
@@ -131,10 +133,15 @@ function checkBatchimEnding(word: string) {
 }
 
 const getDescription = (
+  isPassed: boolean,
   score: number,
   criteria1: string,
   criteria2: string
 ) => {
+  if (!isPassed) {
+    return "일관적이지 않은 응답입니다. 다시 고민해주세요.";
+  }
+
   const rounded = score < 1 ? Math.round(1 / score) : Math.round(score);
   if (score === 1) {
     return "회색 원을 옮겨주세요.";
@@ -165,6 +172,10 @@ const getDescription = (
 
 const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
   const [description, setDescription] = useState("회색 원을 옮겨주세요.");
+  const [scoreStorage, setScoreStorage] = useRecoilState(scoreState);
+  const [isScorePassed, nonPassedQuestionNum] =
+    useRecoilValue(checkPassSelector);
+  const isPassed = !(!isScorePassed && nonPassedQuestionNum === questionIndex);
 
   const media = useMediaQuery("only screen and (min-width: 400px)");
   const range = media ? 265 : 120;
@@ -176,7 +187,14 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
     if (score !== null) {
       const answer = calScoreToVal(score);
       sliderRef.current.value = answer.toString();
-      setDescription((_) => getDescription(score, criteria1, criteria2));
+      setDescription((_) =>
+        getDescription(isPassed, score, criteria1, criteria2)
+      );
+      setScoreStorage((prev) => {
+        let newStorage = { ...prev };
+        newStorage[questionIndex] = score;
+        return newStorage;
+      });
     }
   }, []);
 
@@ -186,7 +204,14 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
     const score = calValToScore(val);
 
     setAnswer(questionIndex, score);
-    setDescription((_) => getDescription(score, criteria1, criteria2));
+    setDescription((_) =>
+      getDescription(isPassed, score, criteria1, criteria2)
+    );
+    setScoreStorage((prev) => {
+      let newStorage = { ...prev };
+      newStorage[questionIndex] = score;
+      return newStorage;
+    });
 
     // handle.current.style.setProperty(
     //   "--ThumbColor",
@@ -223,7 +248,9 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
       <p className="text-center">
         <span
           id="description"
-          className="bg-[url(../../public/Infobox_info_icon.svg)] bg-contain bg-left bg-no-repeat pl-6"
+          className={`bg-[url(../../public/Infobox_info_icon.svg)] bg-contain bg-left bg-no-repeat pl-6 ${
+            isPassed ? "" : "font-bold text-red-600"
+          }`}
         >
           {description}
         </span>

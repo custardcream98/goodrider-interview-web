@@ -1,11 +1,9 @@
-import React from "react";
-import {
-  getDescriptionImage,
-  IDescriptionImages,
-  Questions,
-} from "~/utils/question_data";
+import React, { useEffect } from "react";
+import { IDescriptionImages, Questions } from "~/utils/question_data";
 import SliderQuestion from "~/components/SliderQuestion";
 import DescriptionImage from "./DescriptionImage";
+import { getAnswer, setAnswer } from "~/utils/localStorage";
+import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 
 interface IProps {
   currentPageQuestions: Questions;
@@ -41,12 +39,14 @@ const SliderQuestionBundle = ({
       {React.Children.toArray(
         currentPageQuestions.pairs.map((sub, i) => {
           return (
-            <SliderQuestion
-              key={`${pageIndex}-${i + 1}`}
-              questionIndex={`${pageIndex}-${i + 1}`}
-              subCriteria1={sub.criteria1}
-              subCriteria2={sub.criteria2}
-            />
+            <div className={``}>
+              <SliderQuestion
+                key={`${pageIndex}-${i + 1}`}
+                questionIndex={`${pageIndex}-${i + 1}`}
+                subCriteria1={sub.criteria1}
+                subCriteria2={sub.criteria2}
+              />
+            </div>
           );
         })
       )}
@@ -55,13 +55,3 @@ const SliderQuestionBundle = ({
 };
 
 export default SliderQuestionBundle;
-
-// type Params = {
-//   params: {
-//     criteria: string;
-//   }
-// }
-
-// export async function getStaticProps({ params }: Params) {
-//   return getDescriptionImage(params.criteria);
-// }

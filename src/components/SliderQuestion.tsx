@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { checkPassSelector } from "~/utils/atom";
 import Slider from "./Slider";
 
 type Props = {
@@ -44,8 +46,17 @@ const SliderQuestion = ({
   subCriteria1,
   subCriteria2,
 }: Props) => {
+  const [isScorePassed, nonPassedQuestionNum] =
+    useRecoilValue(checkPassSelector);
+
   return (
-    <section className="mt-4 mb-14 flex flex-col justify-center rounded-xl p-3">
+    <section
+      className={`mt-4 mb-14 flex flex-col justify-center rounded-xl p-3 ${
+        !isScorePassed && questionIndex === "1-3"
+          ? "outline outline-4 outline-offset-0 outline-red-600"
+          : ""
+      }`}
+    >
       <SubCriteriaContainer>
         <SubCriteria>{subCriteria1}</SubCriteria>
         <SubCriteria>{subCriteria2}</SubCriteria>
