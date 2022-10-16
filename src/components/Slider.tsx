@@ -138,15 +138,17 @@ const getDescription = (
   criteria1: string,
   criteria2: string
 ) => {
+  if (score === 1) {
+    return "회색 원을 옮겨주세요.";
+  }
+
   if (!isPassed) {
     return "일관적이지 않은 응답입니다. 다시 고민해주세요.";
   }
 
   const rounded = score < 1 ? Math.round(1 / score) : Math.round(score);
 
-  if (score === 1) {
-    return "회색 원을 옮겨주세요.";
-  } else if (score < 1) {
+  if (score < 1) {
     const adj = checkBatchimEnding(criteria1) ? "이" : "가";
     return (
       criteria1 +
@@ -185,7 +187,7 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
   useEffect(() => {
     const score = getAnswer(questionIndex);
 
-    if (score !== null) {
+    if (score !== undefined) {
       const answer = calScoreToVal(score);
       sliderRef.current.value = answer.toString();
       setDescription((_) =>

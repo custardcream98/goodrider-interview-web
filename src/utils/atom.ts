@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 
-export const scoreState = atom({
+export const scoreState = atom<{ [questionIndex: string]: number }>({
   key: "scoreState",
   default: {},
 });
@@ -15,20 +15,15 @@ export const checkPassSelector = selector({
   get: ({ get }) => {
     const score = get(scoreState);
 
-    if (Object.keys(score).length !== 0) {
-      if ("1-3" in score && "1-2" in score && "1-1" in score) {
-        if (
-          (score["1-3"] > 1 && score["1-2"] < 1 && score["1-1"] > 1) ||
-          (score["1-3"] < 1 && score["1-2"] > 1 && score["1-1"] < 1)
-        ) {
-          console.log(score);
-          return [false, "1-3"];
-        } else {
-          return [true, ""];
-        }
+    if ("1-3" in score && "1-2" in score && "1-1" in score) {
+      if (
+        (score["1-3"] > 1 && score["1-2"] < 1 && score["1-1"] > 1) ||
+        (score["1-3"] < 1 && score["1-2"] > 1 && score["1-1"] < 1)
+      ) {
+        return [false, "1-3"];
       }
-    } else {
-      return [true, ""];
     }
+
+    return [true, ""];
   },
 });
