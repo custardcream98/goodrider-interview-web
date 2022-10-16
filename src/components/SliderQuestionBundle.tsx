@@ -18,8 +18,6 @@ const SliderQuestionBundle = ({
   descriptionImages,
   pageIndex,
 }: IProps) => {
-  let count = 0;
-
   return (
     <section className="question-bundle">
       <h2 className="ir-only">설문 문항</h2>
@@ -41,13 +39,11 @@ const SliderQuestionBundle = ({
         )}
       </div>
       {React.Children.toArray(
-        currentPageQuestions.pairs.map((sub) => {
-          count++;
-
+        currentPageQuestions.pairs.map((sub, i) => {
           return (
             <SliderQuestion
-              key={`${pageIndex}-${count}`}
-              questionIndex={`${pageIndex}-${count}`}
+              key={`${pageIndex}-${i + 1}`}
+              questionIndex={`${pageIndex}-${i + 1}`}
               subCriteria1={sub.criteria1}
               subCriteria2={sub.criteria2}
             />

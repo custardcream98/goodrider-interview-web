@@ -2,11 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useMediaQuery } from "@react-hook/media-query";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
-
-/**
- * 슬라이더가 한 쪽에 몇 단계까지 있는지를 나타냄
- */
-const SLIDER_STEPS = 9;
+import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 
 interface Position {
   x: number;
@@ -122,30 +118,6 @@ function colorInterpolated(x: number): string {
   console.log(`rgb(${res.red},${res.green},${res.blue})`);
   return `rgb(${res.red},${res.green},${res.blue})`;
 }
-
-const calValToScore = (val: number) => {
-  if (val === 50) {
-    val = 1;
-  } else if (val < 50) {
-    val = ((SLIDER_STEPS - 1) / SLIDER_STEPS) * (val / 50) + 1 / SLIDER_STEPS;
-  } else {
-    val = ((val - 50) / 50) * (SLIDER_STEPS - 1) + 1;
-  }
-
-  return val;
-};
-
-const calScoreToVal = (score: number) => {
-  if (score === 1) {
-    return 50;
-  } else if (score < 1) {
-    return (
-      (((score - 1 / SLIDER_STEPS) * SLIDER_STEPS) / (SLIDER_STEPS - 1)) * 50
-    );
-  } else {
-    return ((score - 1) * 50) / (SLIDER_STEPS - 1) + 50;
-  }
-};
 
 function checkBatchimEnding(word: string) {
   if (typeof word !== "string") return null;
