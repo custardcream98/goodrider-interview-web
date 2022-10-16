@@ -251,8 +251,10 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
       <p className="text-center">
         <span
           id="description"
-          className={`bg-[url(../../public/Infobox_info_icon.svg)] bg-contain bg-left bg-no-repeat pl-6 ${
-            isPassed ? "" : "font-bold text-red-600"
+          className={`bg-contain bg-left bg-no-repeat pl-6 ${
+            isPassed
+              ? "bg-[url(../../public/Infobox_info_icon.svg)]"
+              : "bg-[url(../../public/Infobox_info_icon_red.svg)] font-bold text-red-600"
           }`}
         >
           {description}
