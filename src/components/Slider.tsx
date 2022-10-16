@@ -1,7 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useMediaQuery } from "@react-hook/media-query";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
+
+/**
+ * 슬라이더가 한 쪽에 몇 단계까지 있는지를 나타냄
+ */
+const SLIDER_STEPS = 9;
 
 interface Position {
   x: number;
@@ -20,12 +25,10 @@ const Indicator = styled.div<Position>`
 `;
 
 const Wrapper = styled.div`
-  margin: auto;
   position: relative;
-  /* z-index: 1; */
   height: 70px;
-  width: 600px;
-  margin: auto;
+  width: 100%;
+  margin-bottom: 7px;
   background-color: #e5eeec;
   border-radius: 100px;
 `;
@@ -36,11 +39,13 @@ const Wrapper = styled.div`
 
 type Props = {
   questionIndex: string;
+  criteria1: string;
+  criteria2: string;
 };
 
 const InputRange = styled.input`
   position: relative;
-  -webkit-appearance: none; /* Override default CSS styles */
+  -webkit-appearance: none;
   appearance: none;
 
   height: 100%;
@@ -48,8 +53,6 @@ const InputRange = styled.input`
   margin: auto;
   padding: 5px;
   background-color: transparent;
-  /* background-color: #e5eeec;
-  border-radius: 100px; */
 
   z-index: 20;
   @media (max-width: 400px) {
@@ -58,9 +61,6 @@ const InputRange = styled.input`
   }
 
   outline: none;
-  /* opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s; */
 
   --ThumbColor: rgb(151, 151, 151);
 
@@ -96,6 +96,13 @@ const green: Color = { red: 16, green: 152, blue: 43 };
 const gray: Color = { red: 151, green: 151, blue: 151 };
 const red: Color = { red: 119, green: 0, blue: 152 };
 
+/**
+ * 색을 보간법으로 계산해주는 함수
+ *
+ * 개발중, 미사용
+ * @param x `number`
+ * @returns `number`
+ */
 function colorInterpolated(x: number): string {
   let res = { red: 0, green: 0, blue: 0 };
 
@@ -116,57 +123,98 @@ function colorInterpolated(x: number): string {
   return `rgb(${res.red},${res.green},${res.blue})`;
 }
 
-const Slider = ({ questionIndex }: Props) => {
+const calValToScore = (val: number) => {
+  if (val === 50) {
+    val = 1;
+  } else if (val < 50) {
+    val = ((SLIDER_STEPS - 1) / SLIDER_STEPS) * (val / 50) + 1 / SLIDER_STEPS;
+  } else {
+    val = ((val - 50) / 50) * (SLIDER_STEPS - 1) + 1;
+  }
+
+  return val;
+};
+
+const calScoreToVal = (score: number) => {
+  if (score === 1) {
+    return 50;
+  } else if (score < 1) {
+    return (
+      (((score - 1 / SLIDER_STEPS) * SLIDER_STEPS) / (SLIDER_STEPS - 1)) * 50
+    );
+  } else {
+    return ((score - 1) * 50) / (SLIDER_STEPS - 1) + 50;
+  }
+};
+
+function checkBatchimEnding(word: string) {
+  if (typeof word !== "string") return null;
+
+  var lastLetter = word[word.length - 1];
+  var uni = lastLetter.charCodeAt(0);
+
+  if (uni < 44032 || uni > 55203) return null;
+
+  return (uni - 44032) % 28 != 0;
+}
+
+const getDescription = (
+  score: number,
+  criteria1: string,
+  criteria2: string
+) => {
+  const rounded = score < 1 ? Math.round(1 / score) : Math.round(score);
+  if (score === 1) {
+    return "회색 원을 옮겨주세요.";
+  } else if (score < 1) {
+    const adj = checkBatchimEnding(criteria1) ? "이" : "가";
+    return (
+      criteria1 +
+      adj +
+      " " +
+      criteria2 +
+      "보다 " +
+      rounded +
+      "점 더 위험합니다."
+    );
+  } else {
+    const adj = checkBatchimEnding(criteria2) ? "이" : "가";
+    return (
+      criteria2 +
+      adj +
+      " " +
+      criteria1 +
+      "보다 " +
+      rounded +
+      "점 더 위험합니다."
+    );
+  }
+};
+
+const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
+  const [description, setDescription] = useState("회색 원을 옮겨주세요.");
+
   const media = useMediaQuery("only screen and (min-width: 400px)");
   const range = media ? 265 : 120;
-  const handle = useRef<HTMLInputElement>(null);
+  const sliderRef = useRef<HTMLInputElement>(null);
 
-  const xRange = [0, range, 2 * range];
-
-  // const x = useMotionValue(range);
-  // const colors = useTransform(x, xRange, [
-  //   "rgb(16, 152, 43)",
-  //   "rgb(151, 151, 151)",
-  //   "rgb(119, 0, 152)",
-  // ]);
-
-  // useEffect(() => {
-  //   const answer = getAnswer(questionIndex);
-  //   // x.set(
-  //   //   answer
-  //   //     ? answer < 1
-  //   //       ? -(1 / ((answer * 9) / range))
-  //   //       : answer === 1
-  //   //       ? 0
-  //   //       : (answer * range) / 9
-  //   //     : 0
-  //   // );
-
-  //   const unsubscribe = x.onChange((latest) => {
-  //     const score =
-  //       latest < range
-  //         ? ((latest / range) * 8) / 9 + 1 / 9
-  //         : ((latest - range) / range) * 8 + 1;
-
-  //     console.log(latest);
-  //     setAnswer(questionIndex, score);
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
-
-  // const [r, g, b] = [red/y, green/y, blue/y].map(Math.round)
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(event.target.value);
-
-    const val = parseFloat(event.target.value);
-    if (val === 50) {
-      console.log(1);
-    } else if (val < 50) {
-      console.log((1 - 1 / 9) * (val / 50) + 1 / 9);
-    } else {
-      console.log(((val - 50) / 50) * 8 + 1);
+  useEffect(() => {
+    const score = getAnswer(questionIndex);
+    const answer = calScoreToVal(score);
+    if (answer !== null) {
+      sliderRef.current.value = answer.toString();
+      setDescription((_) => getDescription(score, criteria1, criteria2));
     }
+  }, []);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseFloat(event.target.value);
+
+    const score = calValToScore(val);
+
+    setAnswer(questionIndex, score);
+    setDescription((_) => getDescription(score, criteria1, criteria2));
+
     // handle.current.style.setProperty(
     //   "--ThumbColor",
     //   colorInterpolated(parseFloat(event.target.value))
@@ -174,14 +222,40 @@ const Slider = ({ questionIndex }: Props) => {
   };
 
   return (
-    <Wrapper>
-      {React.Children.toArray(
-        new Array(17).fill(0).map((_, i) => {
-          return <Indicator x={(530 * i) / 16 + 35} />;
-        })
-      )}
-      <InputRange ref={handle} type="range" step="0.1" onChange={onChange} />
-    </Wrapper>
+    <div className="m-auto w-[600px]">
+      <Wrapper>
+        {React.Children.toArray(
+          new Array(17)
+            .fill(0)
+            .map((_, i) => <Indicator x={(530 * i) / 16 + 35} />)
+        )}
+        <InputRange
+          ref={sliderRef}
+          type="range"
+          step="0.1"
+          onChange={onChange}
+        />
+      </Wrapper>
+      <div className="mb-2 flex w-full justify-between rounded-full bg-[#e1fbf5] px-2">
+        <span className="inline-block p-1 font-semibold text-darkmint">
+          9점
+        </span>
+        <span className="inline-block p-1 font-semibold text-darkmint">
+          같다
+        </span>
+        <span className="inline-block p-1 font-semibold text-darkmint">
+          9점
+        </span>
+      </div>
+      <p className="text-center">
+        <span
+          id="description"
+          className="bg-[url(../../public/Infobox_info_icon.svg)] bg-contain bg-left bg-no-repeat pl-6"
+        >
+          {description}
+        </span>
+      </p>
+    </div>
   );
 };
 

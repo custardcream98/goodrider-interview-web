@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { IBehaviorQuestion } from "~/utils/score_behavior_question_data";
 import VideoQuestion from "~/components/VideoQuestion";
-import styles from "~/styles/mainCriteriaContainer.module.css";
 
 const QuestionWrapper = styled.div`
   display: flex;
@@ -20,8 +19,8 @@ interface IProps {
 
 const VideoQuestionBundle = ({ scoreBehaviorQuestions, pageIndex }: IProps) => {
   return (
-    <section className={styles.Container}>
-      <h3 className="text-question-title-mobile md:text-question-title mb-5 w-[960px]">
+    <section className="question-bundle ">
+      <h3 className="mb-5 w-[960px] text-question-title-mobile md:text-question-title">
         {scoreBehaviorQuestions.question} 위험도 점수
       </h3>
       <QuestionWrapper>
@@ -30,7 +29,7 @@ const VideoQuestionBundle = ({ scoreBehaviorQuestions, pageIndex }: IProps) => {
             <div className="w-[400px]">
               <VideoQuestion videoPath={videoPath}></VideoQuestion>
               <select
-                className="w-full rounded-lg mt-2 p-2 bg-[#00000022]"
+                className="mt-2 w-full rounded-lg bg-[#00000022] p-2"
                 name="score"
                 id=""
               >

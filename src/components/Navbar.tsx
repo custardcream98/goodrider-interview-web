@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 
 type Props = {
@@ -7,21 +7,41 @@ type Props = {
 };
 
 const Navbar = ({ maxPage, currentPage }: Props) => {
+  useEffect(() => {
+    const navItems = document.getElementsByClassName("nav-item-js");
+
+    for (let i = 0; i < navItems.length; i++) {
+      if (i + 1 === currentPage) {
+        navItems[i].classList.remove("bg-mint", "text-darkmint");
+        navItems[i].classList.add("bg-darkmint", "text-mint");
+      } else {
+        navItems[i].classList.add("bg-mint", "text-darkmint");
+        navItems[i].classList.remove("bg-darkmint", "text-mint");
+      }
+    }
+  }, [currentPage]);
+
   return (
-    <nav className="box block custom:flex custom:items-center custom:justify-between z-50 sticky top-1 !bg-transparent backdrop-blur-md">
-      <h1 className="text-nav-heading-mobile custom:text-nav-heading">
-        착한 이륜차 운전자 평가 모델 관련 설문조사
-      </h1>
-      <ol className="flex justify-start custom:justify-end mt-3 custom:mt-0">
-        {React.Children.toArray(
-          new Array(maxPage).fill(0).map((_, i) => (
-            <li className="py-2 px-3 ml-3 bg-[#effdfa] text-[#3f9381] text-nav-item-mobile custom:text-nav-item rounded-md focus:outline-none">
-              <Link href={`/interview/${i + 1}`}>{i + 1}</Link>
-            </li>
-          ))
-        )}
-      </ol>
-    </nav>
+    <header className="fixed top-2 z-50 w-full">
+      <nav className="m-auto flex w-920 items-center justify-between overflow-hidden rounded-xl bg-[#c8fff326] py-2 px-4 backdrop-blur-md">
+        <h1 className="text-nav-heading">
+          착한 이륜차 운전자 평가 모델 관련 설문조사
+        </h1>
+        <ol className="mt-0 flex justify-end">
+          {React.Children.toArray(
+            new Array(maxPage).fill(0).map((_, i) => (
+              <li className="ml-3">
+                <Link href={`/interview/${i + 1}`}>
+                  <a className="nav-item-js inline-block rounded-md bg-mint py-2 px-3 text-nav-item text-darkmint">
+                    {i + 1}
+                  </a>
+                </Link>
+              </li>
+            ))
+          )}
+        </ol>
+      </nav>
+    </header>
   );
 };
 

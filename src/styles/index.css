@@ -2,20 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./reset.css";
-
-.centering {
-  @apply flex items-center justify-center;
-}
-
-.box {
-  @apply bg-[#effdfa] rounded-lg my-4 mx-auto p-4 w-95% custom:w-60rem;
-}
-
-.deactivate {
-  visibility: hidden;
-}
-
 .ir-only {
   position: absolute;
   clip: rect(0 0 0 0);
@@ -23,4 +9,26 @@
   height: 1px;
   margin: -1px;
   overflow: hidden;
+}
+
+.deactivate {
+  visibility: hidden;
+}
+
+.keep-all {
+  word-break: "keep-all";
+}
+
+@layer components {
+  .centering {
+    @apply flex items-center justify-center;
+  }
+
+  .question-bundle {
+    @apply mx-auto my-4 w-920 rounded-xl bg-mint p-4;
+  }
+
+  .quote {
+    @apply mx-auto my-4 w-920 rounded-xl border-l-4 border-darkmint bg-mint p-4 text-[1.05rem];
+  }
 }

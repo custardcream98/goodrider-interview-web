@@ -1,43 +1,45 @@
 import React from "react";
-import { Questions } from "~/utils/question_data";
+import {
+  getDescriptionImage,
+  IDescriptionImages,
+  Questions,
+} from "~/utils/question_data";
 import SliderQuestion from "~/components/SliderQuestion";
-import styles from "~/styles/mainCriteriaContainer.module.css";
+import DescriptionImage from "./DescriptionImage";
 
 interface IProps {
   currentPageQuestions: Questions;
+  descriptionImages: IDescriptionImages[];
   pageIndex: number;
 }
 
-const QuestionBundle = ({ currentPageQuestions, pageIndex }: IProps) => {
+const QuestionBundle = ({
+  currentPageQuestions,
+  descriptionImages,
+  pageIndex,
+}: IProps) => {
   let count = 0;
 
   return (
-    <section className={styles.Container}>
-      <h2>
-        <span
-          className="text-question-title-mobile md:text-question-title text-center block"
-          style={{ wordBreak: "keep-all" }}
-        >
-          "{currentPageQuestions.mainCriteria}"
-          <span
-            style={{
-              fontSize: "1.5rem",
-              fontWeight: 400,
-            }}
-          >
-            에{" "}
-          </span>
-        </span>
-        <span
-          className="block text-center mb-4"
-          style={{
-            wordBreak: "keep-all",
-            fontSize: "1.5rem",
-          }}
-        >
-          중요한 것은 무엇인가요?
-        </span>
-      </h2>
+    <section className="question-bundle">
+      <h2 className="ir-only">설문 문항</h2>
+      <div
+        className={`mb-6 flex flex-wrap justify-center gap-x-[60px] ${
+          descriptionImages.length === 4 ? "mx-auto w-[600px]" : ""
+        }`}
+      >
+        {React.Children.toArray(
+          descriptionImages.map((descriptionImage) => {
+            return (
+              <DescriptionImage
+                title={descriptionImage.title}
+                imgSrc={descriptionImage.imgSrc}
+                description={descriptionImage.description}
+              />
+            );
+          })
+        )}
+      </div>
       {React.Children.toArray(
         currentPageQuestions.pairs.map((sub) => {
           count++;
@@ -57,3 +59,13 @@ const QuestionBundle = ({ currentPageQuestions, pageIndex }: IProps) => {
 };
 
 export default QuestionBundle;
+
+// type Params = {
+//   params: {
+//     criteria: string;
+//   }
+// }
+
+// export async function getStaticProps({ params }: Params) {
+//   return getDescriptionImage(params.criteria);
+// }

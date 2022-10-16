@@ -62,9 +62,14 @@ module.exports = {
         "3px": "3px",
         "60rem": "60rem",
         "95%": "95%",
+        920: "920px",
       },
       screens: {
         custom: "400px",
+      },
+      colors: {
+        mint: "#effdfa",
+        darkmint: "#3f9381",
       },
     },
   },

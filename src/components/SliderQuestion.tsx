@@ -29,7 +29,7 @@ const SubCriteria = styled.span`
   &:last-child {
     text-align: end;
     padding-left: 0.5rem;
-    border-left: 1px solid gray;
+    /* border-left: 1px solid gray; */
   }
   @media (min-width: 400px) {
     font-size: 1.3rem;
@@ -45,12 +45,16 @@ const SliderQuestion = ({
   subCriteria2,
 }: Props) => {
   return (
-    <section className="p-3 flex flex-col justify-center">
+    <section className="mt-4 mb-14 flex flex-col justify-center p-3">
       <SubCriteriaContainer>
         <SubCriteria>{subCriteria1}</SubCriteria>
         <SubCriteria>{subCriteria2}</SubCriteria>
       </SubCriteriaContainer>
-      <Slider questionIndex={questionIndex} />
+      <Slider
+        questionIndex={questionIndex}
+        criteria1={subCriteria1}
+        criteria2={subCriteria2}
+      />
     </section>
   );
 };

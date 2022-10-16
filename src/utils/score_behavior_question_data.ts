@@ -63,14 +63,14 @@ const getVideoPath = (question: string) => {
 
 export const getBehaviorQuestions = () => {
   let behaviorQuestionData: IBehaviorQuestion[] = [];
-  console.log(questionPath);
 
-  for (const question of questionPath) {
-    behaviorQuestionData.push({
-      question,
-      selectives: getVideoPath(question),
-    });
-  }
+  // 난폭운전 세부 문항 필요시 주석 해제
+  // for (const question of questionPath) {
+  //   behaviorQuestionData.push({
+  //     question,
+  //     selectives: getVideoPath(question),
+  //   });
+  // }
 
   return behaviorQuestionData;
 };
