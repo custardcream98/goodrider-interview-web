@@ -200,8 +200,9 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
 
   useEffect(() => {
     const score = getAnswer(questionIndex);
-    const answer = calScoreToVal(score);
-    if (answer !== null) {
+
+    if (score !== null) {
+      const answer = calScoreToVal(score);
       sliderRef.current.value = answer.toString();
       setDescription((_) => getDescription(score, criteria1, criteria2));
     }
