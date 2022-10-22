@@ -20,6 +20,10 @@ const Indicator = styled.div<Position>`
   border-radius: 2px;
   z-index: 10;
   transform: translateX(-50%);
+
+  @media (max-width: 768px) {
+    top: 10px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -29,6 +33,10 @@ const Wrapper = styled.div`
   margin-bottom: 7px;
   background-color: #e5eeec;
   border-radius: 100px;
+
+  @media (max-width: 768px) {
+    height: 50px;
+  }
 `;
 
 /**
@@ -53,14 +61,13 @@ const InputRange = styled.input`
   background-color: transparent;
 
   z-index: 20;
-  @media (max-width: 400px) {
-    width: 306px;
-    height: 66px;
-  }
-
   outline: none;
 
   --ThumbColor: rgb(151, 151, 151);
+
+  @media (max-width: 768px) {
+    padding: 3px;
+  }
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -70,6 +77,10 @@ const InputRange = styled.input`
     background-color: var(--ThumbColor);
     border-radius: 100%;
     cursor: pointer;
+    @media (max-width: 768px) {
+      width: 44px;
+      height: 44px;
+    }
   }
   &::-moz-range-thumb {
     width: 60px;
@@ -77,6 +88,10 @@ const InputRange = styled.input`
     background-color: var(--ThumbColor);
     border-radius: 100%;
     cursor: pointer;
+    @media (max-width: 768px) {
+      width: 44px;
+      height: 44px;
+    }
   }
 
   &:hover {
@@ -175,13 +190,15 @@ const getDescription = (
 
 const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
   const [description, setDescription] = useState("회색 원을 옮겨주세요.");
+  const [sliderWidth, setSliderWidth] = useState(0);
+
   const [scoreStorage, setScoreStorage] = useRecoilState(scoreState);
   const [isScorePassed, nonPassedQuestionNum] =
     useRecoilValue(checkPassSelector);
   const isPassed = !(!isScorePassed && nonPassedQuestionNum === questionIndex);
 
-  const media = useMediaQuery("only screen and (min-width: 400px)");
-  const range = media ? 265 : 120;
+  const media = useMediaQuery("only screen and (min-width: 768px)");
+
   const sliderRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -199,6 +216,9 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
         return newStorage;
       });
     }
+
+    // 슬라이더 너비 가져오기
+    setSliderWidth(sliderRef.current.offsetWidth);
   }, []);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -223,12 +243,14 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
   };
 
   return (
-    <div className="m-auto w-[600px]">
+    <div className="m-auto w-95% md:w-[600px]">
       <Wrapper>
         {React.Children.toArray(
-          new Array(17)
+          new Array(media ? 17 : 9)
             .fill(0)
-            .map((_, i) => <Indicator x={(530 * i) / 16 + 35} />)
+            .map((_, i) => (
+              <Indicator x={(sliderWidth * (i + 1)) / (media ? 18 : 10)} />
+            ))
         )}
         <InputRange
           ref={sliderRef}
@@ -237,16 +259,10 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
           onChange={onChange}
         />
       </Wrapper>
-      <div className="mb-2 flex w-full justify-between rounded-full bg-[#e1fbf5] px-2">
-        <span className="inline-block p-1 font-semibold text-darkmint">
-          9점
-        </span>
-        <span className="inline-block p-1 font-semibold text-darkmint">
-          같다
-        </span>
-        <span className="inline-block p-1 font-semibold text-darkmint">
-          9점
-        </span>
+      <div className="mb-2 flex w-full justify-between rounded-full bg-[#e1fbf5] px-2 text-sm font-semibold text-darkmint md:text-base">
+        <span className="inline-block p-1">9점</span>
+        <span className="inline-block p-1">같다</span>
+        <span className="inline-block p-1">9점</span>
       </div>
       <p className="text-center">
         <span

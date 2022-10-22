@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.ir-only {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-}
-
 .deactivate {
   visibility: hidden;
 }
@@ -25,10 +16,10 @@
   }
 
   .question-bundle {
-    @apply mx-auto my-4 w-920 rounded-xl bg-mint p-4;
+    @apply mx-auto my-4 w-95% rounded-xl bg-mint p-4 md:w-920;
   }
 
   .quote {
-    @apply mx-auto my-4 w-920 rounded-xl border-l-4 border-darkmint bg-mint p-4 text-[1.05rem];
+    @apply mx-auto my-4 w-95% rounded-xl border-l-4 border-darkmint bg-mint p-4 text-[1.05rem] md:w-920;
   }
 }

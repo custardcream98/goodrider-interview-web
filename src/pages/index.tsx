@@ -14,9 +14,9 @@ const LandingPage = () => {
 
   return (
     <Layout>
-      <header className="h-screen w-full bg-white centering flex-col">
+      <div className="centering h-screen w-full flex-col bg-white">
         <h1
-          className="text-title-mobile md:text-title text-gray-900 font-bold md:w-2/4 w-11/12 text-center leading-normal"
+          className="w-11/12 text-center text-title-mobile font-bold leading-normal text-gray-900 md:w-2/4 md:text-title"
           style={{ wordBreak: "keep-all" }}
         >
           착한 이륜차 운전자 평가 모델 관련 설문조사
@@ -29,13 +29,13 @@ const LandingPage = () => {
           <Link href={"/interview/1"}>
             <a
               type="button"
-              className="py-2 px-3 mt-5 bg-indigo-500 text-white text-m md:text-xl font-semibold rounded-md shadow focus:outline-none"
+              className="text-m mt-5 rounded-md bg-indigo-500 py-2 px-3 font-semibold text-white shadow focus:outline-none md:text-xl"
             >
               {isOnGoing ? "설문 이어하기" : "설문 시작"}
             </a>
           </Link>
         )}
-      </header>
+      </div>
     </Layout>
   );
 };

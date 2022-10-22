@@ -15,6 +15,7 @@ import {
   IBehaviorQuestion,
 } from "~/utils/score_behavior_question_data";
 import VideoQuestionBundle from "~/components/VideoQuestionBundle";
+import storageKeys, { getStorage, setStorage } from "~/utils/localStorage";
 
 const Main = styled.main`
   display: flex;
@@ -51,6 +52,8 @@ const InterviewPage = ({
 }: IProps) => {
   useEffect(() => {
     scrollToTop();
+    if (!getStorage(storageKeys.isOnGoing))
+      setStorage(storageKeys.isOnGoing, "true");
   }, []);
   return (
     <Layout pagenumber={pagenumber}>
@@ -64,7 +67,7 @@ const InterviewPage = ({
           {pagenumber <= maxSliders ? (
             <>
               <section className="quote">
-                <h2 className="ir-only">안내 문구</h2>
+                <h2 className="sr-only">안내 문구</h2>
                 <p>
                   {questions.mainCriteria === "난폭운전" ? (
                     <>
@@ -88,7 +91,7 @@ const InterviewPage = ({
           ) : (
             <>
               <section className="quote">
-                <h2 className="ir-only">안내 문구</h2>
+                <h2 className="sr-only">안내 문구</h2>
                 <p>
                   각 영상에 <strong>위험한 정도</strong>를 매겨주세요!
                 </p>

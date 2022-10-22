@@ -19,7 +19,7 @@ interface IProps {
 
 const VideoQuestionBundle = ({ scoreBehaviorQuestions, pageIndex }: IProps) => {
   return (
-    <section className="question-bundle ">
+    <section className="question-bundle">
       <h3 className="mb-5 w-[960px] text-question-title-mobile md:text-question-title">
         {scoreBehaviorQuestions.question} 위험도 점수
       </h3>

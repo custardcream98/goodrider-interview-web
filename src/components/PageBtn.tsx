@@ -7,7 +7,7 @@ interface IProps {
 
 const PageBtn = ({ maxPage, currentPage }: IProps) => {
   return (
-    <section className="m-auto mt-4 mb-4 w-920 text-center">
+    <section className="m-auto mt-4 mb-4 w-95% text-center md:w-920">
       <h2 hidden>이전 / 다음 페이지</h2>
       <Link href={`/interview/${currentPage - 1}`}>
         <a

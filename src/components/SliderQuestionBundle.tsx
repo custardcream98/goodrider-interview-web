@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { IDescriptionImages, Questions } from "~/utils/question_data";
 import SliderQuestion from "~/components/SliderQuestion";
 import DescriptionImage from "./DescriptionImage";
-import { getAnswer, setAnswer } from "~/utils/localStorage";
-import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 
 interface IProps {
   currentPageQuestions: Questions;
@@ -18,10 +16,10 @@ const SliderQuestionBundle = ({
 }: IProps) => {
   return (
     <section className="question-bundle">
-      <h2 className="ir-only">설문 문항</h2>
+      <h2 className="sr-only">설문 문항</h2>
       <div
-        className={`mb-6 flex flex-wrap justify-center gap-x-[60px] ${
-          descriptionImages.length === 4 ? "mx-auto w-[600px]" : ""
+        className={`mb-6 flex flex-wrap justify-center md:gap-x-[60px] ${
+          descriptionImages.length === 4 ? "mx-auto md:w-[600px]" : ""
         }`}
       >
         {React.Children.toArray(
