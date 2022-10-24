@@ -8,24 +8,6 @@ type Props = {
   subCriteria2: string;
 };
 
-// const SubCriteria = styled.span`
-//   width: 50%;
-//   word-break: keep-all;
-//   font-weight: 500;
-//   &:first-child {
-//     text-align: start;
-//     padding-right: 0.5rem;
-//   }
-//   &:last-child {
-//     text-align: end;
-//     padding-left: 0.5rem;
-//     /* border-left: 1px solid gray; */
-//   }
-//   @media (min-width: 400px) {
-//     font-size: 1.3rem;
-//   }
-// `;
-
 /**
  * questionIndex는 1부터 시작하는 값
  */

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
+import { useRecoilState } from "recoil";
+import { scoreState } from "~/utils/atom";
 
 type Props = {
   maxPage: number;
@@ -7,6 +9,8 @@ type Props = {
 };
 
 const Navbar = ({ maxPage, currentPage }: Props) => {
+  const [scoreStorage, _] = useRecoilState(scoreState);
+
   useEffect(() => {
     const navItems = document.getElementsByClassName("nav-item-js");
     const outlineClasses = ["outline", "outline-2", "outline-darkmint"];
@@ -17,16 +21,27 @@ const Navbar = ({ maxPage, currentPage }: Props) => {
       } else {
         navItems[i].classList.remove(...outlineClasses);
       }
-
-      // if (i + 1 === currentPage) {
-      //   navItems[i].classList.remove("bg-mint", "text-darkmint");
-      //   navItems[i].classList.add("bg-darkmint", "text-mint");
-      // } else {
-      //   navItems[i].classList.add("bg-mint", "text-darkmint");
-      //   navItems[i].classList.remove("bg-darkmint", "text-mint");
-      // }
     }
   }, [currentPage]);
+
+  useEffect(() => {
+    const navItems = document.getElementsByClassName("nav-item-js");
+
+    for (let i = 1; i <= navItems.length; i++) {
+      if (i in scoreStorage) {
+        if (
+          Object.keys(scoreStorage[i]).length - 1 ===
+          scoreStorage[i].maxQuestions
+        ) {
+          navItems[i - 1].classList.remove("bg-mint", "text-darkmint");
+          navItems[i - 1].classList.add("bg-darkmint", "text-mint");
+        } else {
+          navItems[i - 1].classList.add("bg-mint", "text-darkmint");
+          navItems[i - 1].classList.remove("bg-darkmint", "text-mint");
+        }
+      }
+    }
+  }, [scoreStorage]);
 
   return (
     <header className="fixed top-2 z-50 w-full">

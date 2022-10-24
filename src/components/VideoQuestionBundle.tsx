@@ -13,19 +13,19 @@ const QuestionWrapper = styled.div`
 `;
 
 interface IProps {
-  scoreBehaviorQuestions: IBehaviorQuestion;
+  videoQuestions: IBehaviorQuestion;
   pageIndex: number;
 }
 
-const VideoQuestionBundle = ({ scoreBehaviorQuestions, pageIndex }: IProps) => {
+const VideoQuestionBundle = ({ videoQuestions, pageIndex }: IProps) => {
   return (
     <section className="question-bundle">
       <h3 className="mb-5 w-[960px] text-question-title-mobile md:text-question-title">
-        {scoreBehaviorQuestions.question} 위험도 점수
+        {videoQuestions.question} 위험도 점수
       </h3>
       <QuestionWrapper>
         {React.Children.toArray(
-          scoreBehaviorQuestions.selectives.map((videoPath) => (
+          videoQuestions.selectives.map((videoPath) => (
             <div className="w-[400px]">
               <VideoQuestion videoPath={videoPath}></VideoQuestion>
               <select

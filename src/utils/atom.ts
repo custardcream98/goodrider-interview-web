@@ -1,6 +1,13 @@
 import { atom, selector } from "recoil";
 
-export const scoreState = atom<{ [questionIndex: string]: number }>({
+export interface IScoreState {
+  [pageIndex: string]: {
+    maxQuestions: number;
+    [questionIndex: string]: number;
+  };
+}
+
+export const scoreState = atom<IScoreState>({
   key: "scoreState",
   default: {},
 });
@@ -15,14 +22,14 @@ export const checkPassSelector = selector({
   get: ({ get }) => {
     const score = get(scoreState);
 
-    if ("1-3" in score && "1-2" in score && "1-1" in score) {
-      if (
-        (score["1-3"] > 1 && score["1-2"] < 1 && score["1-1"] > 1) ||
-        (score["1-3"] < 1 && score["1-2"] > 1 && score["1-1"] < 1)
-      ) {
-        return [false, "1-3"];
-      }
-    }
+    // if ("1-3" in score && "1-2" in score && "1-1" in score) {
+    //   if (
+    //     (score["1-3"] > 1 && score["1-2"] < 1 && score["1-1"] > 1) ||
+    //     (score["1-3"] < 1 && score["1-2"] > 1 && score["1-1"] < 1)
+    //   ) {
+    //     return [false, "1-3"];
+    //   }
+    // }
 
     return [true, ""];
   },

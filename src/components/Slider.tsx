@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { useMediaQuery } from "@react-hook/media-query";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
-import { checkPassSelector, scoreState } from "~/utils/atom";
+import { checkPassSelector, IScoreState, scoreState } from "~/utils/atom";
 
 interface Position {
   x: number;
@@ -188,16 +187,37 @@ const getDescription = (
   }
 };
 
+const getPageNumAndQuestionNum = (questionIndex: string) =>
+  questionIndex.split("-");
+
+const setScoreState = (
+  questionIndex: string,
+  score: number,
+  setScoreStorage: SetterOrUpdater<IScoreState>
+) => {
+  setScoreStorage((prev) => {
+    const [pageIndex, questionNum] = getPageNumAndQuestionNum(questionIndex);
+    let newStoratge = {};
+    for (let page of Object.keys(prev)) {
+      newStoratge[page] = { ...prev[page] };
+      if (page === pageIndex.toString()) {
+        newStoratge[page][questionNum] = score;
+      }
+    }
+
+    return newStoratge;
+  });
+};
+
 const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
   const [description, setDescription] = useState("회색 원을 옮겨주세요.");
   const [sliderWidth, setSliderWidth] = useState(0);
 
-  const [scoreStorage, setScoreStorage] = useRecoilState(scoreState);
+  const [_, setScoreStorage] = useRecoilState(scoreState);
+
   const [isScorePassed, nonPassedQuestionNum] =
     useRecoilValue(checkPassSelector);
   const isPassed = !(!isScorePassed && nonPassedQuestionNum === questionIndex);
-
-  const media = useMediaQuery("only screen and (min-width: 768px)");
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
@@ -210,11 +230,6 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
       setDescription((_) =>
         getDescription(isPassed, score, criteria1, criteria2)
       );
-      setScoreStorage((prev) => {
-        let newStorage = { ...prev };
-        newStorage[questionIndex] = score;
-        return newStorage;
-      });
     }
 
     // 슬라이더 너비 가져오기
@@ -230,11 +245,8 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
     setDescription((_) =>
       getDescription(isPassed, score, criteria1, criteria2)
     );
-    setScoreStorage((prev) => {
-      let newStorage = { ...prev };
-      newStorage[questionIndex] = score;
-      return newStorage;
-    });
+
+    setScoreState(questionIndex, score, setScoreStorage);
 
     // handle.current.style.setProperty(
     //   "--ThumbColor",
@@ -246,11 +258,9 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
     <div className="m-auto w-95% md:w-[600px]">
       <Wrapper>
         {React.Children.toArray(
-          new Array(media ? 17 : 9)
+          new Array(9)
             .fill(0)
-            .map((_, i) => (
-              <Indicator x={(sliderWidth * (i + 1)) / (media ? 18 : 10)} />
-            ))
+            .map((_, i) => <Indicator x={(sliderWidth * (i + 1)) / 10} />)
         )}
         <InputRange
           ref={sliderRef}

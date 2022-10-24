@@ -15,7 +15,13 @@ import {
   IBehaviorQuestion,
 } from "~/utils/score_behavior_question_data";
 import VideoQuestionBundle from "~/components/VideoQuestionBundle";
-import storageKeys, { getStorage, setStorage } from "~/utils/localStorage";
+import storageKeys, {
+  getAnswer,
+  getStorage,
+  setStorage,
+} from "~/utils/localStorage";
+import { useRecoilState } from "recoil";
+import { IScoreState, scoreState } from "~/utils/atom";
 
 const Main = styled.main`
   display: flex;
@@ -29,12 +35,13 @@ const Wrapper = styled.div`
 `;
 
 interface IProps {
-  questions?: Questions;
+  sliderQuestions?: Questions;
   descImages?: IDescriptionImages[];
-  scoreBehaviorQuestions?: IBehaviorQuestion;
+  videoQuestions?: IBehaviorQuestion;
   pagenumber: number;
   maxSliders: number;
-  maxScoreBehaviors: number;
+  maxVideoQuestions: number;
+  sliderQuestionsCount: number[];
 }
 
 const scrollToTop = () => {
@@ -43,22 +50,49 @@ const scrollToTop = () => {
 };
 
 const InterviewPage = ({
-  questions,
+  sliderQuestions,
   descImages,
-  scoreBehaviorQuestions,
+  videoQuestions,
   pagenumber,
   maxSliders,
-  maxScoreBehaviors,
+  maxVideoQuestions,
+  sliderQuestionsCount,
 }: IProps) => {
+  const [scoreStorage, setScoreStorage] = useRecoilState(scoreState);
+
   useEffect(() => {
     scrollToTop();
     if (!getStorage(storageKeys.isOnGoing))
       setStorage(storageKeys.isOnGoing, "true");
+
+    // scoreState 초기화
+    setScoreStorage((_) => {
+      let initScoreStorage: IScoreState = {};
+      sliderQuestionsCount.forEach((e, i) => {
+        initScoreStorage[i + 1] = {
+          maxQuestions: e,
+        };
+
+        for (let questionIndex = 1; questionIndex <= e; questionIndex++) {
+          const score = getAnswer(`${i + 1}-${questionIndex}`);
+
+          if (score === 0 || !!score) {
+            initScoreStorage[i + 1][questionIndex] = score;
+          }
+        }
+      });
+      return initScoreStorage;
+    });
   }, []);
+
+  // useEffect(() => {
+  //   console.log(scoreStorage);
+  // }, [scoreStorage]);
+
   return (
     <Layout pagenumber={pagenumber}>
       <Navbar
-        maxPage={maxSliders + maxScoreBehaviors}
+        maxPage={maxSliders + maxVideoQuestions}
         currentPage={pagenumber}
       />
 
@@ -69,7 +103,7 @@ const InterviewPage = ({
               <section className="quote">
                 <h2 className="sr-only">안내 문구</h2>
                 <p>
-                  {questions.mainCriteria === "난폭운전" ? (
+                  {sliderQuestions.mainCriteria === "난폭운전" ? (
                     <>
                       영상을 플레이하여 천천히 살펴보신 뒤,
                       <br />
@@ -83,7 +117,7 @@ const InterviewPage = ({
                 </p>
               </section>
               <SliderQuestionBundle
-                currentPageQuestions={questions}
+                currentPageQuestions={sliderQuestions}
                 descriptionImages={descImages}
                 pageIndex={pagenumber}
               />
@@ -99,13 +133,13 @@ const InterviewPage = ({
               </section>
               <VideoQuestionBundle
                 pageIndex={pagenumber}
-                scoreBehaviorQuestions={scoreBehaviorQuestions}
+                videoQuestions={videoQuestions}
               />
             </>
           )}
         </Wrapper>
         <PageBtn
-          maxPage={maxSliders + maxScoreBehaviors}
+          maxPage={maxSliders + maxVideoQuestions}
           currentPage={pagenumber}
         />
       </Main>
@@ -122,46 +156,51 @@ type Params = {
 };
 
 export async function getStaticProps({ params }: Params) {
-  const questions = createPairs();
-  const scoreBehaviors = getBehaviorQuestions();
+  const sliderQuestionsData = createPairs();
+  const videoQuestionsData = getBehaviorQuestions();
   const pageNumber = parseInt(params.pagenumber);
 
-  const descImages = questions.map((question) =>
+  const descImages = sliderQuestionsData.map((question) =>
     getDescriptionImage(question.mainCriteria)
   );
 
   return {
     props: {
-      questions:
-        pageNumber <= questions.length ? questions[pageNumber - 1] : null,
+      sliderQuestions:
+        pageNumber <= sliderQuestionsData.length
+          ? sliderQuestionsData[pageNumber - 1]
+          : null,
       descImages:
-        pageNumber <= questions.length ? descImages[pageNumber - 1] : null,
-      scoreBehaviorQuestions:
-        pageNumber > questions.length
-          ? scoreBehaviors[pageNumber - (questions.length + 1)]
+        pageNumber <= sliderQuestionsData.length
+          ? descImages[pageNumber - 1]
+          : null,
+      videoQuestions:
+        pageNumber > sliderQuestionsData.length
+          ? videoQuestionsData[pageNumber - (sliderQuestionsData.length + 1)]
           : null,
       pagenumber: pageNumber,
-      maxSliders: questions.length,
-      maxScoreBehaviors: scoreBehaviors.length,
+      maxSliders: sliderQuestionsData.length,
+      maxVideoQuestions: videoQuestionsData.length,
+      sliderQuestionsCount: sliderQuestionsData.map((e) => e.pairs.length),
     },
   };
 }
 
 export async function getStaticPaths() {
-  const questions = createPairs();
-  const scoreBehaviors = getBehaviorQuestions();
+  const sliderQuestions = createPairs();
+  const videoQuestions = getBehaviorQuestions();
 
   return {
-    paths: questions
+    paths: sliderQuestions
       .map((_, i) => ({
         params: {
           pagenumber: (i + 1).toString(),
         },
       }))
       .concat(
-        scoreBehaviors.map((_, i) => ({
+        videoQuestions.map((_, i) => ({
           params: {
-            pagenumber: (i + 1 + questions.length).toString(),
+            pagenumber: (i + 1 + sliderQuestions.length).toString(),
           },
         }))
       ),
