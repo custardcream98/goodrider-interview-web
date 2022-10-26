@@ -22,4 +22,8 @@
   .quote {
     @apply mx-auto my-4 w-95% rounded-xl border-l-4 border-darkmint bg-mint p-4 text-[1.05rem] md:w-920;
   }
+
+  .video-number {
+    @apply rounded-full border-4 border-solid border-darkmint bg-mint p-1 font-bold text-darkmint shadow;
+  }
 }

@@ -10,13 +10,11 @@ import {
   IDescriptionImages,
   Questions,
 } from "~/utils/question_data";
-import {
-  getBehaviorQuestions,
-  IBehaviorQuestion,
-} from "~/utils/score_behavior_question_data";
-import VideoQuestionBundle from "~/components/VideoQuestionBundle";
+import { getVideoQuestions, IVideoQuestion } from "~/utils/video_question_data";
+import VideoCheckerQuestionBundle from "~/components/VideoCheckerQuestionBundle";
 import storageKeys, {
   getAnswer,
+  getCheckerAnswer,
   getStorage,
   setStorage,
 } from "~/utils/localStorage";
@@ -37,11 +35,12 @@ const Wrapper = styled.div`
 interface IProps {
   sliderQuestions?: Questions;
   descImages?: IDescriptionImages[];
-  videoQuestions?: IBehaviorQuestion;
+  videoQuestions?: IVideoQuestion;
   pagenumber: number;
   maxSliders: number;
   maxVideoQuestions: number;
   sliderQuestionsCount: number[];
+  videoCheckerQuestionsCount: number[];
 }
 
 const scrollToTop = () => {
@@ -57,8 +56,9 @@ const InterviewPage = ({
   maxSliders,
   maxVideoQuestions,
   sliderQuestionsCount,
+  videoCheckerQuestionsCount,
 }: IProps) => {
-  const [scoreStorage, setScoreStorage] = useRecoilState(scoreState);
+  const [_, setScoreStorage] = useRecoilState(scoreState);
 
   useEffect(() => {
     scrollToTop();
@@ -81,18 +81,33 @@ const InterviewPage = ({
           }
         }
       });
+
+      videoCheckerQuestionsCount.forEach((e, i) => {
+        const score = getCheckerAnswer((i + 1 + maxSliders).toString());
+        if (!!score) {
+          initScoreStorage[i + 1 + maxSliders] = {
+            maxQuestions: e,
+            checkedIndex: score.checked,
+            values: score.values,
+          };
+        } else {
+          initScoreStorage[i + 1 + maxSliders] = {
+            maxQuestions: e,
+            checkedIndex: 999,
+            values: Array(e).fill(0),
+          };
+        }
+      });
+
       return initScoreStorage;
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log(scoreStorage);
-  // }, [scoreStorage]);
-
   return (
     <Layout pagenumber={pagenumber}>
       <Navbar
-        maxPage={maxSliders + maxVideoQuestions}
+        maxSliders={maxSliders}
+        maxVideoQuestions={maxVideoQuestions}
         currentPage={pagenumber}
       />
 
@@ -127,11 +142,19 @@ const InterviewPage = ({
               <section className="quote">
                 <h2 className="sr-only">안내 문구</h2>
                 <p>
-                  각 영상에 <strong>위험한 정도</strong>를 매겨주세요!
+                  다음의 영상들 중{" "}
+                  <strong>
+                    어느 영상부터 {videoQuestions.question}이라 생각하는지
+                    체크하고,
+                  </strong>
                 </p>
-                <p>1부터 10까지 위험도가 올라갑니다.</p>
+                <p>
+                  해당 영상부터{" "}
+                  <strong>1 ~ 5점 사이의 위험운전 점수를 부여</strong>
+                  해주십시오.
+                </p>
               </section>
-              <VideoQuestionBundle
+              <VideoCheckerQuestionBundle
                 pageIndex={pagenumber}
                 videoQuestions={videoQuestions}
               />
@@ -157,7 +180,7 @@ type Params = {
 
 export async function getStaticProps({ params }: Params) {
   const sliderQuestionsData = createPairs();
-  const videoQuestionsData = getBehaviorQuestions();
+  const videoQuestionsData = getVideoQuestions();
   const pageNumber = parseInt(params.pagenumber);
 
   const descImages = sliderQuestionsData.map((question) =>
@@ -182,13 +205,16 @@ export async function getStaticProps({ params }: Params) {
       maxSliders: sliderQuestionsData.length,
       maxVideoQuestions: videoQuestionsData.length,
       sliderQuestionsCount: sliderQuestionsData.map((e) => e.pairs.length),
+      videoCheckerQuestionsCount: videoQuestionsData.map(
+        (e) => e.selectives.length
+      ),
     },
   };
 }
 
 export async function getStaticPaths() {
   const sliderQuestions = createPairs();
-  const videoQuestions = getBehaviorQuestions();
+  const videoQuestions = getVideoQuestions();
 
   return {
     paths: sliderQuestions

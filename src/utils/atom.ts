@@ -1,10 +1,16 @@
 import { atom, selector } from "recoil";
 
 export interface IScoreState {
-  [pageIndex: string]: {
-    maxQuestions: number;
-    [questionIndex: string]: number;
-  };
+  [pageIndex: string]:
+    | {
+        maxQuestions: number;
+        [questionIndex: string]: number;
+      }
+    | {
+        maxQuestions: number;
+        checkedIndex: number;
+        values: number[];
+      };
 }
 
 export const scoreState = atom<IScoreState>({

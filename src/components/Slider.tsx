@@ -131,7 +131,6 @@ function colorInterpolated(x: number): string {
         : gray[c]
     );
   });
-  console.log(`rgb(${res.red},${res.green},${res.blue})`);
   return `rgb(${res.red},${res.green},${res.blue})`;
 }
 

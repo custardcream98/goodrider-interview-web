@@ -4,16 +4,20 @@ import { useRecoilState } from "recoil";
 import { scoreState } from "~/utils/atom";
 
 type Props = {
-  maxPage: number;
+  maxSliders: number;
+  maxVideoQuestions: number;
   currentPage: number;
 };
 
-const Navbar = ({ maxPage, currentPage }: Props) => {
+const outlineClasses = ["outline", "outline-2", "outline-darkmint"];
+const checkedClasses = ["bg-darkmint", "text-mint"];
+const unCheckedClasses = ["bg-mint", "text-darkmint"];
+
+const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
   const [scoreStorage, _] = useRecoilState(scoreState);
 
   useEffect(() => {
     const navItems = document.getElementsByClassName("nav-item-js");
-    const outlineClasses = ["outline", "outline-2", "outline-darkmint"];
 
     for (let i = 0; i < navItems.length; i++) {
       if (i + 1 === currentPage) {
@@ -27,17 +31,39 @@ const Navbar = ({ maxPage, currentPage }: Props) => {
   useEffect(() => {
     const navItems = document.getElementsByClassName("nav-item-js");
 
-    for (let i = 1; i <= navItems.length; i++) {
-      if (i in scoreStorage) {
-        if (
-          Object.keys(scoreStorage[i]).length - 1 ===
-          scoreStorage[i].maxQuestions
-        ) {
-          navItems[i - 1].classList.remove("bg-mint", "text-darkmint");
-          navItems[i - 1].classList.add("bg-darkmint", "text-mint");
-        } else {
-          navItems[i - 1].classList.add("bg-mint", "text-darkmint");
-          navItems[i - 1].classList.remove("bg-darkmint", "text-mint");
+    if (currentPage <= maxSliders) {
+      for (let i = 1; i <= maxSliders; i++) {
+        if (i in scoreStorage) {
+          if (
+            Object.keys(scoreStorage[i]).length - 1 ===
+            scoreStorage[i].maxQuestions
+          ) {
+            navItems[i - 1].classList.remove(...unCheckedClasses);
+            navItems[i - 1].classList.add(...checkedClasses);
+          } else {
+            navItems[i - 1].classList.add(...unCheckedClasses);
+            navItems[i - 1].classList.remove(...checkedClasses);
+          }
+        }
+      }
+    } else {
+      for (let i = maxSliders + 1; i <= maxSliders + maxVideoQuestions; i++) {
+        if (i in scoreStorage) {
+          if (scoreStorage[i].checkedIndex <= scoreStorage[i].maxQuestions) {
+            if (
+              (scoreStorage[i].values as number[]).reduce(
+                (acc, e) => (e > 0 ? acc + 1 : acc),
+                0
+              ) >
+              scoreStorage[i].maxQuestions - scoreStorage[i].checkedIndex
+            ) {
+              navItems[i - 1].classList.remove(...unCheckedClasses);
+              navItems[i - 1].classList.add(...checkedClasses);
+            } else {
+              navItems[i - 1].classList.add(...unCheckedClasses);
+              navItems[i - 1].classList.remove(...checkedClasses);
+            }
+          }
         }
       }
     }
@@ -51,7 +77,7 @@ const Navbar = ({ maxPage, currentPage }: Props) => {
         </h1>
         <ol className="mt-0 flex justify-end">
           {React.Children.toArray(
-            new Array(maxPage).fill(0).map((_, i) => (
+            new Array(maxSliders + maxVideoQuestions).fill(0).map((_, i) => (
               <li className="ml-3">
                 <Link href={`/interview/${i + 1}`}>
                   <a className="nav-item-js inline-block rounded bg-mint px-2 py-[2px] text-nav-item-mobile text-darkmint shadow md:rounded-md md:py-2 md:px-3 md:text-nav-item">

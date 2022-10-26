@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { IBehaviorQuestion } from "~/utils/score_behavior_question_data";
+import { IVideoQuestion } from "~/utils/video_question_data";
 import VideoQuestion from "~/components/VideoQuestion";
 
 const QuestionWrapper = styled.div`
@@ -13,7 +13,7 @@ const QuestionWrapper = styled.div`
 `;
 
 interface IProps {
-  videoQuestions: IBehaviorQuestion;
+  videoQuestions: IVideoQuestion;
   pageIndex: number;
 }
 
