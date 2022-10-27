@@ -93,7 +93,7 @@ const hierarchy: ICriteria = {
   ],
 };
 
-type Pairs = {
+export type Pairs = {
   criteria1: string;
   criteria2: string;
 }[];

@@ -81,4 +81,11 @@ export const getCheckerAnswer = (
   return currentAnswers !== null ? currentAnswers[questionIndex] : null;
 };
 
+export const removeLocalAnswer = () =>
+  localStorage.removeItem(storageKeys.answers);
+export const removeLocalisOnGoing = () =>
+  localStorage.removeItem(storageKeys.answers);
+export const setIsEndedLocalStorage = () =>
+  setStorage(storageKeys.isEnded, true);
+
 export default storageKeys;

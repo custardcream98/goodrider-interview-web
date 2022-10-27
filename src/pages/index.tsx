@@ -8,8 +8,8 @@ const LandingPage = () => {
   const [isOnGoing, setIsOnGoing] = useState(false);
 
   useEffect(() => {
-    setIsEnded(Boolean(getStorage(storageKeys.isEnded)));
-    setIsOnGoing(Boolean(getStorage(storageKeys.isOnGoing)));
+    setIsEnded((_) => Boolean(getStorage(storageKeys.isEnded)));
+    setIsOnGoing((_) => Boolean(getStorage(storageKeys.isOnGoing)));
   }, []);
 
   return (
