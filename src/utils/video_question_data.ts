@@ -24,7 +24,7 @@ export const getVideoQuestions = () => {
   // 난폭운전 세부 문항 필요시 주석 해제
   for (const question of questionPath) {
     videoQuestionData.push({
-      question,
+      question: question.split("_")[1], // 1_영상이름 => 영상이름
       selectives: getVideoPath(question),
     });
   }
