@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { completedQuestionsState, scoreState } from "~/utils/atom";
 
 type Props = {
@@ -14,7 +14,7 @@ const checkedClasses = "dark";
 const unCheckedClasses = "light";
 
 const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
-  const [scoreStorage, _] = useRecoilState(scoreState);
+  const scoreStorage = useRecoilValue(scoreState);
   const [completedQuestionsStorage, setCompletedQuestionsStorage] =
     useRecoilState(completedQuestionsState);
 

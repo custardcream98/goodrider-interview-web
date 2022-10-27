@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { IVideoQuestion } from "~/utils/video_question_data";
 import VideoCheckerQuestion from "~/components/VideoCheckerQuestion";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { setCheckerAnswer } from "~/utils/localStorage";
 import { scoreState } from "~/utils/atom";
 
@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const VideoCheckerQuestionBundle = ({ videoQuestions, pageIndex }: IProps) => {
-  const [scoreStorage, _] = useRecoilState(scoreState);
+  const scoreStorage = useRecoilValue(scoreState);
 
   useEffect(() => {
     if (pageIndex in scoreStorage) {

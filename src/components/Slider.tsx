@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
+import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from "recoil";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 import { checkPassSelector, IScoreState, scoreState } from "~/utils/atom";
@@ -212,7 +212,7 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
   const [description, setDescription] = useState("회색 원을 옮겨주세요.");
   const [sliderWidth, setSliderWidth] = useState(0);
 
-  const [_, setScoreStorage] = useRecoilState(scoreState);
+  const setScoreStorage = useSetRecoilState(scoreState);
 
   const [isScorePassed, nonPassedQuestionNum] =
     useRecoilValue(checkPassSelector);
