@@ -16,8 +16,8 @@ const VideoCheckerQuestion = ({
   videoPath,
   criteria,
 }: IProps) => {
-  const radioEleRef = useRef(null);
-  const selectEleRef = useRef(null);
+  const radioEleRef = useRef<HTMLInputElement>(null);
+  const selectEleRef = useRef<HTMLSelectElement>(null);
   const questionId = (type: "radio" | "select") =>
     [type, pageIndex, questionIndex].join("-");
   const [scoreStorage, setScoreStorage] = useRecoilState(scoreState);
@@ -62,7 +62,7 @@ const VideoCheckerQuestion = ({
   useEffect(() => {
     if (pageIndex in scoreStorage) {
       if (scoreStorage[pageIndex].checkedIndex > questionIndex) {
-        (selectEleRef.current as HTMLSelectElement).value = "0";
+        selectEleRef.current.value = "0";
       }
     }
   }, [scoreStorage]);
@@ -70,13 +70,14 @@ const VideoCheckerQuestion = ({
   useEffect(() => {
     if (pageIndex in scoreStorage) {
       if (scoreStorage[pageIndex].checkedIndex > questionIndex) {
-        (selectEleRef.current as HTMLSelectElement).value = "0";
-        (radioEleRef.current as HTMLInputElement).checked = false;
+        selectEleRef.current.value = "0";
+        radioEleRef.current.checked = false;
       } else {
         if (scoreStorage[pageIndex].checkedIndex === questionIndex) {
-          (radioEleRef.current as HTMLInputElement).checked = true;
+          radioEleRef.current.checked = true;
         }
-        (selectEleRef.current as HTMLSelectElement).value =
+
+        selectEleRef.current.value =
           scoreStorage[pageIndex].values[questionIndex - 1].toString();
       }
     }
