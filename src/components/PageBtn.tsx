@@ -10,22 +10,16 @@ const PageBtn = ({ maxPage, currentPage }: IProps) => {
     <section className="m-auto mt-4 mb-4 w-95% text-center md:w-920">
       <h2 hidden>이전 / 다음 페이지</h2>
       <Link href={`/interview/${currentPage - 1}`}>
-        <a
-          className={`prevBtn text-m inline-block rounded-md bg-indigo-500 py-2 px-3 font-semibold text-white shadow focus:outline-none md:text-xl ${
-            1 === currentPage ? "deactivate" : ""
-          }`}
-        >
+        <a className={`page-btn ${1 === currentPage ? "deactivate" : ""}`}>
           {"<"}
         </a>
       </Link>
-      <div className="text-m m-2 inline-block rounded-md bg-indigo-500 py-2 px-3 font-semibold text-white shadow focus:outline-none md:text-xl">
+      <div className="page-btn m-2">
         <span>{`${currentPage} / ${maxPage}`}</span>
       </div>
       <Link href={`/interview/${currentPage + 1}`}>
         <a
-          className={`prevBtn text-m inline-block rounded-md bg-indigo-500 py-2 px-3 font-semibold text-white shadow focus:outline-none md:text-xl ${
-            maxPage === currentPage ? "deactivate" : ""
-          }`}
+          className={`page-btn ${maxPage === currentPage ? "deactivate" : ""}`}
         >
           {">"}
         </a>

@@ -9,9 +9,9 @@ type Props = {
   currentPage: number;
 };
 
-const outlineClasses = "outline outline-2 outline-darkmint outline-offset-1";
-const checkedClasses = "bg-darkmint text-mint";
-const unCheckedClasses = "bg-mint text-darkmint";
+const outlineClasses = "outline outline-2 outline-darkmint outline-offset-2";
+const checkedClasses = "dark";
+const unCheckedClasses = "light";
 
 const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
   const [scoreStorage, _] = useRecoilState(scoreState);
@@ -59,7 +59,7 @@ const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
               <li className="ml-3">
                 <Link href={`/interview/${i + 1}`}>
                   <a
-                    className={`nav-item-js inline-block rounded  px-2 py-[2px] text-nav-item-mobile shadow md:rounded-md md:py-2 md:px-3 md:text-nav-item ${
+                    className={`inline-block rounded  px-2 py-[2px] text-nav-item-mobile shadow md:rounded-md md:py-2 md:px-3 md:text-nav-item ${
                       completedQuestionsStorage[i]
                         ? checkedClasses
                         : unCheckedClasses

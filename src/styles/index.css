@@ -15,6 +15,13 @@
     @apply flex items-center justify-center;
   }
 
+  .dark {
+    @apply bg-darkmint text-mint;
+  }
+  .light {
+    @apply bg-mint text-darkmint;
+  }
+
   .question-bundle {
     @apply mx-auto my-4 w-95% rounded-xl bg-mint p-4 md:w-920;
   }
@@ -24,6 +31,10 @@
   }
 
   .video-number {
-    @apply rounded-full border-4 border-solid border-darkmint bg-mint p-1 font-bold text-darkmint shadow;
+    @apply light rounded-full border-4 border-solid border-darkmint p-1 font-bold shadow;
+  }
+
+  .page-btn {
+    @apply dark inline-block rounded-md py-2 px-3 font-semibold shadow md:text-xl;
   }
 }
