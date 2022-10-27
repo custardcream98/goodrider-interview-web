@@ -7,7 +7,7 @@
 }
 
 .keep-all {
-  word-break: "keep-all";
+  word-break: keep-all;
 }
 
 @layer components {
