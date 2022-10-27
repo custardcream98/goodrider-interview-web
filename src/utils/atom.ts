@@ -18,6 +18,11 @@ export const scoreState = atom<IScoreState>({
   default: {},
 });
 
+export const completedQuestionsState = atom<boolean[]>({
+  key: "completedQuestionsState",
+  default: [],
+});
+
 /**
  * 통과 검사 로직이 들어와야 하는 곳
  *
