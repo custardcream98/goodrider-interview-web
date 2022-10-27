@@ -23,6 +23,14 @@ export const completedQuestionsState = atom<boolean[]>({
   default: [],
 });
 
+export const checkAllCompletedSelector = selector({
+  key: "checkAllCompletedSelector",
+  get: ({ get }) => {
+    const completedQuestions = get(completedQuestionsState);
+    return completedQuestions.every((e) => e);
+  },
+});
+
 /**
  * 통과 검사 로직이 들어와야 하는 곳
  *

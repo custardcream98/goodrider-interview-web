@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import Layout from "~/components/Layout";
 import SliderQuestionBundle from "~/components/SliderQuestionBundle";
@@ -18,8 +19,12 @@ import storageKeys, {
   getStorage,
   setStorage,
 } from "~/utils/localStorage";
-import { useRecoilState } from "recoil";
-import { IScoreState, scoreState } from "~/utils/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  checkAllCompletedSelector,
+  IScoreState,
+  scoreState,
+} from "~/utils/atom";
 
 const Main = styled.main`
   display: flex;
@@ -58,7 +63,8 @@ const InterviewPage = ({
   sliderQuestionsCount,
   videoCheckerQuestionsCount,
 }: IProps) => {
-  const [_, setScoreStorage] = useRecoilState(scoreState);
+  const setScoreStorage = useSetRecoilState(scoreState);
+  const checkAllCompleted = useRecoilValue(checkAllCompletedSelector);
 
   useEffect(() => {
     scrollToTop();
@@ -165,6 +171,17 @@ const InterviewPage = ({
           maxPage={maxSliders + maxVideoQuestions}
           currentPage={pagenumber}
         />
+        <aside>
+          <Link href="/submitted">
+            <a
+              className={`dark fixed bottom-4 right-4 rounded-full py-2 px-3 ${
+                checkAllCompleted ? "" : "pointer-events-none opacity-30"
+              }`}
+            >
+              제출하기
+            </a>
+          </Link>
+        </aside>
       </Main>
     </Layout>
   );
