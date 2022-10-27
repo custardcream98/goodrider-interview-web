@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { SetterOrUpdater, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
-import { checkPassSelector, IScoreState, scoreState } from "~/utils/atom";
+import { checkPassSelector, scoreState } from "~/utils/atom";
 
 interface Position {
   x: number;
@@ -92,42 +92,12 @@ const InputRange = styled.input`
   }
 `;
 
-type Color = {
-  red: number;
-  green: number;
-  blue: number;
-};
-
-const green: Color = { red: 16, green: 152, blue: 43 };
-const gray: Color = { red: 151, green: 151, blue: 151 };
-const red: Color = { red: 119, green: 0, blue: 152 };
-
 /**
- * 색을 보간법으로 계산해주는 함수
+ * 한글 받침 확인용 함수
  *
- * 개발중, 미사용
- * @param x `number`
- * @returns `number`
+ * @param word
+ * @returns
  */
-function colorInterpolated(x: number): string {
-  let res = { red: 0, green: 0, blue: 0 };
-
-  Object.keys(gray).forEach((c) => {
-    const color = x <= 50 ? green : x >= 51 ? red : 0;
-    if (color === 0) return `rgb(${gray.red},${gray.green},${gray.blue})`;
-
-    const denominator = Math.abs(color[c] - gray[c]);
-    res[c] = Math.round(
-      x <= 50
-        ? (denominator * (50 - x)) / 50 + Math.min(gray[c], color[c])
-        : x >= 51
-        ? (denominator * (x - 50)) / 50 + Math.min(gray[c], color[c])
-        : gray[c]
-    );
-  });
-  return `rgb(${res.red},${res.green},${res.blue})`;
-}
-
 function checkBatchimEnding(word: string) {
   if (typeof word !== "string") return null;
 
@@ -145,15 +115,15 @@ const getDescription = (
   criteria1: string,
   criteria2: string
 ) => {
-  if (score === 1) {
-    return "회색 원을 옮겨주세요.";
-  }
-
   if (!isPassed) {
     return "일관적이지 않은 응답입니다. 다시 고민해주세요.";
   }
 
   const rounded = score < 1 ? Math.round(1 / score) : Math.round(score);
+
+  if (rounded === 1) {
+    return "둘 다 똑같이 위험합니다.";
+  }
 
   if (score < 1) {
     const adj = checkBatchimEnding(criteria1) ? "이" : "가";
