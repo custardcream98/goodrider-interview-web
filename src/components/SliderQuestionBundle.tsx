@@ -37,14 +37,13 @@ const SliderQuestionBundle = ({
       {React.Children.toArray(
         currentPageQuestions.pairs.map((sub, i) => {
           return (
-            <div className={``}>
-              <SliderQuestion
-                key={`${pageIndex}-${i + 1}`}
-                questionIndex={`${pageIndex}-${i + 1}`}
-                subCriteria1={sub.criteria1}
-                subCriteria2={sub.criteria2}
-              />
-            </div>
+            <SliderQuestion
+              key={`${pageIndex}-${i + 1}`}
+              pageIndex={pageIndex}
+              questionIndex={i + 1}
+              subCriteria1={sub.criteria1}
+              subCriteria2={sub.criteria2}
+            />
           );
         })
       )}

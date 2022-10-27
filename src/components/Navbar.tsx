@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { completedQuestionsState, scoreState } from "~/utils/atom";
+import {
+  completedQuestionsState,
+  ISelectiveScoreState,
+  scoreState,
+} from "~/utils/atom";
 
 type Props = {
   maxSliders: number;
@@ -34,7 +38,7 @@ const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
       if (i in scoreStorage) {
         if (scoreStorage[i].checkedIndex <= scoreStorage[i].maxQuestions) {
           isCompleted.push(
-            (scoreStorage[i].values as number[]).reduce(
+            (scoreStorage[i] as ISelectiveScoreState).values.reduce(
               (acc, e) => (e > 0 ? acc + 1 : acc),
               0
             ) >

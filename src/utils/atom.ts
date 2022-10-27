@@ -1,16 +1,18 @@
 import { atom, selector } from "recoil";
 
 export interface IScoreState {
-  [pageIndex: string]:
-    | {
-        maxQuestions: number;
-        [questionIndex: string]: number;
-      }
-    | {
-        maxQuestions: number;
-        checkedIndex: number;
-        values: number[];
-      };
+  [pageIndex: string]: ISliderScoreState | ISelectiveScoreState;
+}
+
+interface ISliderScoreState {
+  maxQuestions: number;
+  [questionIndex: string]: number;
+}
+
+export interface ISelectiveScoreState {
+  maxQuestions: number;
+  checkedIndex: number;
+  values: number[];
 }
 
 export const scoreState = atom<IScoreState>({

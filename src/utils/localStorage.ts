@@ -1,5 +1,14 @@
-interface answers {
-  [key: number]: number | { checked: number; [number: number]: number };
+interface ILocalAnswers {
+  [key: number]: ILocalSliderAnswer | ILocalSelectiveAnswer;
+}
+
+interface ILocalSliderAnswer {
+  [subIndex: number]: number;
+}
+
+export interface ILocalSelectiveAnswer {
+  checked: number;
+  values: number[];
 }
 
 const storageKeys = {
@@ -12,15 +21,34 @@ export const getStorage = (key: string) => localStorage.getItem(key);
 export const setStorage = (key: string, value) =>
   localStorage.setItem(key, value);
 
-export const getAnswer = (questionIndex: string): number | null => {
-  const currentAnswers: answers = JSON.parse(getStorage(storageKeys.answers));
+export const getAllAnswers = () => {
+  const currentAnswers: ILocalAnswers = JSON.parse(
+    getStorage(storageKeys.answers)
+  );
 
-  return currentAnswers !== null ? currentAnswers[questionIndex] : null;
+  return currentAnswers || null;
 };
-export const setAnswer = (questionIndex: string, value: number) => {
-  let currentAnswers: answers =
+export const getAnswer = (
+  pageIndex: number,
+  questionIndex: number
+): number | null => {
+  const currentAnswers: ILocalAnswers = getAllAnswers();
+
+  return pageIndex in currentAnswers
+    ? currentAnswers[pageIndex][questionIndex]
+    : null;
+};
+export const setAnswer = (
+  pageIndex: number,
+  questionIndex: number,
+  value: number
+) => {
+  let currentAnswers: ILocalAnswers =
     JSON.parse(getStorage(storageKeys.answers)) ?? {};
-  currentAnswers[questionIndex] = value;
+
+  if (!(pageIndex in currentAnswers)) currentAnswers[pageIndex] = {};
+  currentAnswers[pageIndex][questionIndex] = value;
+
   localStorage.setItem(storageKeys.answers, JSON.stringify(currentAnswers));
 };
 
@@ -35,7 +63,7 @@ export const setCheckerAnswer = ({
   values,
   checked,
 }: ICheckerAnswerProps) => {
-  let currentAnswers: answers =
+  let currentAnswers: ILocalAnswers =
     JSON.parse(getStorage(storageKeys.answers)) ?? {};
   currentAnswers[questionIndex] = {
     checked,
@@ -46,7 +74,9 @@ export const setCheckerAnswer = ({
 export const getCheckerAnswer = (
   questionIndex: string
 ): { checked: number; values: number[] } | null => {
-  const currentAnswers: answers = JSON.parse(getStorage(storageKeys.answers));
+  const currentAnswers: ILocalAnswers = JSON.parse(
+    getStorage(storageKeys.answers)
+  );
 
   return currentAnswers !== null ? currentAnswers[questionIndex] : null;
 };

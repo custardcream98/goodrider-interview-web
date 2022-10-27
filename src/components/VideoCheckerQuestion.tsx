@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import { IScoreState, scoreState } from "~/utils/atom";
+import { IScoreState, ISelectiveScoreState, scoreState } from "~/utils/atom";
 import EmbededContent from "./EmbededContent";
 
 interface IProps {
@@ -47,9 +47,9 @@ const VideoCheckerQuestion = ({
     setScoreStorage((prev): IScoreState => {
       let newPageStorage = {
         ...prev[pageIndex],
-      };
+      } as ISelectiveScoreState;
 
-      newPageStorage.values = [...(newPageStorage.values as number[])];
+      newPageStorage.values = [...newPageStorage.values];
       newPageStorage.values.splice(questionIndex - 1, 1, parseInt(value));
 
       let newStorage = { ...prev };

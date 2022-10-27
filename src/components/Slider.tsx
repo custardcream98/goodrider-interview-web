@@ -42,12 +42,6 @@ const Wrapper = styled.div`
  * 로직은 아직 덜짬
  */
 
-type Props = {
-  questionIndex: string;
-  criteria1: string;
-  criteria2: string;
-};
-
 const InputRange = styled.input`
   position: relative;
   -webkit-appearance: none;
@@ -186,29 +180,14 @@ const getDescription = (
   }
 };
 
-const getPageNumAndQuestionNum = (questionIndex: string) =>
-  questionIndex.split("-");
-
-const setScoreState = (
-  questionIndex: string,
-  score: number,
-  setScoreStorage: SetterOrUpdater<IScoreState>
-) => {
-  setScoreStorage((prev) => {
-    const [pageIndex, questionNum] = getPageNumAndQuestionNum(questionIndex);
-    let newStoratge = {};
-    for (let page of Object.keys(prev)) {
-      newStoratge[page] = { ...prev[page] };
-      if (page === pageIndex.toString()) {
-        newStoratge[page][questionNum] = score;
-      }
-    }
-
-    return newStoratge;
-  });
+type IProps = {
+  pageIndex: number;
+  questionIndex: number;
+  criteria1: string;
+  criteria2: string;
 };
 
-const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
+const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
   const [description, setDescription] = useState("회색 원을 옮겨주세요.");
   const [sliderWidth, setSliderWidth] = useState(0);
 
@@ -216,12 +195,12 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
 
   const [isScorePassed, nonPassedQuestionNum] =
     useRecoilValue(checkPassSelector);
-  const isPassed = !(!isScorePassed && nonPassedQuestionNum === questionIndex);
+  const isPassed = true; //!(!isScorePassed && nonPassedQuestionNum === questionIndex);
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const score = getAnswer(questionIndex);
+    const score = getAnswer(pageIndex, questionIndex);
 
     if (score) {
       const answer = calScoreToVal(score);
@@ -240,12 +219,22 @@ const Slider = ({ questionIndex, criteria1, criteria2 }: Props) => {
 
     const score = calValToScore(val);
 
-    setAnswer(questionIndex, score);
+    setAnswer(pageIndex, questionIndex, score);
     setDescription((_) =>
       getDescription(isPassed, score, criteria1, criteria2)
     );
 
-    setScoreState(questionIndex, score, setScoreStorage);
+    setScoreStorage((prev) => {
+      let newStoratge = {};
+      for (let page of Object.keys(prev)) {
+        newStoratge[page] = { ...prev[page] };
+        if (page === pageIndex.toString()) {
+          newStoratge[page][questionIndex] = score;
+        }
+      }
+
+      return newStoratge;
+    });
 
     // handle.current.style.setProperty(
     //   "--ThumbColor",

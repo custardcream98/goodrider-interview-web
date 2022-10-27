@@ -80,7 +80,7 @@ const InterviewPage = ({
         };
 
         for (let questionIndex = 1; questionIndex <= e; questionIndex++) {
-          const score = getAnswer(`${i + 1}-${questionIndex}`);
+          const score = getAnswer(i + 1, questionIndex);
 
           if (score === 0 || !!score) {
             initScoreStorage[i + 1][questionIndex] = score;

@@ -3,7 +3,7 @@ import { IVideoQuestion } from "~/utils/video_question_data";
 import VideoCheckerQuestion from "~/components/VideoCheckerQuestion";
 import { useRecoilValue } from "recoil";
 import { setCheckerAnswer } from "~/utils/localStorage";
-import { scoreState } from "~/utils/atom";
+import { ISelectiveScoreState, scoreState } from "~/utils/atom";
 
 interface IProps {
   videoQuestions: IVideoQuestion;
@@ -21,7 +21,7 @@ const VideoCheckerQuestionBundle = ({ videoQuestions, pageIndex }: IProps) => {
       ) {
         setCheckerAnswer({
           questionIndex: pageIndex.toString(),
-          values: scoreStorage[pageIndex].values as number[],
+          values: (scoreStorage[pageIndex] as ISelectiveScoreState).values,
           checked: scoreStorage[pageIndex].checkedIndex,
         });
       }
