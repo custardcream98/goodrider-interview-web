@@ -19,9 +19,7 @@ const LandingPage = () => {
           착한 이륜차 운전자 평가 모델 관련 설문조사
         </h1>
         {isEnded ? (
-          <p className="mt-5 text-xl">
-            이미 설문에 참여하셨습니다. 감사합니다.
-          </p>
+          <p className="mt-5 text-xl">설문에 참여해주셔서 감사합니다! 🙇</p>
         ) : (
           <Link href="/interview/1">
             <a type="button" className="page-btn mt-5">

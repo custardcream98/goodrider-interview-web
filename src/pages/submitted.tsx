@@ -24,9 +24,6 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
   const router = useRouter();
   const checkAllCompleted = useRecoilValue(checkAllCompletedSelector);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isPosted, setIsPosted] = useState(false);
-
-  const postDataAndLoad = async (questionnaireData: IQuestionnaireData) => {};
 
   useEffect(() => {
     if (!checkAllCompleted) {
@@ -94,8 +91,6 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
       });
     }
 
-    console.log(questionnaireData);
-
     if (!(await postData(questionnaireData))) {
       router.push("interview/1");
       return;
@@ -104,6 +99,8 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
     removeLocalAnswer();
     removeLocalisOnGoing();
     setIsEndedLocalStorage();
+
+    router.push("/");
   };
 
   const phoneEleRef = useRef<HTMLInputElement>(null);
@@ -145,12 +142,10 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
                 </button>
               </form>
             </>
-          ) : !isPosted ? (
+          ) : (
             <p className="mt-5 text-xl">
               데이터 전송중입니다. 잠시 기다려주세요.
             </p>
-          ) : (
-            <p className="mt-5 text-xl">설문에 참여해주셔서 감사합니다! 🙇</p>
           )}
         </main>
       </div>

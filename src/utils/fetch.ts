@@ -6,8 +6,6 @@ export const postData = async (
   questionnaireData: IQuestionnaireData
 ): Promise<Response | null> => {
   try {
-    console.log(JSON.stringify(questionnaireData));
-
     const response = await fetch(BE_URL, {
       method: "POST",
       // mode: "no-cors",
