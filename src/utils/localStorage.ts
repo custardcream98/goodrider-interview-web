@@ -34,9 +34,11 @@ export const getAnswer = (
 ): number | null => {
   const currentAnswers: ILocalAnswers = getAllAnswers();
 
-  return pageIndex in currentAnswers
-    ? currentAnswers[pageIndex][questionIndex]
-    : null;
+  if (currentAnswers)
+    return pageIndex in currentAnswers
+      ? currentAnswers[pageIndex][questionIndex]
+      : null;
+  return null;
 };
 export const setAnswer = (
   pageIndex: number,
