@@ -31,7 +31,11 @@ const VideoCheckerQuestionBundle = ({ videoQuestions, pageIndex }: IProps) => {
   return (
     <section className="question-bundle">
       <h3 className="sr-only">{videoQuestions.question} 위험운전 점수</h3>
-      <fieldset className="flex flex-wrap items-center justify-center gap-5">
+      <fieldset
+        className={`flex flex-wrap items-center justify-center gap-5 ${
+          videoQuestions.selectives.length === 4 ? "mx-auto md:w-[600px]" : ""
+        }`}
+      >
         {React.Children.toArray(
           videoQuestions.selectives.map((videoPath, i) => (
             <VideoCheckerQuestion
