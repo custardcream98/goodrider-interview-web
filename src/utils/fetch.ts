@@ -1,6 +1,6 @@
 import { IQuestionnaireData } from "./questionnaireDataInterface";
 
-const BE_URL = "http://geodb.uos.ac.kr/api/driver/post/survey";
+const BE_URL = "/post";
 
 export const postData = async (
   questionnaireData: IQuestionnaireData
