@@ -11,6 +11,7 @@ export const postData = async (
       // mode: "no-cors",
       headers: {
         "content-type": "application/json",
+        "Content-Security-Policy": "upgrade-insecure-requests",
       },
       body: JSON.stringify(questionnaireData),
     });
