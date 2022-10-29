@@ -1,10 +1,11 @@
 import { atom, selector } from "recoil";
+import { checkSliderValid } from "./ahpValidation";
 
 export interface IScoreState {
   [pageIndex: string]: ISliderScoreState | ISelectiveScoreState;
 }
 
-interface ISliderScoreState {
+export interface ISliderScoreState {
   maxQuestions: number;
   [questionIndex: string]: number;
 }
@@ -33,25 +34,51 @@ export const checkAllCompletedSelector = selector({
   },
 });
 
+type IPageIndex = {
+  currentPageIndex: number;
+  criteriaCount: number;
+};
+
+export const currentPageIndexState = atom<IPageIndex>({
+  key: "currentPageIndexState",
+  default: {
+    currentPageIndex: 1,
+    criteriaCount: 3,
+  },
+});
+
 /**
- * 통과 검사 로직이 들어와야 하는 곳
- *
- * 지금은 임시로 더미 로직 넣어놨습니다.
+ * 통과 검사
  */
-export const checkPassSelector = selector({
+export const checkPassSelector = selector<[boolean, number, string]>({
   key: "checkPass",
-  get: ({ get }) => {
+  get: ({ get }): [boolean, number, string] => {
+    const { currentPageIndex, criteriaCount } = get(currentPageIndexState);
     const score = get(scoreState);
 
-    // if ("1-3" in score && "1-2" in score && "1-1" in score) {
-    //   if (
-    //     (score["1-3"] > 1 && score["1-2"] < 1 && score["1-1"] > 1) ||
-    //     (score["1-3"] < 1 && score["1-2"] > 1 && score["1-1"] < 1)
-    //   ) {
-    //     return [false, "1-3"];
-    //   }
-    // }
+    // const [questionIndex, instruction] = checkSliderValid(5, {
+    //   maxQuestions: 10,
+    //   1: 0.333,
+    //   2: 4,
+    //   3: 0.2,
+    //   4: 0.453,
+    //   5: 3,
+    //   6: 0.167,
+    //   7: 0.123,
+    //   8: 0.143,
+    //   9: 0.167,
+    //   10: 4,
+    // });
 
-    return [true, ""];
+    if (currentPageIndex in score) {
+      const [questionIndex, instruction] = checkSliderValid(
+        criteriaCount,
+        score[currentPageIndex] as ISliderScoreState
+      );
+      console.log(questionIndex, instruction);
+      return [questionIndex === "pass", questionIndex as number, instruction];
+    }
+
+    return [true, 0, ""];
   },
 });

@@ -110,14 +110,14 @@ function checkBatchimEnding(word: string) {
 }
 
 const getDescription = (
-  isPassed: boolean,
+  // isPassed: boolean,
   score: number,
   criteria1: string,
   criteria2: string
 ) => {
-  if (!isPassed) {
-    return "일관적이지 않은 응답입니다. 다시 고민해주세요.";
-  }
+  // if (!isPassed) {
+  //   return "일관적이지 않은 응답입니다. 다시 고민해주세요.";
+  // }
 
   const rounded = score < 1 ? Math.round(1 / score) : Math.round(score);
 
@@ -163,9 +163,12 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
 
   const setScoreStorage = useSetRecoilState(scoreState);
 
-  const [isScorePassed, nonPassedQuestionNum] =
+  const [isScorePassed, nonPassedQuestionNum, instructionForPass] =
     useRecoilValue(checkPassSelector);
-  const isPassed = true; //!(!isScorePassed && nonPassedQuestionNum === questionIndex);
+  const isPassed = !(
+    !isScorePassed &&
+    (nonPassedQuestionNum === questionIndex || nonPassedQuestionNum === -1)
+  );
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
@@ -175,9 +178,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
     if (score) {
       const answer = calScoreToVal(score);
       sliderRef.current.value = answer.toString();
-      setDescription((_) =>
-        getDescription(isPassed, score, criteria1, criteria2)
-      );
+      setDescription((_) => getDescription(score, criteria1, criteria2));
     }
 
     // 슬라이더 너비 가져오기
@@ -190,9 +191,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
     const score = calValToScore(val);
 
     setAnswer(pageIndex, questionIndex, score);
-    setDescription((_) =>
-      getDescription(isPassed, score, criteria1, criteria2)
-    );
+    setDescription((_) => getDescription(score, criteria1, criteria2));
 
     setScoreStorage((prev) => {
       let newStoratge = {};
@@ -241,7 +240,11 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
               : "bg-[url(../../public/Infobox_info_icon_red.svg)] font-bold text-red-600"
           }`}
         >
-          {description}
+          {isPassed
+            ? description
+            : (nonPassedQuestionNum === -1 ? "" : "일관성이 낮습니다. ") +
+              instructionForPass +
+              (nonPassedQuestionNum === -1 ? "" : "으로 움직여주세요.")}
         </span>
       </p>
     </div>

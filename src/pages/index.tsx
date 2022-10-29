@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Layout from "~/components/Layout";
 import storageKeys, { getStorage } from "~/utils/localStorage";
+import { calAhp } from "~/utils/ahpValidation/calculations";
 
 const LandingPage = () => {
   const [isEnded, setIsEnded] = useState(false);
@@ -10,6 +11,14 @@ const LandingPage = () => {
   useEffect(() => {
     setIsEnded((_) => Boolean(getStorage(storageKeys.isEnded)));
     setIsOnGoing((_) => Boolean(getStorage(storageKeys.isOnGoing)));
+    console.log(
+      calAhp([
+        [1, 1 / 4, 1 / 6, 1 / 9],
+        [4, 1, 1 / 8, 1 / 5],
+        [6, 8, 1, 1],
+        [9, 5, 1, 1],
+      ])
+    );
   }, []);
 
   return (

@@ -22,6 +22,7 @@ import storageKeys, {
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   checkAllCompletedSelector,
+  currentPageIndexState,
   IScoreState,
   scoreState,
 } from "~/utils/atom";
@@ -64,12 +65,24 @@ const InterviewPage = ({
   videoCheckerQuestionsCount,
 }: IProps) => {
   const setScoreStorage = useSetRecoilState(scoreState);
+  const setCurrentPageIndexStorage = useSetRecoilState(currentPageIndexState);
   const checkAllCompleted = useRecoilValue(checkAllCompletedSelector);
 
   useEffect(() => {
     scrollToTop();
-    if (!getStorage(storageKeys.isOnGoing))
+    if (
+      !getStorage(storageKeys.isOnGoing) &&
+      !getStorage(storageKeys.isEnded)
+    ) {
       setStorage(storageKeys.isOnGoing, "true");
+    }
+
+    if (pagenumber <= maxSliders) {
+      setCurrentPageIndexStorage((_) => ({
+        currentPageIndex: pagenumber,
+        criteriaCount: descImages.length,
+      }));
+    }
 
     // scoreState 초기화
     setScoreStorage((_) => {
