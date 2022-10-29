@@ -1,6 +1,6 @@
 import { ISliderScoreState } from "../atom";
 import { calAhp, getChangedRows } from "./calculations";
-import { npEye, npTranspose } from "./numpy";
+import { npEye } from "./numpy";
 
 const CR_PASS = 0.1;
 
