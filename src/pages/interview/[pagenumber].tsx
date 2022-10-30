@@ -77,13 +77,6 @@ const InterviewPage = ({
       setStorage(storageKeys.isOnGoing, "true");
     }
 
-    if (pagenumber <= maxSliders) {
-      setCurrentPageIndexStorage((_) => ({
-        currentPageIndex: pagenumber,
-        criteriaCount: descImages.length,
-      }));
-    }
-
     // scoreState 초기화
     setScoreStorage((_) => {
       let initScoreStorage: IScoreState = {};
@@ -121,6 +114,15 @@ const InterviewPage = ({
       return initScoreStorage;
     });
   }, []);
+
+  useEffect(() => {
+    if (pagenumber <= maxSliders) {
+      setCurrentPageIndexStorage((_) => ({
+        currentPageIndex: pagenumber,
+        criteriaCount: descImages.length,
+      }));
+    }
+  }, [pagenumber]);
 
   return (
     <Layout pagenumber={pagenumber}>

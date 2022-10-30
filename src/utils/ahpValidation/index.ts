@@ -4,20 +4,28 @@ import { npEye } from "./numpy";
 
 const CR_PASS = 0.1;
 
-function getTargetMatrixComparison(
-  matrixComparison: number[][]
-): [number[][], number, number, number] {
-  const [originalWeight, originalCr] = calAhp(matrixComparison);
+function getTargetMatrixComparison(matrixComparison: number[][]): {
+  newMatrixComparison: number[][];
+  indexOfMinCr: number;
+  indexOfMaxWeight: number;
+  flag: -1 | 0 | 1 | 2;
+} {
+  const { weight: originalWeight, Cr: originalCr } = calAhp(matrixComparison);
   console.log(originalCr);
 
   if (originalCr < CR_PASS) {
     /*
       통과일 경우 flag = 0;
     */
-    return [[[]], 0, 0, 0];
+    return {
+      newMatrixComparison: [[]],
+      indexOfMinCr: 0,
+      indexOfMaxWeight: 0,
+      flag: 0,
+    };
   }
 
-  const [changedRows, indexOfMaxWeight] = getChangedRows(
+  const { changedRows, indexOfMaxWeight } = getChangedRows(
     matrixComparison,
     originalWeight
   );
@@ -33,8 +41,8 @@ function getTargetMatrixComparison(
         1 / matrixComparison[indexOfMaxWeight][j];
     }
 
-    const [_, cr] = calAhp(matrixComparison);
-    return cr;
+    const { Cr } = calAhp(matrixComparison);
+    return Cr;
   });
 
   // arrCr에서 최소 CR의 인덱스
@@ -55,7 +63,12 @@ function getTargetMatrixComparison(
 
   const flag = minCr < 0.1 ? 1 : 2;
 
-  return [matrixComparison, indexOfMinCr, indexOfMaxWeight, flag];
+  return {
+    newMatrixComparison: matrixComparison,
+    indexOfMinCr,
+    indexOfMaxWeight,
+    flag,
+  };
 }
 
 type questionIndex = number;
@@ -65,9 +78,8 @@ function countPr(
   indexOfMinCr: number,
   indexOfMaxWeight: number,
   elementCount: number
-): [questionIndex, instruction] {
+): { questionIndex: questionIndex | "pass"; instruction: instruction } {
   let questionIndex = Math.floor((indexOfMinCr - 1) / 2) + 1;
-  let updown = indexOfMinCr % 2;
 
   if (questionIndex > indexOfMaxWeight) {
     // 입력값 부분, 엑셀 실습에서 초록칸
@@ -75,6 +87,11 @@ function countPr(
 
     for (let i = 1; i < indexOfMaxWeight + 1; i++)
       questionIndex += elementCount - i;
+
+    return {
+      questionIndex,
+      instruction: indexOfMinCr % 2 === 1 ? "왼쪽" : "오른쪽",
+    };
   } else {
     // 할당값 부분
     let k = indexOfMaxWeight - questionIndex + 1;
@@ -82,16 +99,20 @@ function countPr(
     for (let i = 1; i < questionIndex; i++) k += elementCount - i;
 
     questionIndex = k;
+    return {
+      questionIndex,
+      instruction: indexOfMinCr % 2 === 1 ? "오른쪽" : "왼쪽",
+    };
   }
 
-  if (updown === 0) return [questionIndex, "왼쪽"];
-  else return [questionIndex, "오른쪽"];
+  // 새로 생성한 배열의 배열은 +-1 순으로 생성됐음
+  // 따라서 홀수일 경우 왼쪽
 }
 
 function getMatrixComparison(
   criteriaCount: number,
   sliderScore: ISliderScoreState
-) {
+): number[][] {
   let matrixComparison = npEye(criteriaCount, criteriaCount, 0);
 
   let k = 0;
@@ -113,33 +134,33 @@ function getMatrixComparison(
 export function checkSliderValid(
   criteriaCount: number,
   sliderScore: ISliderScoreState
-): [questionIndex | "pass", instruction] {
+): { questionIndex: questionIndex | "pass"; instruction: instruction } {
   const matrixComparison = getMatrixComparison(criteriaCount, sliderScore);
-  const [firstMatrixComparison, indexOfMinCr, indexOfMaxWeight, flag] =
+
+  return findDirection(matrixComparison, criteriaCount, 0);
+}
+
+function findDirection(
+  matrixComparison: number[][],
+  criteriaCount: number,
+  recursiveCount: number
+): { questionIndex: questionIndex | "pass"; instruction: instruction } {
+  if (recursiveCount === 20)
+    return {
+      questionIndex: -1,
+      instruction: "일관성 지수가 크게 벗어났습니다. 다시 설문해주세요!",
+    };
+
+  const { newMatrixComparison, indexOfMinCr, indexOfMaxWeight, flag } =
     getTargetMatrixComparison(matrixComparison);
 
   if (flag === 0) {
-    return ["pass", ""];
+    return { questionIndex: "pass", instruction: "" };
   }
 
   if (flag === 1) {
     return countPr(indexOfMinCr, indexOfMaxWeight, criteriaCount);
   } else {
-    const [_, secoundIndexOfMinCr, secoundIndexOfMaxWeight, secoundFlag] =
-      getTargetMatrixComparison(firstMatrixComparison);
-
-    if (secoundFlag === 2) {
-      /*
-        두 번 확인했으나 일관성 지수가 벗어난 경우
-        이전 값을 리턴합니다.
-      */
-      return [-1, "일관성 지수가 크게 벗어났습니다. 다시 설문해주세요!"];
-    } else {
-      return countPr(
-        secoundIndexOfMinCr,
-        secoundIndexOfMaxWeight,
-        criteriaCount
-      );
-    }
+    return findDirection(newMatrixComparison, criteriaCount, ++recursiveCount);
   }
 }

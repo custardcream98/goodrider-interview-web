@@ -11,14 +11,6 @@ const LandingPage = () => {
   useEffect(() => {
     setIsEnded((_) => Boolean(getStorage(storageKeys.isEnded)));
     setIsOnGoing((_) => Boolean(getStorage(storageKeys.isOnGoing)));
-    console.log(
-      calAhp([
-        [1, 1 / 4, 1 / 6, 1 / 9],
-        [4, 1, 1 / 8, 1 / 5],
-        [6, 8, 1, 1],
-        [9, 5, 1, 1],
-      ])
-    );
   }, []);
 
   return (

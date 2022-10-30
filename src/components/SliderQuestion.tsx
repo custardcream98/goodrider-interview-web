@@ -18,13 +18,16 @@ const SliderQuestion = ({
   subCriteria1,
   subCriteria2,
 }: Props) => {
-  const [isScorePassed, nonPassedQuestionNum] =
+  const { isScorePassed, nonPassedQuestionNum } =
     useRecoilValue(checkPassSelector);
 
   return (
     <section
       className={`mt-4 mb-14 flex flex-col justify-center rounded-xl p-3 ${
-        false ? "outline outline-4 outline-offset-0 outline-red-600" : ""
+        !isScorePassed &&
+        (nonPassedQuestionNum === questionIndex || nonPassedQuestionNum === -1)
+          ? "outline outline-4 outline-offset-0 outline-red-600"
+          : ""
       }`}
     >
       <h3 className="keep-all m-auto flex w-[90%] items-center pb-2 text-lg font-medium md:w-[51rem] md:text-xl">

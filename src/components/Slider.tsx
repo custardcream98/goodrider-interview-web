@@ -163,7 +163,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
 
   const setScoreStorage = useSetRecoilState(scoreState);
 
-  const [isScorePassed, nonPassedQuestionNum, instructionForPass] =
+  const { isScorePassed, nonPassedQuestionNum, instructionForPass } =
     useRecoilValue(checkPassSelector);
   const isPassed = !(
     !isScorePassed &&
