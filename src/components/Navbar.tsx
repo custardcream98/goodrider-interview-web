@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  checkPassSelector,
   completedQuestionsState,
   ISelectiveScoreState,
   scoreState,
@@ -21,18 +22,20 @@ const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
   const scoreStorage = useRecoilValue(scoreState);
   const [completedQuestionsStorage, setCompletedQuestionsStorage] =
     useRecoilState(completedQuestionsState);
+  const { isScorePassed } = useRecoilValue(checkPassSelector);
 
   useEffect(() => {
-    let isCompleted = [];
+    let isCompleted: boolean[] = [];
 
     for (let i = 1; i <= maxSliders; i++) {
       if (i in scoreStorage) {
         isCompleted.push(
           Object.keys(scoreStorage[i]).length - 1 ===
-            scoreStorage[i].maxQuestions
+            scoreStorage[i].maxQuestions && isScorePassed
         );
       }
     }
+    console.log(isCompleted);
 
     for (let i = maxSliders + 1; i <= maxSliders + maxVideoQuestions; i++) {
       if (i in scoreStorage) {
