@@ -14,7 +14,10 @@ const randomIndexTable = [
  * @param matrixComparison
  * @returns `[weight, CR]`
  */
-export function calAhp(matrixComparison: number[][]): [number[], number] {
+export function calAhp(matrixComparison: number[][]): {
+  weight: number[];
+  Cr: number;
+} {
   const elementCount = matrixComparison.length;
 
   /*
@@ -46,11 +49,11 @@ export function calAhp(matrixComparison: number[][]): [number[], number] {
   const AW = npMatrixDot(matrixComparison, weight).map((e) => e[0]);
   const lambda = AW.map((awElement, i) => awElement / weight[i][0]);
   const lambdaMax = npAverage(lambda);
-  const CI = (lambdaMax - elementCount) / (elementCount - 1);
+  const Ci = (lambdaMax - elementCount) / (elementCount - 1);
 
-  const CR = CI / randomIndexTable[elementCount - 1] || 0; // 요소의 개수가 두개일 경우 NaN
+  const Cr = Ci / randomIndexTable[elementCount - 1] || 0; // 요소의 개수가 두개일 경우 NaN
 
-  return [weight.map((e) => e[0]), CR];
+  return { weight: weight.map((e) => e[0]), Cr };
 }
 
 /**
@@ -71,7 +74,7 @@ const minorities = [1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 6, 1 / 7, 1 / 8, 1 / 9];
 export function getChangedRows(
   matrixComparison: number[][],
   weight: number[]
-): [number[][], number] {
+): { changedRows: number[][]; indexOfMaxWeight: number } {
   const indexOfMaxWeight = weight.indexOf(Math.max(...weight));
   // 가중치가 높은 항목의 인덱스 찾기
 
@@ -87,36 +90,62 @@ export function getChangedRows(
     let increased = [...maxWeightRow],
       decreased = [...maxWeightRow];
 
-    if (increased[i] >= 8)
-      // 1 이상 부분
-      increased[i] = 9; // 범위에서 최댓값
-    else if (0.5 <= increased[i] && increased[i] < 1) increased[i] = 1;
-    else if (increased[i] >= 1) increased[i] += 1;
-    else {
-      // 1 미만 부분
-      for (let j = 1; j < minorities.length; j++) {
-        if (increased[i] >= minorities[j]) {
-          increased[i] = minorities[j - 1];
-          break;
-        }
-      }
-    }
+    const { increasedElement, decreasedElement } = getChangedRowDelta(
+      maxWeightRow[i]
+    );
+    increased[i] = increasedElement;
+    decreased[i] = decreasedElement;
     changedRows.push(increased);
-
-    if (decreased[i] <= 0.125) decreased[i] = 1 / 9; // 범위에서 최소값
-    else if (1 <= decreased[i] && decreased[i] < 2) decreased[i] = 0.5;
-    else if (decreased[i] > 1) decreased[i] -= 1;
-    else {
-      for (let j = 0; j < minorities.length - 1; j++) {
-        if (increased[i] >= minorities[j]) {
-          increased[i] = minorities[j + 1];
-          break;
-        }
-      }
-    }
     changedRows.push(decreased);
   }
 
   // [1,3,5,7] => changedRows = [[1,4,5,7],[1,2,5,7],[1,3,6,7],[1,3,4,7].....]
-  return [changedRows, indexOfMaxWeight];
+  return { changedRows, indexOfMaxWeight };
+}
+
+/**
+ * 1 미만 여부 확인하여 increasedElement, decreasedElement 계산하는 함수
+ * @param numToChange
+ * @returns
+ */
+function getChangedRowDelta(numToChange: number): {
+  increasedElement: number;
+  decreasedElement: number;
+} {
+  let isInversed = false;
+  let increasedElement = 0,
+    decreasedElement = 0;
+
+  if (numToChange < 1) {
+    isInversed = true;
+    numToChange = 1 / numToChange;
+  }
+
+  if (numToChange >= 8) {
+    if (isInversed) {
+      decreasedElement = 9;
+      increasedElement = numToChange - 1;
+    } else {
+      increasedElement = 9;
+      decreasedElement = numToChange - 1;
+    }
+  } else {
+    if (isInversed) {
+      decreasedElement = numToChange + 1;
+      increasedElement = numToChange - 1;
+    } else {
+      increasedElement = numToChange + 1;
+      decreasedElement = numToChange - 1;
+    }
+  }
+
+  return isInversed
+    ? {
+        increasedElement: 1 / increasedElement,
+        decreasedElement: 1 / decreasedElement,
+      }
+    : {
+        increasedElement,
+        decreasedElement,
+      };
 }
