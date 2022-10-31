@@ -1,4 +1,4 @@
-import { npAverage, npMatrixDot, npTranspose } from "./numpy";
+import { npAverageOfArr, npMatrixDot, npTranspose } from "./numpy";
 
 /**
  * Random Index 값
@@ -40,7 +40,7 @@ export function calAhp(matrixComparison: number[][]): {
     4. 가중치(weight) 계산
   */
 
-  const weight = matrixNomalized.map((line) => [npAverage(line)]);
+  const weight = matrixNomalized.map((line) => [npAverageOfArr(line)]);
 
   /*
     5. 일관성 체크
@@ -48,7 +48,7 @@ export function calAhp(matrixComparison: number[][]): {
 
   const AW = npMatrixDot(matrixComparison, weight).map((e) => e[0]);
   const lambda = AW.map((awElement, i) => awElement / weight[i][0]);
-  const lambdaMax = npAverage(lambda);
+  const lambdaMax = npAverageOfArr(lambda);
   const Ci = (lambdaMax - elementCount) / (elementCount - 1);
 
   const Cr = Ci / randomIndexTable[elementCount - 1] || 0; // 요소의 개수가 두개일 경우 NaN
@@ -59,7 +59,7 @@ export function calAhp(matrixComparison: number[][]): {
 /**
  * `getChangedRows()` 에서 필요한 1 미만 값 break points
  */
-const minorities = [1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 6, 1 / 7, 1 / 8, 1 / 9];
+// const minorities = [1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 6, 1 / 7, 1 / 8, 1 / 9];
 
 /**
   * 가중치가 가장 큰 행을 찾아 각 항목에 +-1을(1이하의 수는 분모의 +-1) 계산한 배열을 생성    

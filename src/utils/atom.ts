@@ -1,5 +1,6 @@
 import { atom, selector } from "recoil";
 import { checkSliderValid } from "./ahpValidation";
+import { PassNonPass } from "./ahpValidation/types";
 
 export interface IScoreState {
   [pageIndex: string]: ISliderScoreState | ISelectiveScoreState;
@@ -52,6 +53,7 @@ interface ICheckPassSelector {
   nonPassedQuestionNum: number;
   instructionForPass: string;
 }
+
 /**
  * 통과 검사
  */
@@ -68,7 +70,7 @@ export const checkPassSelector = selector<ICheckPassSelector>({
       );
       console.log(questionIndex, instruction);
       return {
-        isScorePassed: questionIndex === "pass",
+        isScorePassed: questionIndex === PassNonPass.Pass,
         nonPassedQuestionNum: questionIndex as number,
         instructionForPass: instruction,
       };

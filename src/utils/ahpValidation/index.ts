@@ -1,14 +1,27 @@
 import { ISliderScoreState } from "../atom";
 import { calAhp, getChangedRows } from "./calculations";
 import { npEye } from "./numpy";
+import {
+  CrPassCheck,
+  Instruction,
+  IQuestionToInstruct,
+  PassNonPass,
+} from "./types";
 
 const CR_PASS = 0.1;
 
+/**
+ * 새로운 행렬을 가지고 각 Case에 대해 CR을 확인하여
+ *
+ * CR < 0.1이 되는 경우 확인 후 리턴하는 함수
+ * @param matrixComparison
+ * @returns
+ */
 function getTargetMatrixComparison(matrixComparison: number[][]): {
   newMatrixComparison: number[][];
   indexOfMinCr: number;
   indexOfMaxWeight: number;
-  flag: -1 | 0 | 1 | 2;
+  flag: CrPassCheck;
 } {
   const { weight: originalWeight, Cr: originalCr } = calAhp(matrixComparison);
   console.log(originalCr);
@@ -21,7 +34,7 @@ function getTargetMatrixComparison(matrixComparison: number[][]): {
       newMatrixComparison: [[]],
       indexOfMinCr: 0,
       indexOfMaxWeight: 0,
-      flag: 0,
+      flag: CrPassCheck.Passed,
     };
   }
 
@@ -61,7 +74,8 @@ function getTargetMatrixComparison(matrixComparison: number[][]): {
 
   const minCr = arrCr[indexOfMinCr]; // 최소 CR
 
-  const flag = minCr < 0.1 ? 1 : 2;
+  const flag =
+    minCr < CR_PASS ? CrPassCheck.PassedOnChange : CrPassCheck.ContinueToFind;
 
   return {
     newMatrixComparison: matrixComparison,
@@ -71,14 +85,20 @@ function getTargetMatrixComparison(matrixComparison: number[][]): {
   };
 }
 
-type questionIndex = number;
-type instruction = string;
-
-function countPr(
+/**
+ * CR 최솟값의 인덱스와 가중치 최댓값의 인덱스를 활용해
+ *
+ * 조정이 필요한 문항 번호와 지시사항을 리턴하는 함수
+ * @param indexOfMinCr
+ * @param indexOfMaxWeight
+ * @param elementCount
+ * @returns
+ */
+function getQuestionIndexAndInstruction(
   indexOfMinCr: number,
   indexOfMaxWeight: number,
   elementCount: number
-): { questionIndex: questionIndex | "pass"; instruction: instruction } {
+): IQuestionToInstruct {
   let questionIndex = Math.floor((indexOfMinCr - 1) / 2) + 1;
 
   if (questionIndex > indexOfMaxWeight) {
@@ -90,7 +110,8 @@ function countPr(
 
     return {
       questionIndex,
-      instruction: indexOfMinCr % 2 === 1 ? "왼쪽" : "오른쪽",
+      instruction:
+        indexOfMinCr % 2 === 1 ? Instruction.Left : Instruction.Right,
     };
   } else {
     // 할당값 부분
@@ -101,14 +122,18 @@ function countPr(
     questionIndex = k;
     return {
       questionIndex,
-      instruction: indexOfMinCr % 2 === 1 ? "오른쪽" : "왼쪽",
+      instruction:
+        indexOfMinCr % 2 === 1 ? Instruction.Right : Instruction.Left,
     };
   }
-
-  // 새로 생성한 배열의 배열은 +-1 순으로 생성됐음
-  // 따라서 홀수일 경우 왼쪽
 }
 
+/**
+ * 현재 점수 state를 입력받아 comparison matrix를 생성하는 함수
+ * @param criteriaCount
+ * @param sliderScore
+ * @returns
+ */
 function getMatrixComparison(
   criteriaCount: number,
   sliderScore: ISliderScoreState
@@ -131,35 +156,61 @@ function getMatrixComparison(
   return matrixComparison;
 }
 
+/**
+ * 현재 Slider Questions의 입력값을 가지고 값이 유효(CR < CR_PASS)한지 확인 후
+ *
+ * 조정이 필요한 경우 조정이 필요한 questionIndex와 instruction을 리턴하는 함수
+ *
+ * 조정이 필요없는 경우(조정 없이 통과) questionIndex = "NonPass"로 리턴합니다.
+ * @param criteriaCount
+ * @param sliderScore
+ * @returns
+ */
 export function checkSliderValid(
   criteriaCount: number,
   sliderScore: ISliderScoreState
-): { questionIndex: questionIndex | "pass"; instruction: instruction } {
+): IQuestionToInstruct {
   const matrixComparison = getMatrixComparison(criteriaCount, sliderScore);
 
   return findDirection(matrixComparison, criteriaCount, 0);
 }
 
+/**
+ * 조정이 필요한 questionIndex와 instruction을 리턴하는 함수
+ *
+ * 재귀적으로 여러 경우의 수를 검사하며, 19번까지 검사합니다.
+ * @param matrixComparison
+ * @param criteriaCount
+ * @param recursiveCount
+ * @returns
+ */
 function findDirection(
   matrixComparison: number[][],
   criteriaCount: number,
   recursiveCount: number
-): { questionIndex: questionIndex | "pass"; instruction: instruction } {
+): IQuestionToInstruct {
   if (recursiveCount === 20)
     return {
-      questionIndex: -1,
-      instruction: "일관성 지수가 크게 벗어났습니다. 다시 설문해주세요!",
+      questionIndex: PassNonPass.NonPass,
+      instruction: Instruction.NotAbleToFind,
     };
 
   const { newMatrixComparison, indexOfMinCr, indexOfMaxWeight, flag } =
     getTargetMatrixComparison(matrixComparison);
 
-  if (flag === 0) {
-    return { questionIndex: "pass", instruction: "" };
+  if (flag === CrPassCheck.Passed) {
+    return {
+      questionIndex: PassNonPass.Pass,
+      instruction: Instruction.NoNeedToMove,
+    };
   }
 
-  if (flag === 1) {
-    return countPr(indexOfMinCr, indexOfMaxWeight, criteriaCount);
+  if (flag === CrPassCheck.PassedOnChange) {
+    return getQuestionIndexAndInstruction(
+      indexOfMinCr,
+      indexOfMaxWeight,
+      criteriaCount
+    );
   } else {
     return findDirection(newMatrixComparison, criteriaCount, ++recursiveCount);
   }

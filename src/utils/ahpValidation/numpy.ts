@@ -15,7 +15,7 @@ export function npTranspose(arr: number[][]) {
  * @param k
  * @returns 단위행렬
  */
-export function npEye(N: number, M: number, k: number) {
+export function npEye(N: number, M: number, k: number): number[][] {
   let t = [];
   for (let i = 0; i < N; i++) {
     let p = [];
@@ -34,7 +34,7 @@ export function npEye(N: number, M: number, k: number) {
  * @param arr
  * @returns 평균
  */
-export function npAverage(arr: number[]) {
+export function npAverageOfArr(arr: number[]) {
   return arr.reduce((acc, e) => acc + e, 0) / arr.length;
 }
 
@@ -42,16 +42,18 @@ export function npAverage(arr: number[]) {
  * 행렬곱 계산
  *
  * `np.dot()`
- * @param arr1
- * @param arr2
+ * @param matrix1
+ * @param matrix2
  * @returns
  */
-export function npMatrixDot(arr1: number[][], arr2: number[][]) {
-  return Array(arr1.length)
+export function npMatrixDot(matrix1: number[][], matrix2: number[][]) {
+  return Array(matrix1.length)
     .fill(0)
     .map((_, i) =>
-      Array(arr2[0].length)
+      Array(matrix2[0].length)
         .fill(0)
-        .map((_, j) => arr1[i].reduce((acc, e, k) => acc + e * arr2[k][j], 0))
+        .map((_, j) =>
+          matrix1[i].reduce((acc, e, k) => acc + e * matrix2[k][j], 0)
+        )
     );
 }
