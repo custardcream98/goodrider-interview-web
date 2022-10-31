@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import Layout from "~/components/Layout";
+import LoadingSpinner from "~/components/LoadingSpinner";
 import { checkAllCompletedSelector } from "~/utils/atom";
 import { postData } from "~/utils/fetch";
 import {
@@ -111,43 +112,39 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
         <h1 className="keep-all mb-6 w-11/12 text-center text-title-mobile font-bold leading-normal text-gray-900 md:w-2/4 md:text-title">
           착한 이륜차 운전자 평가 모델 관련 설문조사
         </h1>
-        <main className="question-bundle max-w-[900px] p-4">
-          {!isSubmitted ? (
-            <>
-              <p className="mb-4 text-lg">
-                설문에 참여해주셔서 감사합니다. <br />
-                전화번호를 기입해주시면 추첨을 통해 <strong>기프티콘</strong>을
-                보내드릴 예정이오니, 원하시는 경우 아래에 적고 제출하기를
-                눌러주세요. <br /> <br />
-                (원치 않으시는 경우 빈 칸으로 두고 제출하기를 눌러주세요.)
-              </p>
-              <form className="w-full" onSubmit={onSubmit}>
-                <div className="flex flex-col items-center md:flex-row">
-                  <div className="mb-2 md:mb-0">
-                    <label className="block" htmlFor="phone">
-                      전화번호를 적어주세요:{" "}
-                    </label>
-                    <small>예시: 010-1234-5678</small>
-                  </div>
-                  <input
-                    id="phone"
-                    className="ml-3 rounded-md outline outline-2 outline-darkmint"
-                    type="tel"
-                    pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
-                    ref={phoneEleRef}
-                  />
-                </div>
-                <button className="page-btn ml-auto block" type="submit">
-                  제출하기
-                </button>
-              </form>
-            </>
-          ) : (
-            <p className="mt-5 text-xl">
-              데이터 전송중입니다. 잠시 기다려주세요.
+        {!isSubmitted ? (
+          <main className="question-bundle max-w-[900px] p-4">
+            <p className="mb-4 text-lg">
+              설문에 참여해주셔서 감사합니다. <br />
+              전화번호를 기입해주시면 추첨을 통해 <strong>기프티콘</strong>을
+              보내드릴 예정이오니, 원하시는 경우 아래에 적고 제출하기를
+              눌러주세요. <br /> <br />
+              (원치 않으시는 경우 빈 칸으로 두고 제출하기를 눌러주세요.)
             </p>
-          )}
-        </main>
+            <form className="w-full" onSubmit={onSubmit}>
+              <div className="flex flex-col items-center md:flex-row">
+                <div className="mb-2 md:mb-0">
+                  <label className="block" htmlFor="phone">
+                    전화번호를 적어주세요:{" "}
+                  </label>
+                  <small>예시: 010-1234-5678</small>
+                </div>
+                <input
+                  id="phone"
+                  className="ml-3 rounded-md outline outline-2 outline-darkmint"
+                  type="tel"
+                  pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                  ref={phoneEleRef}
+                />
+              </div>
+              <button className="page-btn ml-auto block" type="submit">
+                제출하기
+              </button>
+            </form>
+          </main>
+        ) : (
+          <LoadingSpinner />
+        )}
       </div>
     </Layout>
   );

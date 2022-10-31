@@ -131,7 +131,6 @@ const InterviewPage = ({
         maxVideoQuestions={maxVideoQuestions}
         currentPage={pagenumber}
       />
-
       <Main>
         <Wrapper>
           {pagenumber <= maxSliders ? (
