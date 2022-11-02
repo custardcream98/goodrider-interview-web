@@ -9,6 +9,7 @@ import {
 } from "./types";
 
 const CR_PASS = 0.1;
+const RECURSIVE_CEIL = 9;
 
 /**
  * 새로운 행렬을 가지고 각 Case에 대해 CR을 확인하여
@@ -60,6 +61,8 @@ function getTargetMatrixComparison(matrixComparison: number[][]): {
 
   // arrCr에서 최소 CR의 인덱스
   const indexOfMinCr = arrCr.indexOf(Math.min(...arrCr));
+  // console.log(changedRows[indexOfMinCr].map((e) => e.toFixed(2)));
+  // console.log(arrCr[indexOfMinCr]);
 
   matrixComparison[indexOfMaxWeight] = changedRows[indexOfMinCr];
 
@@ -99,7 +102,7 @@ function getQuestionIndexAndInstruction(
   indexOfMaxWeight: number,
   elementCount: number
 ): IQuestionToInstruct {
-  let questionIndex = Math.floor((indexOfMinCr - 1) / 2) + 1;
+  let questionIndex = Math.floor(indexOfMinCr / 2) + 1;
 
   if (questionIndex > indexOfMaxWeight) {
     // 입력값 부분, 엑셀 실습에서 초록칸
@@ -172,7 +175,7 @@ export function checkSliderValid(
 ): IQuestionToInstruct {
   const matrixComparison = getMatrixComparison(criteriaCount, sliderScore);
 
-  return findDirection(matrixComparison, criteriaCount, 0);
+  return findDirection(matrixComparison, criteriaCount, 0, []);
 }
 
 /**
@@ -187,16 +190,27 @@ export function checkSliderValid(
 function findDirection(
   matrixComparison: number[][],
   criteriaCount: number,
-  recursiveCount: number
+  recursiveCount: number,
+  arr: number[]
 ): IQuestionToInstruct {
-  if (recursiveCount === 20)
+  if (recursiveCount === RECURSIVE_CEIL) {
+    console.log(arr);
     return {
       questionIndex: PassNonPass.NonPass,
       instruction: Instruction.NotAbleToFind,
     };
+  }
 
   const { newMatrixComparison, indexOfMinCr, indexOfMaxWeight, flag } =
     getTargetMatrixComparison(matrixComparison);
+
+  arr.push(
+    getQuestionIndexAndInstruction(
+      indexOfMinCr,
+      indexOfMaxWeight,
+      criteriaCount
+    )["questionIndex"] as number
+  );
 
   if (flag === CrPassCheck.Passed) {
     return {
@@ -206,12 +220,19 @@ function findDirection(
   }
 
   if (flag === CrPassCheck.PassedOnChange) {
+    console.log(arr);
+
     return getQuestionIndexAndInstruction(
       indexOfMinCr,
       indexOfMaxWeight,
       criteriaCount
     );
   } else {
-    return findDirection(newMatrixComparison, criteriaCount, ++recursiveCount);
+    return findDirection(
+      newMatrixComparison,
+      criteriaCount,
+      ++recursiveCount,
+      arr
+    );
   }
 }

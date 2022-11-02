@@ -50,7 +50,7 @@ export const currentPageIndexState = atom<IPageIndex>({
 
 interface ICheckPassSelector {
   isScorePassed: boolean;
-  nonPassedQuestionNum: number;
+  nonPassedQuestionNum: number | PassNonPass;
   instructionForPass: string;
 }
 
@@ -71,7 +71,7 @@ export const checkPassSelector = selector<ICheckPassSelector>({
       console.log(questionIndex, instruction);
       return {
         isScorePassed: questionIndex === PassNonPass.Pass,
-        nonPassedQuestionNum: questionIndex as number,
+        nonPassedQuestionNum: questionIndex,
         instructionForPass: instruction,
       };
     }

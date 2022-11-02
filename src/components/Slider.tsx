@@ -4,6 +4,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 import { checkPassSelector, scoreState } from "~/utils/atom";
+import { PassNonPass } from "~/utils/ahpValidation/types";
 
 interface Position {
   x: number;
@@ -167,7 +168,8 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
     useRecoilValue(checkPassSelector);
   const isPassed = !(
     !isScorePassed &&
-    (nonPassedQuestionNum === questionIndex || nonPassedQuestionNum === -1)
+    (nonPassedQuestionNum === questionIndex ||
+      nonPassedQuestionNum === PassNonPass.NonPass)
   );
 
   const sliderRef = useRef<HTMLInputElement>(null);
@@ -242,9 +244,13 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
         >
           {isPassed
             ? description
-            : (nonPassedQuestionNum === -1 ? "" : "일관성이 낮습니다. ") +
+            : (nonPassedQuestionNum === PassNonPass.NonPass
+                ? ""
+                : "일관성이 낮습니다. ") +
               instructionForPass +
-              (nonPassedQuestionNum === -1 ? "" : "으로 움직여주세요.")}
+              (nonPassedQuestionNum === PassNonPass.NonPass
+                ? ""
+                : "으로 움직여주세요.")}
         </span>
       </p>
     </div>
