@@ -191,10 +191,10 @@ function findDirection(
   matrixComparison: number[][],
   criteriaCount: number,
   recursiveCount: number,
-  arr: number[]
+  pastResults: IQuestionToInstruct[]
 ): IQuestionToInstruct {
   if (recursiveCount === RECURSIVE_CEIL) {
-    console.log(arr);
+    console.log(pastResults);
     return {
       questionIndex: PassNonPass.NonPass,
       instruction: Instruction.NotAbleToFind,
@@ -204,12 +204,12 @@ function findDirection(
   const { newMatrixComparison, indexOfMinCr, indexOfMaxWeight, flag } =
     getTargetMatrixComparison(matrixComparison);
 
-  arr.push(
+  pastResults.push(
     getQuestionIndexAndInstruction(
       indexOfMinCr,
       indexOfMaxWeight,
       criteriaCount
-    )["questionIndex"] as number
+    )
   );
 
   if (flag === CrPassCheck.Passed) {
@@ -220,19 +220,20 @@ function findDirection(
   }
 
   if (flag === CrPassCheck.PassedOnChange) {
-    console.log(arr);
+    console.log(pastResults);
 
-    return getQuestionIndexAndInstruction(
-      indexOfMinCr,
-      indexOfMaxWeight,
-      criteriaCount
-    );
+    return pastResults[0];
+    // return getQuestionIndexAndInstruction(
+    //   indexOfMinCr,
+    //   indexOfMaxWeight,
+    //   criteriaCount
+    // );
   } else {
     return findDirection(
       newMatrixComparison,
       criteriaCount,
       ++recursiveCount,
-      arr
+      pastResults
     );
   }
 }
