@@ -271,7 +271,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
         </p>
       </div>
       <button
-        className={`dark fixed bottom-[60px] right-4 rounded-full py-2 px-3 ${
+        className={`dark fixed bottom-[60px] right-4 z-10 rounded-full py-2 px-3 ${
           isPassed || nonPassedQuestionNum === PassNonPass.NonPass
             ? "hidden"
             : ""
