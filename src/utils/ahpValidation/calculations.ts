@@ -122,7 +122,10 @@ function getChangedRowDelta(numToChange: number): {
   let increasedElement = numToChange,
     decreasedElement = numToChange;
 
-  if (numToChange >= 8) {
+  if (numToChange === 1) {
+    increasedElement++;
+    decreasedElement /= 2;
+  } else if (numToChange >= 8) {
     if (isInversed) {
       decreasedElement = 9;
       increasedElement--;
@@ -133,8 +136,10 @@ function getChangedRowDelta(numToChange: number): {
   } else if (numToChange <= 2) {
     if (isInversed) {
       decreasedElement++;
+      increasedElement = 1;
     } else {
       increasedElement++;
+      decreasedElement = 1;
     }
   } else {
     if (isInversed) {

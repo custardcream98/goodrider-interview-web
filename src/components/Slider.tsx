@@ -34,6 +34,8 @@ const Wrapper = styled.div`
   background-color: #e5eeec;
   border-radius: 100px;
 
+  z-index: 0;
+
   @media (max-width: 768px) {
     height: 50px;
   }
@@ -213,47 +215,72 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
     // );
   };
 
+  const onMoveToWrongQuestion = () => {
+    if (!isPassed) {
+      // window.scrollTo({
+      //   top: sliderRef.current.offsetTop,
+      //   // +
+      //   // window.innerHeight / 2 -
+      //   // sliderRef.current.offsetHeight,
+      //   behavior: "smooth",
+      // });
+      sliderRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="m-auto w-95% md:w-[600px]">
-      <Wrapper>
-        {React.Children.toArray(
-          new Array(9)
-            .fill(0)
-            .map((_, i) => <Indicator x={(sliderWidth * (i + 1)) / 10} />)
-        )}
-        <InputRange
-          ref={sliderRef}
-          type="range"
-          step="0.1"
-          onChange={onChange}
-        />
-      </Wrapper>
-      <div className="mb-2 flex w-full justify-between rounded-full bg-[#e1fbf5] px-2 text-sm font-semibold text-darkmint md:text-base">
-        <span className="inline-block p-1">9점</span>
-        <span className="inline-block p-1">같다</span>
-        <span className="inline-block p-1">9점</span>
+    <>
+      <div className="m-auto w-95% md:w-[600px]">
+        <Wrapper>
+          {React.Children.toArray(
+            new Array(9)
+              .fill(0)
+              .map((_, i) => <Indicator x={(sliderWidth * (i + 1)) / 10} />)
+          )}
+          <InputRange
+            ref={sliderRef}
+            type="range"
+            step="0.1"
+            onChange={onChange}
+          />
+        </Wrapper>
+        <div className="mb-2 flex w-full justify-between rounded-full bg-[#e1fbf5] px-2 text-sm font-semibold text-darkmint md:text-base">
+          <span className="inline-block p-1">9점</span>
+          <span className="inline-block p-1">같다</span>
+          <span className="inline-block p-1">9점</span>
+        </div>
+        <p className="text-center">
+          <span
+            id="description"
+            className={`bg-contain bg-left bg-no-repeat pl-6 ${
+              isPassed
+                ? "bg-[url(../../public/Infobox_info_icon.svg)]"
+                : "bg-[url(../../public/Infobox_info_icon_red.svg)] font-bold text-red-600"
+            }`}
+          >
+            {isPassed
+              ? description
+              : (nonPassedQuestionNum === PassNonPass.NonPass
+                  ? ""
+                  : "일관성이 낮습니다. ") +
+                instructionForPass +
+                (nonPassedQuestionNum === PassNonPass.NonPass
+                  ? ""
+                  : "으로 움직여주세요.")}
+          </span>
+        </p>
       </div>
-      <p className="text-center">
-        <span
-          id="description"
-          className={`bg-contain bg-left bg-no-repeat pl-6 ${
-            isPassed
-              ? "bg-[url(../../public/Infobox_info_icon.svg)]"
-              : "bg-[url(../../public/Infobox_info_icon_red.svg)] font-bold text-red-600"
-          }`}
-        >
-          {isPassed
-            ? description
-            : (nonPassedQuestionNum === PassNonPass.NonPass
-                ? ""
-                : "일관성이 낮습니다. ") +
-              instructionForPass +
-              (nonPassedQuestionNum === PassNonPass.NonPass
-                ? ""
-                : "으로 움직여주세요.")}
-        </span>
-      </p>
-    </div>
+      <button
+        className={`dark fixed bottom-[60px] right-4 rounded-full py-2 px-3 ${
+          isPassed || nonPassedQuestionNum === PassNonPass.NonPass
+            ? "hidden"
+            : ""
+        }`}
+        onClick={onMoveToWrongQuestion}
+      >
+        틀린 문제로 이동
+      </button>
+    </>
   );
 };
 
