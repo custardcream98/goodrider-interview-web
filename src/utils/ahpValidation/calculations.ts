@@ -10,9 +10,6 @@ const randomIndexTable = [
 
 /**
  * 가중치와 CR을 계산하는 함수
- *
- * @param matrixComparison
- * @returns `[weight, CR]`
  */
 export function calAhp(matrixComparison: number[][]): {
   weight: number[];
@@ -57,19 +54,11 @@ export function calAhp(matrixComparison: number[][]): {
 }
 
 /**
- * `getChangedRows()` 에서 필요한 1 미만 값 break points
- */
-// const minorities = [1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 6, 1 / 7, 1 / 8, 1 / 9];
-
-/**
   * 가중치가 가장 큰 행을 찾아 각 항목에 +-1을(1이하의 수는 분모의 +-1) 계산한 배열을 생성    
   * * 입력값 : matrixComparison, 가중치(weight)  
   * * 리턴값 : +-1 연산된 행들의 배열(changedRows), matrixComparison에서 가중치가 가장큰 행의 위치 인덱스(indexOfMaxWeight)  
   
  * 위 리턴값 두 가지로 matrixComparison을 바꾸어 가며, 최소의 CR을 가진 matrixComparison을 찾음.
- * @param matrixComparison 
- * @param weight 
- * @returns `[changedRows, indexOfMaxWeight]`
  */
 export function getChangedRows(
   matrixComparison: number[][],
@@ -105,59 +94,33 @@ export function getChangedRows(
 
 /**
  * 1 미만 여부 확인하여 increasedElement, decreasedElement 계산하는 함수
- * @param numToChange
- * @returns
  */
 function getChangedRowDelta(numToChange: number): {
   increasedElement: number;
   decreasedElement: number;
 } {
-  let isInversed = false;
-
-  if (numToChange < 1) {
-    isInversed = true;
-    numToChange = 1 / numToChange;
-  }
-
-  let increasedElement = numToChange,
-    decreasedElement = numToChange;
+  let isInversed = numToChange < 1;
+  numToChange = isInversed ? 1 / numToChange : numToChange;
 
   if (numToChange === 1) {
-    increasedElement++;
-    decreasedElement /= 2;
-  } else if (numToChange >= 8) {
-    if (isInversed) {
-      decreasedElement = 9;
-      increasedElement--;
-    } else {
-      increasedElement = 9;
-      decreasedElement--;
-    }
-  } else if (numToChange <= 2) {
-    if (isInversed) {
-      decreasedElement++;
-      increasedElement = 1;
-    } else {
-      increasedElement++;
-      decreasedElement = 1;
-    }
-  } else {
-    if (isInversed) {
-      decreasedElement++;
-      increasedElement--;
-    } else {
-      increasedElement++;
-      decreasedElement--;
-    }
+    return {
+      increasedElement: numToChange + 1,
+      decreasedElement: numToChange / 2,
+    };
+  } // early return
+
+  const decreasedNum = numToChange < 2 ? 1 : numToChange - 1;
+  const increasedNum = numToChange > 8 ? 9 : numToChange + 1;
+
+  if (isInversed) {
+    return {
+      increasedElement: 1 / decreasedNum,
+      decreasedElement: 1 / increasedNum,
+    };
   }
 
-  return isInversed
-    ? {
-        increasedElement: 1 / increasedElement,
-        decreasedElement: 1 / decreasedElement,
-      }
-    : {
-        increasedElement,
-        decreasedElement,
-      };
+  return {
+    increasedElement: increasedNum,
+    decreasedElement: decreasedNum,
+  };
 }
