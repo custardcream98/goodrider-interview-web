@@ -1,10 +1,11 @@
+import { IUserInfo } from "~/interfaces/userInfo";
 import { Pairs } from "./question_data";
 
-export interface IQuestionnaireData {
+export interface IQuestionnaireData extends IUserInfo {
   questions_count: number;
   results_slider: ISliderQuestionData[];
   results_selective: ISelectiveQuestionData[];
-  phone: string;
+  email: string;
 }
 
 export interface ISliderQuestionData {

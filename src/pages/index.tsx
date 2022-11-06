@@ -4,14 +4,12 @@ import Layout from "~/components/Layout";
 import storageKeys, {
   getStorage,
   getUserInfoLocalStorage,
-  IUserInfo,
   setUserInfoLocalStorage,
 } from "~/utils/localStorage";
-
-type UserInfoName = "age" | "gender" | "experiencedMotor";
+import { IUserInfo } from "~/interfaces/userInfo";
 
 interface HTMLCustomInputSelectElement extends HTMLInputElement {
-  name: UserInfoName;
+  name: keyof IUserInfo;
 }
 
 /**
@@ -92,8 +90,8 @@ const LandingPage = () => {
             </p>
             <p className="my-5">
               아울러 응답해주신 분들 중 추첨을 통해 감사의 의미를 담아
-              기프티콘을 드리고자 하오니 원하시는 분은 이메일 주소를
-              기입해주시기 바랍니다.
+              기프티콘을 드리고자 하오니 원하시는 분은 설문 결과 제출시 이메일
+              주소를 기입해주시기 바랍니다.
             </p>
             <p className="my-5">
               바쁘신 중에도 귀중한 시간을 내시어 본 설문조사에 응해주셔서
@@ -103,89 +101,91 @@ const LandingPage = () => {
               서울시립대학교 공간데이터베이스 연구실
             </p>
           </section>
-          <section className="question-bundle mt-5">
-            <h2 className="sr-only">개인정보 입력</h2>
-            <form
-              action="#"
-              onChange={onFormChange}
-              onSubmit={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            >
-              <label className="mb-2 block text-lg" htmlFor="age">
-                나이대
-              </label>
-              <select
-                className="select block"
-                id="age"
-                name="age"
-                value={userInfoState.age}
+          <section>
+            <div className="question-bundle mt-5">
+              <h2 className="sr-only">개인정보 입력</h2>
+              <form
+                action="#"
+                onChange={onFormChange}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
-                <option value="">나이대를 선택해주세요.</option>
-                <option value="10">10대</option>
-                <option value="20">20대</option>
-                <option value="30">30대</option>
-                <option value="40">40대</option>
-                <option value="50">50대</option>
-                <option value="60">60대 이상</option>
-              </select>
-              <fieldset className="my-4">
-                <legend className="mb-2 block text-lg">성별</legend>
-                <input
-                  className="mx-1"
-                  id="male"
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  defaultChecked={userInfoState.gender === "male"}
-                />
-                <label htmlFor="male">남성</label>
-                <input
-                  className="ml-3 mr-1"
-                  id="female"
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  defaultChecked={userInfoState.gender === "female"}
-                />
-                <label htmlFor="female">여성</label>
-              </fieldset>
-              <fieldset className="mt-4">
-                <legend className="mb-2 block text-lg">
-                  이륜차 운전 경험 여부
-                </legend>
-                <input
-                  className="mx-1"
-                  id="yes"
-                  type="radio"
-                  name="experiencedMotor"
-                  value="true"
-                  defaultChecked={userInfoState.experiencedMotor === true}
-                />
-                <label htmlFor="yes">있음</label>
-                <input
-                  className="ml-3 mr-1"
-                  id="no"
-                  type="radio"
-                  name="experiencedMotor"
-                  value="false"
-                  defaultChecked={userInfoState.experiencedMotor === false}
-                />
-                <label htmlFor="no">없음</label>
-              </fieldset>
-            </form>
+                <label className="mb-2 block text-lg" htmlFor="age">
+                  나이대
+                </label>
+                <select
+                  className="select block"
+                  id="age"
+                  name="age"
+                  value={userInfoState.age}
+                >
+                  <option value="">나이대를 선택해주세요.</option>
+                  <option value="10">10대</option>
+                  <option value="20">20대</option>
+                  <option value="30">30대</option>
+                  <option value="40">40대</option>
+                  <option value="50">50대</option>
+                  <option value="60">60대 이상</option>
+                </select>
+                <fieldset className="my-4">
+                  <legend className="mb-2 block text-lg">성별</legend>
+                  <input
+                    className="mx-1"
+                    id="male"
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    defaultChecked={userInfoState.gender === "male"}
+                  />
+                  <label htmlFor="male">남성</label>
+                  <input
+                    className="ml-3 mr-1"
+                    id="female"
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    defaultChecked={userInfoState.gender === "female"}
+                  />
+                  <label htmlFor="female">여성</label>
+                </fieldset>
+                <fieldset className="mt-4">
+                  <legend className="mb-2 block text-lg">
+                    이륜차 운전 경험 여부
+                  </legend>
+                  <input
+                    className="mx-1"
+                    id="yes"
+                    type="radio"
+                    name="experiencedMotor"
+                    value="true"
+                    defaultChecked={userInfoState.experiencedMotor === true}
+                  />
+                  <label htmlFor="yes">있음</label>
+                  <input
+                    className="ml-3 mr-1"
+                    id="no"
+                    type="radio"
+                    name="experiencedMotor"
+                    value="false"
+                    defaultChecked={userInfoState.experiencedMotor === false}
+                  />
+                  <label htmlFor="no">없음</label>
+                </fieldset>
+              </form>
+            </div>
+            <Link href="/interview/1">
+              <a
+                className={`page-btn mt-4 ml-auto block w-[200px] ${
+                  isUserInfoReady ? "" : "pointer-events-none opacity-30"
+                }`}
+              >
+                {isOnGoing ? "설문 이어하기" : "설문 시작"}
+                <span className="float-right">{">"}</span>
+              </a>
+            </Link>
           </section>
-          <Link href="/interview/1">
-            <a
-              className={`page-btn mt-5 ml-auto block w-[200px] ${
-                isUserInfoReady ? "" : "pointer-events-none opacity-30"
-              }`}
-            >
-              {isOnGoing ? "설문 이어하기" : "설문 시작"}
-              <span className="float-right">{">"}</span>
-            </a>
-          </Link>
         </main>
       )}
     </Layout>

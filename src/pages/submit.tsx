@@ -7,6 +7,7 @@ import { checkAllCompletedSelector } from "~/utils/atom";
 import { postData } from "~/utils/fetch";
 import {
   getAllAnswers,
+  getUserInfoLocalStorage,
   ILocalSelectiveAnswer,
   removeLocalAnswer,
   removeLocalisOnGoing,
@@ -25,6 +26,7 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
   const router = useRouter();
   const checkAllCompleted = useRecoilValue(checkAllCompletedSelector);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const emailInputEleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!checkAllCompleted) {
@@ -38,16 +40,19 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
 
     setIsSubmitted((_) => true);
 
-    const phoneNumber = phoneEleRef.current.value.trim().replaceAll("-", "");
+    const email = emailInputEleRef.current.value.trim();
 
     const answers = getAllAnswers();
     const questionsCount = sliderQuestions.length + selectiveQuestions.length;
+
+    const userInfo = getUserInfoLocalStorage();
 
     let questionnaireData: IQuestionnaireData = {
       questions_count: questionsCount,
       results_slider: [],
       results_selective: [],
-      phone: phoneNumber,
+      email,
+      ...userInfo,
     };
 
     for (
@@ -104,43 +109,49 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
     router.push("/");
   };
 
-  const phoneEleRef = useRef<HTMLInputElement>(null);
-
   return (
     <Layout>
       <div className="centering h-screen w-full flex-col bg-white">
-        <h1 className="keep-all mb-6 w-11/12 text-center text-title-mobile font-bold leading-normal text-gray-900 md:w-2/4 md:text-title">
-          착한 이륜차 운전자 평가 모델 관련 설문조사
+        <h1 className="keep-all my-4 text-center text-title-mobile font-bold leading-normal text-gray-900 md:text-title">
+          착한 이륜차 운전자 평가 모델{" "}
+          <span className="block md:inline">관련 설문조사</span>
         </h1>
         {!isSubmitted ? (
-          <main className="question-bundle max-w-[900px] p-4">
-            <p className="mb-4 text-lg">
-              설문에 참여해주셔서 감사합니다. <br />
-              전화번호를 기입해주시면 추첨을 통해 <strong>기프티콘</strong>을
-              보내드릴 예정이오니, 원하시는 경우 아래에 적고 제출하기를
-              눌러주세요. <br /> <br />
-              (원치 않으시는 경우 빈 칸으로 두고 제출하기를 눌러주세요.)
-            </p>
-            <form className="w-full" onSubmit={onSubmit}>
-              <div className="flex flex-col items-center md:flex-row">
-                <div className="mb-2 md:mb-0">
-                  <label className="block" htmlFor="phone">
-                    전화번호를 적어주세요:{" "}
+          <main className="mx-auto p-4 md:w-920 md:p-0">
+            <div className="question-bundle keep-all p-4">
+              <p className="text-lg">
+                설문에 참여해주셔서 감사합니다. <br />
+                이메일을 기입해주시면 추첨을 통해 <strong>기프티콘</strong>을
+                보내드릴 예정이오니, 원하시는 경우 아래에 적고 제출하기를
+                눌러주세요. <br /> <br />
+                (원치 않으시는 경우 빈 칸으로 두고 제출하기를 눌러주세요.)
+              </p>
+              <form
+                className="mt-3 w-full"
+                id="submit-answers"
+                onSubmit={onSubmit}
+              >
+                <div className="flex w-full flex-col md:flex-row">
+                  <label className="mb-2 md:mb-0" htmlFor="email">
+                    이메일을 적어주세요:
                   </label>
-                  <small>예시: 010-1234-5678</small>
+                  <input
+                    id="email"
+                    className="max-w-[300px] grow rounded-md px-1 outline outline-2 outline-darkmint md:ml-3"
+                    type="email"
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    ref={emailInputEleRef}
+                  />
                 </div>
-                <input
-                  id="phone"
-                  className="ml-3 rounded-md outline outline-2 outline-darkmint"
-                  type="tel"
-                  pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
-                  ref={phoneEleRef}
-                />
-              </div>
-              <button className="page-btn ml-auto block" type="submit">
-                제출하기
-              </button>
-            </form>
+              </form>
+            </div>
+            <button
+              className="page-btn mt-4 ml-auto block w-[200px]"
+              type="submit"
+              form="submit-answers"
+            >
+              제출하기
+            </button>
           </main>
         ) : (
           <LoadingSpinner />

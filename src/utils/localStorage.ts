@@ -1,3 +1,5 @@
+import { IUserInfo } from "~/interfaces/userInfo";
+
 interface ILocalAnswers {
   [key: number]: ILocalSliderAnswer | ILocalSelectiveAnswer;
 }
@@ -9,12 +11,6 @@ interface ILocalSliderAnswer {
 export interface ILocalSelectiveAnswer {
   checked: number;
   values: number[];
-}
-
-export interface IUserInfo {
-  age: number;
-  gender: "male" | "female";
-  experiencedMotor: boolean;
 }
 
 enum storageKeys {

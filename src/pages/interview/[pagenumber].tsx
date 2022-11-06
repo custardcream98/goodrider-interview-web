@@ -191,7 +191,7 @@ const InterviewPage = ({
           currentPage={pagenumber}
         />
         <aside>
-          <Link href="/submitted">
+          <Link href="/submit">
             <a
               className={`dark fixed bottom-4 right-4 rounded-full py-2 px-3 ${
                 checkAllCompleted ? "" : "pointer-events-none opacity-30"
