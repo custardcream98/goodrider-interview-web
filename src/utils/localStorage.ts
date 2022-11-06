@@ -25,9 +25,12 @@ export const setStorage = (key: string, value: string) =>
   localStorage.setItem(key, value);
 
 export const getUserInfoLocalStorage = () => {
-  const userInfo: IUserInfo = JSON.parse(getStorage(storageKeys.userInfo));
-
-  return userInfo || null;
+  try {
+    const userInfo: IUserInfo = JSON.parse(getStorage(storageKeys.userInfo));
+    return userInfo || null;
+  } catch (e) {
+    return null;
+  }
 };
 export const setUserInfoLocalStorage = ({
   age,

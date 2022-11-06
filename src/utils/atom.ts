@@ -1,6 +1,7 @@
 import { atom, selector } from "recoil";
 import { checkSliderValid } from "./ahpValidation";
 import { PassNonPass } from "./ahpValidation/types";
+import { getUserInfoLocalStorage } from "./localStorage";
 
 export interface IScoreState {
   [pageIndex: string]: ISliderScoreState | ISelectiveScoreState;
@@ -31,7 +32,10 @@ export const checkAllCompletedSelector = selector({
   key: "checkAllCompletedSelector",
   get: ({ get }) => {
     const completedQuestions = get(completedQuestionsState);
-    return completedQuestions.every((e) => e);
+    return (
+      completedQuestions.every((e) => e) &&
+      Object.keys(getUserInfoLocalStorage() || {}).length === 3
+    );
   },
 });
 
@@ -68,7 +72,7 @@ export const checkPassSelector = selector<ICheckPassSelector>({
         criteriaCount,
         score[currentPageIndex] as ISliderScoreState
       );
-      console.log(questionIndex, instruction);
+
       return {
         isScorePassed: questionIndex === PassNonPass.Pass,
         nonPassedQuestionNum: questionIndex,
