@@ -7,6 +7,7 @@ type Props = {
   questionIndex: number;
   subCriteria1: string;
   subCriteria2: string;
+  pairsCount: number;
 };
 
 /**
@@ -17,13 +18,16 @@ const SliderQuestion = ({
   questionIndex,
   subCriteria1,
   subCriteria2,
+  pairsCount,
 }: Props) => {
   const { isScorePassed, nonPassedQuestionNum } =
     useRecoilValue(checkPassSelector);
 
   return (
     <section
-      className={`mt-4 mb-14 flex flex-col justify-center rounded-xl p-3 ${
+      className={`mt-4 flex flex-col justify-center rounded-xl p-3 ${
+        pairsCount === questionIndex ? "" : "mb-14"
+      } ${
         !isScorePassed &&
         (nonPassedQuestionNum === questionIndex || nonPassedQuestionNum === -1)
           ? "outline outline-4 outline-offset-0 outline-red-600"

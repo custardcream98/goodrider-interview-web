@@ -38,11 +38,11 @@ const SliderQuestionBundle = ({
         currentPageQuestions.pairs.map((sub, i) => {
           return (
             <SliderQuestion
-              key={`${pageIndex}-${i + 1}`}
               pageIndex={pageIndex}
               questionIndex={i + 1}
               subCriteria1={sub.criteria1}
               subCriteria2={sub.criteria2}
+              pairsCount={currentPageQuestions.pairs.length}
             />
           );
         })
