@@ -42,8 +42,6 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    console.log(userInfoState);
-
     const userInfoStateKeys = Object.keys(userInfoState);
 
     if (userInfoStateKeys.length !== 0) setUserInfoLocalStorage(userInfoState);

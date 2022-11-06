@@ -4,33 +4,47 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   completedQuestionsState,
   ISelectiveScoreState,
+  ISliderScoreState,
   scoreState,
 } from "~/utils/atom";
+import { checkSliderValid } from "~/utils/ahpValidation";
+import { PassNonPass } from "~/utils/ahpValidation/types";
 
-type Props = {
+interface IProps {
   maxSliders: number;
   maxVideoQuestions: number;
   currentPage: number;
-};
+  criteriaCounts: number[];
+}
 
 const outlineClasses = "outline outline-2 outline-darkmint outline-offset-2";
 const checkedClasses = "dark";
 const unCheckedClasses = "light";
 
-const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
+const Navbar = ({
+  maxSliders,
+  maxVideoQuestions,
+  currentPage,
+  criteriaCounts,
+}: IProps) => {
   const scoreStorage = useRecoilValue(scoreState);
   const [completedQuestionsStorage, setCompletedQuestionsStorage] =
     useRecoilState(completedQuestionsState);
 
   useEffect(() => {
-    let isCompleted = [];
+    let isCompleted: boolean[] = [];
 
     for (let i = 1; i <= maxSliders; i++) {
-      if (i in scoreStorage) {
-        isCompleted.push(
-          Object.keys(scoreStorage[i]).length - 1 ===
-            scoreStorage[i].maxQuestions
+      if (
+        i in scoreStorage &&
+        Object.keys(scoreStorage[i]).length - 1 === scoreStorage[i].maxQuestions
+      ) {
+        const { questionIndex } = checkSliderValid(
+          criteriaCounts[i - 1],
+          scoreStorage[i] as ISliderScoreState
         );
+
+        isCompleted.push(questionIndex === PassNonPass.Pass);
         continue;
       }
       isCompleted.push(false);

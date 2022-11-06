@@ -38,7 +38,7 @@ const Main = styled.main`
 
 interface IProps {
   sliderQuestions?: Questions;
-  descImages?: IDescriptionImages[];
+  descImages?: IDescriptionImages[][];
   videoQuestions?: IVideoQuestion;
   pagenumber: number;
   maxSliders: number;
@@ -124,7 +124,7 @@ const InterviewPage = ({
     if (pagenumber <= maxSliders) {
       setCurrentPageIndexStorage((_) => ({
         currentPageIndex: pagenumber,
-        criteriaCount: descImages.length,
+        criteriaCount: descImages[pagenumber - 1].length,
       }));
     }
   }, [pagenumber]);
@@ -135,6 +135,7 @@ const InterviewPage = ({
         maxSliders={maxSliders}
         maxVideoQuestions={maxVideoQuestions}
         currentPage={pagenumber}
+        criteriaCounts={descImages.map((imgArr) => imgArr.length)}
       />
       <main className="main pt-20 md:pt-16">
         <div className="grow p-4">
@@ -158,7 +159,7 @@ const InterviewPage = ({
               </section>
               <SliderQuestionBundle
                 currentPageQuestions={sliderQuestions}
-                descriptionImages={descImages}
+                descriptionImages={descImages[pagenumber - 1]}
                 pageIndex={pagenumber}
               />
             </>
@@ -229,10 +230,7 @@ export async function getStaticProps({ params }: Params) {
         pageNumber <= sliderQuestionsData.length
           ? sliderQuestionsData[pageNumber - 1]
           : null,
-      descImages:
-        pageNumber <= sliderQuestionsData.length
-          ? descImages[pageNumber - 1]
-          : null,
+      descImages,
       videoQuestions:
         pageNumber > sliderQuestionsData.length
           ? videoQuestionsData[pageNumber - (sliderQuestionsData.length + 1)]
