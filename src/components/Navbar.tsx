@@ -31,7 +31,9 @@ const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
           Object.keys(scoreStorage[i]).length - 1 ===
             scoreStorage[i].maxQuestions
         );
+        continue;
       }
+      isCompleted.push(false);
     }
 
     for (let i = maxSliders + 1; i <= maxSliders + maxVideoQuestions; i++) {
@@ -44,8 +46,10 @@ const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
             ) >
               scoreStorage[i].maxQuestions - scoreStorage[i].checkedIndex
           );
+          continue;
         }
       }
+      isCompleted.push(false);
     }
 
     setCompletedQuestionsStorage((_) => isCompleted);
