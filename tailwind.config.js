@@ -8,13 +8,13 @@ module.exports = {
     extend: {
       fontSize: {
         "title-mobile": [
-          "2rem",
+          "1.8rem",
           {
             lineHeight: "1.5",
           },
         ],
         title: [
-          "3rem",
+          "2.3rem",
           {
             lineHeight: "1.5",
           },

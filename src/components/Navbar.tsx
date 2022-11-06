@@ -57,7 +57,7 @@ const Navbar = ({ maxSliders, maxVideoQuestions, currentPage }: Props) => {
         <h1 className="mb-1 text-[1rem] font-[600] md:mb-0 md:text-[1.5rem]">
           착한 이륜차 운전자 평가 모델 관련 설문조사
         </h1>
-        <ol className="mt-0 flex justify-end">
+        <ol className="flex justify-end md:mt-1">
           {React.Children.toArray(
             new Array(maxSliders + maxVideoQuestions).fill(0).map((_, i) => (
               <li className="ml-3">
