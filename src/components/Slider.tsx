@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { getAnswer, setAnswer } from "~/utils/localStorage";
+import {
+  getAnswer,
+  resetSliderAnswersOfPage,
+  setAnswer,
+} from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 import { checkPassSelector, scoreState } from "~/utils/atom";
 import { PassNonPass } from "~/utils/ahpValidation/types";
+import Router from "next/router";
 
 interface Position {
   x: number;
@@ -40,10 +45,6 @@ const Wrapper = styled.div`
     height: 50px;
   }
 `;
-
-/**
- * 로직은 아직 덜짬
- */
 
 const InputRange = styled.input`
   position: relative;
@@ -113,15 +114,10 @@ function checkBatchimEnding(word: string) {
 }
 
 const getDescription = (
-  // isPassed: boolean,
   score: number,
   criteria1: string,
   criteria2: string
 ) => {
-  // if (!isPassed) {
-  //   return "일관적이지 않은 응답입니다. 다시 고민해주세요.";
-  // }
-
   const rounded = score < 1 ? Math.round(1 / score) : Math.round(score);
 
   if (rounded === 1) {
@@ -208,24 +204,17 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
 
       return newStoratge;
     });
-
-    // handle.current.style.setProperty(
-    //   "--ThumbColor",
-    //   colorInterpolated(parseFloat(event.target.value))
-    // );
   };
 
   const onMoveToWrongQuestion = () => {
     if (!isPassed) {
-      // window.scrollTo({
-      //   top: sliderRef.current.offsetTop,
-      //   // +
-      //   // window.innerHeight / 2 -
-      //   // sliderRef.current.offsetHeight,
-      //   behavior: "smooth",
-      // });
       sliderRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const onResetSliders = () => {
+    resetSliderAnswersOfPage(pageIndex);
+    Router.reload();
   };
 
   return (
@@ -249,7 +238,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
           <span className="inline-block p-1">같다</span>
           <span className="inline-block p-1">9점</span>
         </div>
-        <p className="text-center">
+        <p className="keep-all h-10 text-center md:h-fit">
           <span
             id="description"
             className={`bg-contain bg-left bg-no-repeat pl-6 ${
@@ -279,6 +268,16 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
         onClick={onMoveToWrongQuestion}
       >
         틀린 문제로 이동
+      </button>
+      <button
+        className={`dark fixed bottom-[60px] right-4 z-10 rounded-full py-2 px-3 ${
+          isPassed || nonPassedQuestionNum !== PassNonPass.NonPass
+            ? "hidden"
+            : ""
+        }`}
+        onClick={onResetSliders}
+      >
+        슬라이더 리셋
       </button>
     </>
   );

@@ -74,6 +74,14 @@ export const setAnswer = (
 
   setStorage(storageKeys.answers, JSON.stringify(currentAnswers));
 };
+export const resetSliderAnswersOfPage = (pageIndex: number) => {
+  let currentAnswers: ILocalAnswers =
+    JSON.parse(getStorage(storageKeys.answers)) ?? {};
+
+  delete currentAnswers[pageIndex];
+
+  setStorage(storageKeys.answers, JSON.stringify(currentAnswers));
+};
 
 interface ICheckerAnswerProps {
   questionIndex: string;
