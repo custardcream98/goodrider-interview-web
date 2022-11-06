@@ -9,14 +9,12 @@ import {
 } from "./types";
 
 const CR_PASS = 0.1;
-const RECURSIVE_CEIL = 9;
+const RECURSIVE_CEIL = 10;
 
 /**
  * 새로운 행렬을 가지고 각 Case에 대해 CR을 확인하여
  *
  * CR < 0.1이 되는 경우 확인 후 리턴하는 함수
- * @param matrixComparison
- * @returns
  */
 function getTargetMatrixComparison(matrixComparison: number[][]): {
   newMatrixComparison: number[][];
@@ -61,8 +59,6 @@ function getTargetMatrixComparison(matrixComparison: number[][]): {
 
   // arrCr에서 최소 CR의 인덱스
   const indexOfMinCr = arrCr.indexOf(Math.min(...arrCr));
-  // console.log(changedRows[indexOfMinCr].map((e) => e.toFixed(2)));
-  // console.log(arrCr[indexOfMinCr]);
 
   matrixComparison[indexOfMaxWeight] = changedRows[indexOfMinCr];
 
@@ -92,10 +88,6 @@ function getTargetMatrixComparison(matrixComparison: number[][]): {
  * CR 최솟값의 인덱스와 가중치 최댓값의 인덱스를 활용해
  *
  * 조정이 필요한 문항 번호와 지시사항을 리턴하는 함수
- * @param indexOfMinCr
- * @param indexOfMaxWeight
- * @param elementCount
- * @returns
  */
 function getQuestionIndexAndInstruction(
   indexOfMinCr: number,
@@ -105,7 +97,6 @@ function getQuestionIndexAndInstruction(
   let questionIndex = Math.floor(indexOfMinCr / 2) + 1;
 
   if (questionIndex > indexOfMaxWeight) {
-    // 입력값 부분, 엑셀 실습에서 초록칸
     questionIndex -= indexOfMaxWeight;
 
     for (let i = 1; i < indexOfMaxWeight + 1; i++)
@@ -116,26 +107,21 @@ function getQuestionIndexAndInstruction(
       instruction:
         indexOfMinCr % 2 === 1 ? Instruction.Left : Instruction.Right,
     };
-  } else {
-    // 할당값 부분
-    let k = indexOfMaxWeight - questionIndex + 1;
-
-    for (let i = 1; i < questionIndex; i++) k += elementCount - i;
-
-    questionIndex = k;
-    return {
-      questionIndex,
-      instruction:
-        indexOfMinCr % 2 === 1 ? Instruction.Right : Instruction.Left,
-    };
   }
+
+  let k = indexOfMaxWeight - questionIndex + 1;
+
+  for (let i = 1; i < questionIndex; i++) k += elementCount - i;
+
+  questionIndex = k;
+  return {
+    questionIndex,
+    instruction: indexOfMinCr % 2 === 1 ? Instruction.Right : Instruction.Left,
+  };
 }
 
 /**
  * 현재 점수 state를 입력받아 comparison matrix를 생성하는 함수
- * @param criteriaCount
- * @param sliderScore
- * @returns
  */
 function getMatrixComparison(
   criteriaCount: number,
@@ -165,9 +151,6 @@ function getMatrixComparison(
  * 조정이 필요한 경우 조정이 필요한 questionIndex와 instruction을 리턴하는 함수
  *
  * 조정이 필요없는 경우(조정 없이 통과) questionIndex = "NonPass"로 리턴합니다.
- * @param criteriaCount
- * @param sliderScore
- * @returns
  */
 export function checkSliderValid(
   criteriaCount: number,
@@ -175,26 +158,21 @@ export function checkSliderValid(
 ): IQuestionToInstruct {
   const matrixComparison = getMatrixComparison(criteriaCount, sliderScore);
 
-  return findDirection(matrixComparison, criteriaCount, 0, []);
+  return findDirection(matrixComparison, criteriaCount, 0);
 }
 
 /**
  * 조정이 필요한 questionIndex와 instruction을 리턴하는 함수
  *
  * 재귀적으로 여러 경우의 수를 검사하며, 19번까지 검사합니다.
- * @param matrixComparison
- * @param criteriaCount
- * @param recursiveCount
- * @returns
  */
 function findDirection(
   matrixComparison: number[][],
   criteriaCount: number,
   recursiveCount: number,
-  pastResults: IQuestionToInstruct[]
+  firstResult?: IQuestionToInstruct
 ): IQuestionToInstruct {
   if (recursiveCount === RECURSIVE_CEIL) {
-    console.log(pastResults);
     return {
       questionIndex: PassNonPass.NonPass,
       instruction: Instruction.NotAbleToFind,
@@ -204,13 +182,13 @@ function findDirection(
   const { newMatrixComparison, indexOfMinCr, indexOfMaxWeight, flag } =
     getTargetMatrixComparison(matrixComparison);
 
-  pastResults.push(
-    getQuestionIndexAndInstruction(
+  if (recursiveCount === 0) {
+    firstResult = getQuestionIndexAndInstruction(
       indexOfMinCr,
       indexOfMaxWeight,
       criteriaCount
-    )
-  );
+    );
+  }
 
   if (flag === CrPassCheck.Passed) {
     return {
@@ -220,20 +198,12 @@ function findDirection(
   }
 
   if (flag === CrPassCheck.PassedOnChange) {
-    console.log(pastResults);
-
-    return pastResults[0];
-    // return getQuestionIndexAndInstruction(
-    //   indexOfMinCr,
-    //   indexOfMaxWeight,
-    //   criteriaCount
-    // );
-  } else {
-    return findDirection(
-      newMatrixComparison,
-      criteriaCount,
-      ++recursiveCount,
-      pastResults
-    );
+    return firstResult;
   }
+  return findDirection(
+    newMatrixComparison,
+    criteriaCount,
+    ++recursiveCount,
+    firstResult
+  );
 }

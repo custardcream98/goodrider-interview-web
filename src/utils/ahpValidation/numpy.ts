@@ -10,10 +10,6 @@ export function npTranspose(arr: number[][]) {
  * 단위행렬 생성 함수
  *
  * `np.eye()`
- * @param N
- * @param M
- * @param k
- * @returns 단위행렬
  */
 export function npEye(N: number, M: number, k: number): number[][] {
   let t = [];
@@ -42,9 +38,6 @@ export function npAverageOfArr(arr: number[]) {
  * 행렬곱 계산
  *
  * `np.dot()`
- * @param matrix1
- * @param matrix2
- * @returns
  */
 export function npMatrixDot(matrix1: number[][], matrix2: number[][]) {
   return Array(matrix1.length)
