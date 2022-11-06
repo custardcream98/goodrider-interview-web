@@ -2,6 +2,11 @@ import React from "react";
 import { IDescriptionImages, Questions } from "~/utils/question_data";
 import SliderQuestion from "~/components/SliderQuestion";
 import DescriptionImage from "./DescriptionImage";
+import { useRecoilValue } from "recoil";
+import { checkPassSelector } from "~/utils/atom";
+import { PassNonPass } from "~/utils/ahpValidation/types";
+import { resetSliderAnswersOfPage } from "~/utils/localStorage";
+import Router from "next/router";
 
 interface IProps {
   currentPageQuestions: Questions;
@@ -14,6 +19,13 @@ const SliderQuestionBundle = ({
   descriptionImages,
   pageIndex,
 }: IProps) => {
+  const { nonPassedQuestionNum } = useRecoilValue(checkPassSelector);
+
+  const onResetSliders = () => {
+    resetSliderAnswersOfPage(pageIndex);
+    Router.reload();
+  };
+
   return (
     <section className="question-bundle">
       <h2 className="sr-only">설문 문항</h2>
@@ -47,6 +59,14 @@ const SliderQuestionBundle = ({
           );
         })
       )}
+      <button
+        className={`dark fixed bottom-[60px] right-4 z-10 rounded-full py-2 px-3 ${
+          nonPassedQuestionNum === PassNonPass.NonPass ? "" : "hidden"
+        }`}
+        onClick={onResetSliders}
+      >
+        슬라이더 리셋
+      </button>
     </section>
   );
 };

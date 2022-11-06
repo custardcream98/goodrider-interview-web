@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  getAnswer,
-  resetSliderAnswersOfPage,
-  setAnswer,
-} from "~/utils/localStorage";
+import { getAnswer, setAnswer } from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 import { checkPassSelector, scoreState } from "~/utils/atom";
 import { PassNonPass } from "~/utils/ahpValidation/types";
-import Router from "next/router";
 
 interface Position {
   x: number;
@@ -212,11 +207,6 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
     }
   };
 
-  const onResetSliders = () => {
-    resetSliderAnswersOfPage(pageIndex);
-    Router.reload();
-  };
-
   return (
     <>
       <div className="m-auto w-95% md:w-[600px]">
@@ -268,16 +258,6 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
         onClick={onMoveToWrongQuestion}
       >
         틀린 문제로 이동
-      </button>
-      <button
-        className={`dark fixed bottom-[60px] right-4 z-10 rounded-full py-2 px-3 ${
-          isPassed || nonPassedQuestionNum !== PassNonPass.NonPass
-            ? "hidden"
-            : ""
-        }`}
-        onClick={onResetSliders}
-      >
-        슬라이더 리셋
       </button>
     </>
   );
