@@ -7,7 +7,7 @@ type Props = {
 
 const EmbededContent = ({ imgTitle, src }: Props) => (
   <div
-    className={`relative h-[230px] w-[330px] overflow-hidden rounded-xl md:h-44 md:w-64`}
+    className={`relative h-[200px] w-[280px] overflow-hidden rounded-xl md:h-44 md:w-64`}
   >
     {/\.mp4$/.test(src) ? (
       <video
