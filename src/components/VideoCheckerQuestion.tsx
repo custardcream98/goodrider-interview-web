@@ -103,7 +103,7 @@ const VideoCheckerQuestion = ({
         </label>
       </div>
       <select
-        className="w-full rounded-lg bg-[#00000022] p-2 disabled:opacity-30"
+        className="select w-full"
         id={questionId("select")}
         ref={selectEleRef}
         disabled={

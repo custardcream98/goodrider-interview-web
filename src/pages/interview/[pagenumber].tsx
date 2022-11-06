@@ -17,6 +17,7 @@ import storageKeys, {
   getAnswer,
   getCheckerAnswer,
   getStorage,
+  getUserInfoLocalStorage,
   setStorage,
 } from "~/utils/localStorage";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -26,16 +27,13 @@ import {
   IScoreState,
   scoreState,
 } from "~/utils/atom";
+import { useRouter } from "next/router";
 
 const Main = styled.main`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   padding-top: 64px;
-`;
-
-const Wrapper = styled.div`
-  flex-grow: 1;
 `;
 
 interface IProps {
@@ -67,6 +65,7 @@ const InterviewPage = ({
   const setScoreStorage = useSetRecoilState(scoreState);
   const setCurrentPageIndexStorage = useSetRecoilState(currentPageIndexState);
   const checkAllCompleted = useRecoilValue(checkAllCompletedSelector);
+  const router = useRouter();
 
   useEffect(() => {
     scrollToTop();
@@ -116,6 +115,12 @@ const InterviewPage = ({
   }, []);
 
   useEffect(() => {
+    const userInfo = getUserInfoLocalStorage();
+    if ((userInfo && Object.keys(userInfo).length !== 3) || !userInfo) {
+      router.push("/");
+      return;
+    }
+
     if (pagenumber <= maxSliders) {
       setCurrentPageIndexStorage((_) => ({
         currentPageIndex: pagenumber,
@@ -131,8 +136,8 @@ const InterviewPage = ({
         maxVideoQuestions={maxVideoQuestions}
         currentPage={pagenumber}
       />
-      <Main>
-        <Wrapper>
+      <main className="main pt-20 md:pt-16">
+        <div className="grow p-4">
           {pagenumber <= maxSliders ? (
             <>
               <section className="quote">
@@ -180,7 +185,7 @@ const InterviewPage = ({
               />
             </>
           )}
-        </Wrapper>
+        </div>
         <PageBtn
           maxPage={maxSliders + maxVideoQuestions}
           currentPage={pagenumber}
@@ -196,7 +201,7 @@ const InterviewPage = ({
             </a>
           </Link>
         </aside>
-      </Main>
+      </main>
     </Layout>
   );
 };

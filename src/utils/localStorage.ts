@@ -11,15 +11,37 @@ export interface ILocalSelectiveAnswer {
   values: number[];
 }
 
-const storageKeys = {
-  isEnded: "isEnded",
-  isOnGoing: "isOnGoing",
-  answers: "answers",
-};
+export interface IUserInfo {
+  age: number;
+  gender: "male" | "female";
+  experiencedMotor: boolean;
+}
+
+enum storageKeys {
+  isEnded = "isEnded",
+  isOnGoing = "isOnGoing",
+  answers = "answers",
+  userInfo = "userInfo",
+}
 
 export const getStorage = (key: string) => localStorage.getItem(key);
-export const setStorage = (key: string, value) =>
+export const setStorage = (key: string, value: string) =>
   localStorage.setItem(key, value);
+
+export const getUserInfoLocalStorage = () => {
+  const userInfo: IUserInfo = JSON.parse(getStorage(storageKeys.userInfo));
+
+  return userInfo || null;
+};
+export const setUserInfoLocalStorage = ({
+  age,
+  gender,
+  experiencedMotor,
+}: Partial<IUserInfo>) =>
+  setStorage(
+    storageKeys.userInfo,
+    JSON.stringify({ age, gender, experiencedMotor })
+  );
 
 export const getAllAnswers = () => {
   const currentAnswers: ILocalAnswers = JSON.parse(
@@ -51,7 +73,7 @@ export const setAnswer = (
   if (!(pageIndex in currentAnswers)) currentAnswers[pageIndex] = {};
   currentAnswers[pageIndex][questionIndex] = value;
 
-  localStorage.setItem(storageKeys.answers, JSON.stringify(currentAnswers));
+  setStorage(storageKeys.answers, JSON.stringify(currentAnswers));
 };
 
 interface ICheckerAnswerProps {
@@ -88,6 +110,6 @@ export const removeLocalAnswer = () =>
 export const removeLocalisOnGoing = () =>
   localStorage.removeItem(storageKeys.answers);
 export const setIsEndedLocalStorage = () =>
-  setStorage(storageKeys.isEnded, true);
+  setStorage(storageKeys.isEnded, "true");
 
 export default storageKeys;

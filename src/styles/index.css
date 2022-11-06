@@ -22,12 +22,16 @@
     @apply bg-mint text-darkmint;
   }
 
+  .main {
+    @apply flex min-h-screen flex-col;
+  }
+
   .question-bundle {
-    @apply mx-auto my-4 w-95% rounded-xl bg-mint p-4 md:w-920;
+    @apply mx-auto my-4 rounded-xl bg-mint p-4 md:w-920;
   }
 
   .quote {
-    @apply mx-auto my-4 w-95% rounded-xl border-l-4 border-darkmint bg-mint p-4 text-[1.05rem] md:w-920;
+    @apply mx-auto my-4 rounded-xl border-l-4 border-darkmint bg-mint p-4 text-[1.05rem] md:w-920;
   }
 
   .video-number {
@@ -36,5 +40,9 @@
 
   .page-btn {
     @apply dark inline-block rounded-md py-2 px-3 font-semibold shadow md:text-xl;
+  }
+
+  .select {
+    @apply rounded-lg bg-[#00000022] p-2 disabled:opacity-30;
   }
 }
