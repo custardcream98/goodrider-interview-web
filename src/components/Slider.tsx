@@ -201,10 +201,11 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
     });
   };
 
-  const onMoveToWrongQuestion = () => {
-    if (!isPassed) {
-      sliderRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+  const scrollToWrongQuestion = () => {
+    sliderRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   };
 
   return (
@@ -255,7 +256,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
             ? "hidden"
             : ""
         }`}
-        onClick={onMoveToWrongQuestion}
+        onClick={scrollToWrongQuestion}
       >
         틀린 문제로 이동
       </button>
