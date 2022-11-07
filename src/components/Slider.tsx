@@ -1,95 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { getAnswer, setAnswer } from "~/utils/localStorage";
 import { calScoreToVal, calValToScore } from "~/utils/calSlider";
 import { checkPassSelector, scoreState } from "~/utils/atom";
 import { PassNonPass } from "~/utils/ahpValidation/types";
-
-interface Position {
-  x: number;
-}
-
-const Indicator = styled.div<Position>`
-  position: absolute;
-  top: 20px;
-  left: ${(props) => props.x.toString() + "px"};
-  width: 4px;
-  height: 30px;
-  background-color: #cdcdcd;
-  border-radius: 2px;
-  z-index: 10;
-  transform: translateX(-50%);
-
-  @media (max-width: 768px) {
-    top: 10px;
-  }
-`;
-
-const Wrapper = styled.div`
-  position: relative;
-  height: 70px;
-  width: 100%;
-  margin-bottom: 7px;
-  background-color: #e5eeec;
-  border-radius: 100px;
-
-  z-index: 0;
-
-  @media (max-width: 768px) {
-    height: 50px;
-  }
-`;
-
-const InputRange = styled.input`
-  position: relative;
-  -webkit-appearance: none;
-  appearance: none;
-
-  height: 100%;
-  width: 100%;
-  margin: auto;
-  padding: 5px;
-  background-color: transparent;
-
-  z-index: 20;
-  outline: none;
-
-  --ThumbColor: rgb(151, 151, 151);
-
-  @media (max-width: 768px) {
-    padding: 3px;
-  }
-
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 60px;
-    height: 60px;
-    background-color: var(--ThumbColor);
-    border-radius: 100%;
-    cursor: pointer;
-    @media (max-width: 768px) {
-      width: 44px;
-      height: 44px;
-    }
-  }
-  &::-moz-range-thumb {
-    width: 60px;
-    height: 60px;
-    background-color: var(--ThumbColor);
-    border-radius: 100%;
-    cursor: pointer;
-    @media (max-width: 768px) {
-      width: 44px;
-      height: 44px;
-    }
-  }
-
-  &:hover {
-    opacity: 1;
-  }
-`;
+import InputRangeWithIndicator from "./InputRangeWithIndicator";
 
 /**
  * 한글 받침 확인용 함수
@@ -180,8 +95,8 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
     setSliderWidth(sliderRef.current.offsetWidth);
   }, []);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseFloat(event.target.value);
+  const onSliderMoveCallback = useCallback(() => {
+    const val = parseFloat(sliderRef.current.value);
 
     const score = calValToScore(val);
 
@@ -199,7 +114,16 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
 
       return newStoratge;
     });
-  };
+  }, [
+    sliderRef,
+    setAnswer,
+    pageIndex,
+    questionIndex,
+    setDescription,
+    criteria1,
+    criteria2,
+    setScoreStorage,
+  ]);
 
   const scrollToWrongQuestion = () => {
     sliderRef.current.scrollIntoView({
@@ -211,19 +135,11 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
   return (
     <>
       <div className="m-auto w-95% md:w-[600px]">
-        <Wrapper>
-          {React.Children.toArray(
-            new Array(9)
-              .fill(0)
-              .map((_, i) => <Indicator x={(sliderWidth * (i + 1)) / 10} />)
-          )}
-          <InputRange
-            ref={sliderRef}
-            type="range"
-            step="0.1"
-            onChange={onChange}
-          />
-        </Wrapper>
+        <InputRangeWithIndicator
+          sliderRef={sliderRef}
+          sliderWidth={sliderWidth}
+          onChange={onSliderMoveCallback}
+        />
         <div className="mb-2 flex w-full justify-between rounded-full bg-[#e1fbf5] px-2 text-sm font-semibold text-darkmint md:text-base">
           <span className="inline-block p-1">9점</span>
           <span className="inline-block p-1">같다</span>

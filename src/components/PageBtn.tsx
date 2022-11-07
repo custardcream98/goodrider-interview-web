@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { memo } from "react";
 
 interface IProps {
   maxPage: number;
@@ -28,4 +29,4 @@ const PageBtn = ({ maxPage, currentPage }: IProps) => {
   );
 };
 
-export default PageBtn;
+export default memo(PageBtn);

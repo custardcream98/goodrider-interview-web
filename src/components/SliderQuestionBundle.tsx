@@ -36,13 +36,7 @@ const SliderQuestionBundle = ({
       >
         {React.Children.toArray(
           descriptionImages.map((descriptionImage) => {
-            return (
-              <DescriptionImage
-                title={descriptionImage.title}
-                imgSrc={descriptionImage.imgSrc}
-                description={descriptionImage.description}
-              />
-            );
+            return <DescriptionImage data={descriptionImage} />;
           })
         )}
       </div>
