@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
-import styled from "styled-components";
 import Layout from "~/components/Layout";
 import SliderQuestionBundle from "~/components/SliderQuestionBundle";
 import PageBtn from "~/components/PageBtn";
@@ -178,22 +177,22 @@ const InterviewPage = ({
               />
             </>
           )}
+          <aside>
+            <Link href="/submit">
+              <a
+                className={`dark fixed bottom-4 right-4 rounded-full py-2 px-3 md:bottom-6 md:right-6 md:px-5 md:py-4 md:text-2xl ${
+                  checkAllCompleted ? "" : "pointer-events-none opacity-30"
+                }`}
+              >
+                제출하기
+              </a>
+            </Link>
+          </aside>
         </div>
         <PageBtn
           maxPage={maxSliders + maxVideoQuestions}
           currentPage={pagenumber}
         />
-        <aside>
-          <Link href="/submit">
-            <a
-              className={`dark fixed bottom-4 right-4 rounded-full py-2 px-3 ${
-                checkAllCompleted ? "" : "pointer-events-none opacity-30"
-              }`}
-            >
-              제출하기
-            </a>
-          </Link>
-        </aside>
       </main>
     </Layout>
   );
