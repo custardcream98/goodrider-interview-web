@@ -41,6 +41,10 @@ export const setUserInfoLocalStorage = ({
     storageKeys.userInfo,
     JSON.stringify({ age, gender, experiencedMotor })
   );
+export const checkUserInfoValid = () => {
+  const userInfo = getUserInfoLocalStorage();
+  return userInfo && Object.keys(userInfo).length === 3;
+}; // TODO: 유저인포 벨리드 확인
 
 export const getAllAnswers = () => {
   const currentAnswers: ILocalAnswers = JSON.parse(

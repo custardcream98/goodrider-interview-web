@@ -14,10 +14,10 @@ import {
 import { getVideoQuestions, IVideoQuestion } from "~/utils/video_question_data";
 import VideoCheckerQuestionBundle from "~/components/VideoCheckerQuestionBundle";
 import storageKeys, {
+  checkUserInfoValid,
   getAnswer,
   getCheckerAnswer,
   getStorage,
-  getUserInfoLocalStorage,
   setStorage,
 } from "~/utils/localStorage";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -28,13 +28,6 @@ import {
   scoreState,
 } from "~/utils/atom";
 import { useRouter } from "next/router";
-
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-top: 64px;
-`;
 
 interface IProps {
   sliderQuestions?: Questions;
@@ -115,8 +108,7 @@ const InterviewPage = ({
   }, []);
 
   useEffect(() => {
-    const userInfo = getUserInfoLocalStorage();
-    if ((userInfo && Object.keys(userInfo).length !== 3) || !userInfo) {
+    if (!checkUserInfoValid()) {
       router.push("/");
       return;
     }

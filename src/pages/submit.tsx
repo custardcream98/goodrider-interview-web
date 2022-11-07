@@ -6,6 +6,7 @@ import LoadingSpinner from "~/components/LoadingSpinner";
 import { checkAllCompletedSelector } from "~/utils/atom";
 import { postData } from "~/utils/fetch";
 import {
+  checkUserInfoValid,
   getAllAnswers,
   getUserInfoLocalStorage,
   ILocalSelectiveAnswer,
@@ -29,6 +30,11 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
   const emailInputEleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!checkUserInfoValid()) {
+      router.push("/");
+      return;
+    }
+
     if (!checkAllCompleted) {
       router.push("interview/1");
       return;
