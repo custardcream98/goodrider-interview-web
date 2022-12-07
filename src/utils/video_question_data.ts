@@ -1,12 +1,13 @@
 import fs from "fs";
+import path from "path";
 
 export interface IVideoQuestion {
   question: string;
   selectives: string[];
 }
 
-const ROOT_PATH = "./public/videos/";
-const makePath = (name: string) => ROOT_PATH + name;
+const ROOT_PATH = path.join("public", "videos");
+const makePath = (name: string) => path.join(ROOT_PATH, name);
 
 const questionPath = fs
   .readdirSync(ROOT_PATH)
@@ -14,8 +15,9 @@ const questionPath = fs
 const getVideoPath = (question: string) => {
   const videos = fs
     .readdirSync(makePath(question))
-    .filter((dir) => /\.mp4$/.test(dir));
-  return videos.map((video) => "../videos/" + question + "/" + video);
+    .filter((dir) => /\.mp4$/.test(dir))
+    .sort();
+  return videos.map((video) => path.join("..", "videos", question, video));
 };
 
 export const getVideoQuestions = () => {
