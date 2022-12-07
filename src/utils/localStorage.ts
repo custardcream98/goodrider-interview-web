@@ -44,7 +44,7 @@ export const setUserInfoLocalStorage = ({
 export const checkUserInfoValid = () => {
   const userInfo = getUserInfoLocalStorage();
   return userInfo && Object.keys(userInfo).length === 3;
-}; // TODO: 유저인포 벨리드 확인
+};
 
 export const getAllAnswers = () => {
   const currentAnswers: ILocalAnswers = JSON.parse(
@@ -119,7 +119,9 @@ export const getCheckerAnswer = (
 export const removeLocalAnswer = () =>
   localStorage.removeItem(storageKeys.answers);
 export const removeLocalisOnGoing = () =>
-  localStorage.removeItem(storageKeys.answers);
+  localStorage.removeItem(storageKeys.isOnGoing);
+export const removeLocalUserInfo = () =>
+  localStorage.removeItem(storageKeys.userInfo);
 export const setIsEndedLocalStorage = () =>
   setStorage(storageKeys.isEnded, "true");
 

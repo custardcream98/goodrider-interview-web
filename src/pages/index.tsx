@@ -4,9 +4,13 @@ import Layout from "~/components/Layout";
 import storageKeys, {
   getStorage,
   getUserInfoLocalStorage,
+  removeLocalAnswer,
+  removeLocalisOnGoing,
+  removeLocalUserInfo,
   setUserInfoLocalStorage,
 } from "~/utils/localStorage";
 import { IUserInfo } from "~/interfaces/userInfo";
+import Router from "next/router";
 
 interface HTMLCustomInputSelectElement extends HTMLInputElement {
   name: keyof IUserInfo;
@@ -47,18 +51,26 @@ const LandingPage = () => {
     if (userInfoStateKeys.length !== 0) setUserInfoLocalStorage(userInfoState);
 
     if (userInfoStateKeys.length === 3) {
-      setIsUserInfoReady((_) => true);
+      setIsUserInfoReady(true);
     }
   }, [userInfoState]);
 
   useEffect(() => {
-    setIsEnded((_) => JSON.parse(getStorage(storageKeys.isEnded)));
-    setIsOnGoing((_) => JSON.parse(getStorage(storageKeys.isOnGoing)));
+    setIsEnded(JSON.parse(getStorage(storageKeys.isEnded)));
+    setIsOnGoing(JSON.parse(getStorage(storageKeys.isOnGoing)));
 
     const userInfo = getUserInfoLocalStorage();
 
-    setUserInfoState((_) => userInfo || {});
+    setUserInfoState(userInfo || {});
   }, []);
+
+  const handleReset = () => {
+    removeLocalAnswer();
+    removeLocalisOnGoing();
+    removeLocalUserInfo();
+
+    Router.reload();
+  };
 
   return (
     <Layout>
@@ -173,9 +185,18 @@ const LandingPage = () => {
                 </fieldset>
               </form>
             </div>
+            {(isOnGoing || Object.keys(userInfoState).length !== 0) && (
+              <button
+                className="page-btn mt-4 w-[200px]"
+                type="button"
+                onClick={handleReset}
+              >
+                응답 초기화하기
+              </button>
+            )}
             <Link href="/interview/1">
               <a
-                className={`page-btn mt-4 ml-auto block w-[200px] ${
+                className={`page-btn float-right mt-4 w-[200px] ${
                   isUserInfoReady ? "" : "pointer-events-none opacity-30"
                 }`}
               >
@@ -184,6 +205,14 @@ const LandingPage = () => {
               </a>
             </Link>
           </section>
+          {/* <button
+            className={`dark fixed bottom-4 right-4 rounded-full py-2 px-3 md:bottom-6 md:right-6 md:px-5 md:py-4 md:text-2xl ${
+              !isOnGoing ? "hidden" : ""
+            }`}
+            onClick={handleReset}
+          >
+            응답 초기화하기
+          </button> */}
         </main>
       )}
     </Layout>
