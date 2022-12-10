@@ -86,6 +86,7 @@ const Navbar = ({
                         ? checkedClasses
                         : unCheckedClasses
                     } ${i + 1 === currentPage ? outlineClasses : ""}`}
+                    data-testid="page-link"
                   >
                     {i + 1}
                   </a>
