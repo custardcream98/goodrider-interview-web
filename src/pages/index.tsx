@@ -205,14 +205,6 @@ const LandingPage = () => {
               </a>
             </Link>
           </section>
-          {/* <button
-            className={`dark fixed bottom-4 right-4 rounded-full py-2 px-3 md:bottom-6 md:right-6 md:px-5 md:py-4 md:text-2xl ${
-              !isOnGoing ? "hidden" : ""
-            }`}
-            onClick={handleReset}
-          >
-            응답 초기화하기
-          </button> */}
         </main>
       )}
     </Layout>
