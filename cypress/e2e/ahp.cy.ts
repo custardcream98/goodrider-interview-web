@@ -1,13 +1,6 @@
 import { calScoreToVal } from "~/utils/calSlider";
 import ahpDummyJson from "../fixtures/ahpDummy.json";
 
-const delay = (time: number) =>
-  new Promise((resolve, reject) =>
-    setTimeout(() => {
-      resolve("");
-    }, time)
-  );
-
 describe("AHP 테스트", () => {
   it("렌더링 확인", () => {
     cy.visit("/");
@@ -24,7 +17,7 @@ describe("AHP 테스트", () => {
     );
   });
 
-  it("AHP 입력 및 확인", () => {
+  it("응답 입력 및 동작 확인", () => {
     cy.visit("/");
 
     // 나이대 체크
@@ -52,57 +45,65 @@ describe("AHP 테스트", () => {
       "value"
     )?.set;
 
+    const inputEventDispatcher = (
+      element: EventTarget,
+      val: number | string
+    ) => {
+      nativeInputValueSetter?.call(element, val);
+      element.dispatchEvent(new Event("input", { bubbles: true }));
+    };
+
+    const setInputValByPage = (pageIndex: number) =>
+      cy
+        .get<HTMLInputElement[]>("input[type='range']")
+        .each((element, questionIndex) => {
+          const calculatedVal = calScoreToVal(
+            ahpDummyJson[pageIndex][questionIndex]
+          );
+
+          inputEventDispatcher(element[0], calculatedVal);
+        })
+        .then((_) => {
+          cy.wait(20);
+          cy.contains<HTMLButtonElement>("틀린 문제로 이동").should(
+            "be.hidden"
+          );
+          cy.get("a.outline").should("have.class", "dark");
+        });
+
     cy.get<HTMLAnchorElement[]>("[data-testid='page-link']").each(
       (pageLink, i) => {
-        if (i > Object.keys(ahpDummyJson).length - 1) {
-          return;
-        }
-
-        if (i !== 0) {
-          cy.visit(pageLink.attr("href"), { timeout: 30000 }).then(
-            async (_) => {
-              await delay(1000);
-              cy.get<HTMLInputElement[]>("input[type='range']")
-                .each((element, index) => {
-                  cy.log(JSON.stringify(ahpDummyJson[i.toString()][index]));
-
-                  const calculatedVal = calScoreToVal(ahpDummyJson[i][index]);
-
-                  nativeInputValueSetter?.call(element[0], calculatedVal);
-                  element[0].dispatchEvent(
-                    new Event("input", { bubbles: true })
-                  );
-                })
-                .then(async (_) => {
-                  await delay(300);
-                  cy.contains<HTMLButtonElement>("틀린 문제로 이동").should(
-                    "be.hidden"
-                  );
-                  cy.get("a.outline").should("have.class", "dark");
-                });
-            }
-          );
-        } else {
-          cy.get<HTMLInputElement[]>("input[type='range']")
-            .each((element, index) => {
-              cy.log(JSON.stringify(ahpDummyJson[i.toString()][index]));
-
-              const calculatedVal = calScoreToVal(ahpDummyJson[i][index]);
-              nativeInputValueSetter?.call(element[0], calculatedVal);
-              element[0].dispatchEvent(new Event("input", { bubbles: true }));
-            })
-            .then((_) => {
-              cy.contains<HTMLButtonElement>("틀린 문제로 이동").should(
-                "be.hidden"
-              );
-              expect(pageLink.hasClass("dark")).to.be.true;
+        cy.log(JSON.stringify(ahpDummyJson[i][1]));
+        if (typeof ahpDummyJson[i][1] === "object") {
+          cy.visit(pageLink.attr("href"), { timeout: 30000 }).then((_) => {
+            cy.wait(500);
+            const radioCheckIndex = ahpDummyJson[i][0] as number;
+            cy.get("input[type='radio']").each((element, index) => {
+              if (index === radioCheckIndex) {
+                cy.wrap(element).check();
+              }
             });
+            cy.get("select")
+              .each((element, index) => {
+                if (index >= radioCheckIndex) {
+                  cy.wrap(element).select(
+                    ahpDummyJson[i][1][index - radioCheckIndex]
+                  );
+                }
+              })
+              .then((_) => {
+                cy.get("a.outline").should("have.class", "dark");
+              });
+          });
+        } else if (i !== 0) {
+          cy.visit(pageLink.attr("href"), { timeout: 30000 }).then((_) => {
+            cy.wait(500);
+            setInputValByPage(i);
+          });
+        } else {
+          setInputValByPage(i);
         }
       }
     );
-
-    /**
-     * 설문지
-     */
   });
 });
