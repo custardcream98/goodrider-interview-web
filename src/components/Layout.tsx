@@ -1,12 +1,10 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import Head from "next/head";
 
-type Props = {
-  children: string | JSX.Element | JSX.Element[] | null;
-  pagenumber?: number;
-};
-
-const Layout = ({ children, pagenumber }: Props) => {
+const Layout = ({
+  children,
+  pagenumber,
+}: PropsWithChildren<{ pagenumber?: number }>) => {
   return (
     <>
       <Head>

@@ -196,7 +196,7 @@ const LandingPage = () => {
             )}
             <Link href="/interview/1">
               <a
-                className={`page-btn float-right mt-4 w-[200px] ${
+                className={`page-btn float-right my-4 w-[200px] ${
                   isUserInfoReady ? "" : "pointer-events-none opacity-30"
                 }`}
               >

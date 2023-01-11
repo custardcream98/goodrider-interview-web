@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { IVideoQuestion } from "~/utils/video_question_data";
 import VideoCheckerQuestion from "~/components/VideoCheckerQuestion";
 import { useRecoilValue } from "recoil";
@@ -36,16 +36,15 @@ const VideoCheckerQuestionBundle = ({ videoQuestions, pageIndex }: IProps) => {
           videoQuestions.selectives.length === 4 ? "mx-auto md:w-[600px]" : ""
         }`}
       >
-        {React.Children.toArray(
-          videoQuestions.selectives.map((videoPath, i) => (
-            <VideoCheckerQuestion
-              questionIndex={i + 1}
-              pageIndex={pageIndex}
-              videoPath={videoPath}
-              criteria={videoQuestions.question}
-            />
-          ))
-        )}
+        {videoQuestions.selectives.map((videoPath, i) => (
+          <VideoCheckerQuestion
+            key={i}
+            questionIndex={i + 1}
+            pageIndex={pageIndex}
+            videoPath={videoPath}
+            criteria={videoQuestions.question}
+          />
+        ))}
       </fieldset>
     </section>
   );

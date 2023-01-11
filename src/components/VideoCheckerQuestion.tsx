@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
-import { IScoreState, ISelectiveScoreState, scoreState } from "~/utils/atom";
+import { ChangeEventHandler, useEffect, useRef, Children } from "react";
+import useCheckboxState from "~/hooks/useCheckboxState";
 import EmbededContent from "./EmbededContent";
 
 interface IProps {
@@ -16,72 +15,43 @@ const VideoCheckerQuestion = ({
   videoPath,
   criteria,
 }: IProps) => {
-  const radioEleRef = useRef<HTMLInputElement>(null);
+  const checkboxEleRef = useRef<HTMLInputElement>(null);
   const selectEleRef = useRef<HTMLSelectElement>(null);
-  const questionId = (type: "radio" | "select") =>
+  const questionId = (type: "checkbox" | "select") =>
     [type, pageIndex, questionIndex].join("-");
-  const [scoreStorage, setScoreStorage] = useRecoilState(scoreState);
+  const {
+    isPageIndexInStoreage,
+    checkedIndex,
+    selectedVal,
+    maxQuestions,
+    setCheckbox,
+    setSelectScore,
+  } = useCheckboxState({ questionIndex, pageIndex });
 
-  const onCheck = () => {
-    setScoreStorage((prev): IScoreState => {
-      let newPageStorage = {
-        ...prev[pageIndex],
-      };
-
-      newPageStorage.checkedIndex = questionIndex;
-
-      newPageStorage.values = (newPageStorage.values as number[]).map((e, i) =>
-        i + 1 < questionIndex ? 0 : e
-      );
-
-      let newStorage = { ...prev };
-      newStorage[pageIndex] = newPageStorage;
-
-      return newStorage;
-    });
+  const onCheck: ChangeEventHandler<HTMLInputElement> = () => {
+    setCheckbox();
   };
 
-  const onSelectScore = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onSelectScore: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const { value } = event.target;
 
-    setScoreStorage((prev): IScoreState => {
-      let newPageStorage = {
-        ...prev[pageIndex],
-      } as ISelectiveScoreState;
-
-      newPageStorage.values = [...newPageStorage.values];
-      newPageStorage.values.splice(questionIndex - 1, 1, parseInt(value));
-
-      let newStorage = { ...prev };
-      newStorage[pageIndex] = newPageStorage;
-
-      return newStorage;
-    });
+    setSelectScore(value);
   };
 
   useEffect(() => {
-    if (pageIndex in scoreStorage) {
-      if (scoreStorage[pageIndex].checkedIndex > questionIndex) {
-        selectEleRef.current.value = "0";
-      }
+    if (!isPageIndexInStoreage) {
+      return;
     }
-  }, [scoreStorage]);
 
-  useEffect(() => {
-    if (pageIndex in scoreStorage) {
-      if (scoreStorage[pageIndex].checkedIndex > questionIndex) {
-        selectEleRef.current.value = "0";
-        radioEleRef.current.checked = false;
-      } else {
-        if (scoreStorage[pageIndex].checkedIndex === questionIndex) {
-          radioEleRef.current.checked = true;
-        }
-
-        selectEleRef.current.value =
-          scoreStorage[pageIndex].values[questionIndex - 1].toString();
-      }
+    if (checkedIndex > questionIndex) {
+      selectEleRef.current.value = "0";
+      checkboxEleRef.current.checked = false;
+      return;
     }
-  }, [pageIndex]);
+
+    selectEleRef.current.value = selectedVal;
+    checkboxEleRef.current.checked = true;
+  }, [isPageIndexInStoreage, checkedIndex, selectedVal, questionIndex]);
 
   return (
     <div className="relative">
@@ -89,35 +59,29 @@ const VideoCheckerQuestion = ({
       <div className="video-number absolute top-2 left-2">
         {questionIndex}번
       </div>
-      <div className="my-2">
+
+      <label className="my-2 block">
         <input
-          type="radio"
-          id={questionId("radio")}
+          className="mr-1"
+          type="checkbox"
+          name={"checkbox-" + pageIndex}
           value={questionIndex}
-          name={"radio-" + pageIndex}
-          onClick={onCheck}
-          ref={radioEleRef}
+          onChange={onCheck}
+          ref={checkboxEleRef}
         />
-        <label className="ml-1" htmlFor={questionId("radio")}>
-          {questionIndex}번부터 {criteria}이다.
-        </label>
-      </div>
+        {criteria}
+      </label>
+
       <select
         className="select w-full"
         id={questionId("select")}
         ref={selectEleRef}
-        disabled={
-          (pageIndex in scoreStorage
-            ? scoreStorage[pageIndex].checkedIndex
-            : 0) > questionIndex
-        }
+        disabled={isPageIndexInStoreage ? checkedIndex > questionIndex : true}
         onChange={onSelectScore}
       >
-        {React.Children.toArray([
+        {Children.toArray([
           <option value="0">점수를 선택해주세요.</option>,
-          ...Array(
-            pageIndex in scoreStorage ? scoreStorage[pageIndex].maxQuestions : 5
-          )
+          ...Array(isPageIndexInStoreage ? maxQuestions : 5)
             .fill(0)
             .map((_, i) => <option value={i + 1}>{i + 1}점</option>),
         ])}
