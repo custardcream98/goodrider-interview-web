@@ -77,17 +77,17 @@ describe("AHP 테스트", () => {
         if (typeof ahpDummyJson[i][1] === "object") {
           cy.visit(pageLink.attr("href"), { timeout: 30000 }).then((_) => {
             cy.wait(500);
-            const radioCheckIndex = ahpDummyJson[i][0] as number;
-            cy.get("input[type='radio']").each((element, index) => {
-              if (index === radioCheckIndex) {
+            const checkIndex = ahpDummyJson[i][0] as number;
+            cy.get("input[type='checkbox']").each((element, index) => {
+              if (index === checkIndex) {
                 cy.wrap(element).check();
               }
             });
             cy.get("select")
               .each((element, index) => {
-                if (index >= radioCheckIndex) {
+                if (index >= checkIndex) {
                   cy.wrap(element).select(
-                    ahpDummyJson[i][1][index - radioCheckIndex]
+                    ahpDummyJson[i][1][index - checkIndex]
                   );
                 }
               })
