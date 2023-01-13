@@ -45,14 +45,14 @@ export default ({
   );
 
   const isPageIndexInStoreage = pageIndex in scoreStorage;
-  const checkedIndex = scoreStorage[pageIndex]?.checkedIndex;
+  const isChecked = scoreStorage[pageIndex]?.checkedIndex <= questionIndex ;
   const selectedVal =
     scoreStorage[pageIndex]?.values[questionIndex - 1].toString();
   const maxQuestions = scoreStorage[pageIndex]?.maxQuestions;
 
   return {
     isPageIndexInStoreage,
-    checkedIndex,
+    isChecked,
     selectedVal,
     maxQuestions,
     setCheckbox,

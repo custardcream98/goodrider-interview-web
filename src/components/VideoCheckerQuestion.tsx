@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useEffect, useRef, Children } from "react";
+import { ChangeEventHandler, useEffect, useRef, Children, useState } from "react";
 import useCheckboxState from "~/hooks/useCheckboxState";
 import EmbededContent from "./EmbededContent";
 
@@ -15,13 +15,13 @@ const VideoCheckerQuestion = ({
   videoPath,
   criteria,
 }: IProps) => {
-  const checkboxEleRef = useRef<HTMLInputElement>(null);
+  // const checkboxEleRef = useRef<HTMLInputElement>(null);
   const selectEleRef = useRef<HTMLSelectElement>(null);
   const questionId = (type: "checkbox" | "select") =>
     [type, pageIndex, questionIndex].join("-");
   const {
     isPageIndexInStoreage,
-    checkedIndex,
+    isChecked,
     selectedVal,
     maxQuestions,
     setCheckbox,
@@ -43,15 +43,13 @@ const VideoCheckerQuestion = ({
       return;
     }
 
-    if (checkedIndex > questionIndex) {
+    if (!isChecked) {
       selectEleRef.current.value = "0";
-      checkboxEleRef.current.checked = false;
       return;
     }
 
     selectEleRef.current.value = selectedVal;
-    checkboxEleRef.current.checked = true;
-  }, [isPageIndexInStoreage, checkedIndex, selectedVal, questionIndex]);
+  }, [isPageIndexInStoreage, isChecked, selectedVal, questionIndex]);
 
   return (
     <div className="relative">
@@ -60,15 +58,16 @@ const VideoCheckerQuestion = ({
         {questionIndex}번
       </div>
 
-      <label className="my-2 block">
-        <input
-          className="mr-1"
-          type="checkbox"
-          name={"checkbox-" + pageIndex}
-          value={questionIndex}
-          onChange={onCheck}
-          ref={checkboxEleRef}
-        />
+      <input
+        id={questionId("checkbox")}
+        className="sr-only"
+        type="checkbox"
+        name={"checkbox-" + pageIndex}
+        value={questionIndex}
+        onChange={onCheck}
+        checked={isChecked}
+      />
+      <label className={`my-2 py-1 text-center block mx-auto border-2 rounded-lg cursor-pointer border-darkmint${isChecked ? " dark" : " light"}`} htmlFor={questionId("checkbox")}>
         {criteria}
       </label>
 
@@ -76,7 +75,7 @@ const VideoCheckerQuestion = ({
         className="select w-full"
         id={questionId("select")}
         ref={selectEleRef}
-        disabled={isPageIndexInStoreage ? checkedIndex > questionIndex : true}
+        disabled={isPageIndexInStoreage ? !isChecked : true}
         onChange={onSelectScore}
       >
         {Children.toArray([

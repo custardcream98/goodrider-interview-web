@@ -149,7 +149,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
           <span
             id="description"
             className={`bg-contain bg-left bg-no-repeat pl-6 ${
-              isPassed
+              isPassed && description !== "회색 원을 옮겨주세요."
                 ? "bg-[url(../../public/Infobox_info_icon.svg)]"
                 : "bg-[url(../../public/Infobox_info_icon_red.svg)] font-bold text-red-600"
             }`}

@@ -161,13 +161,13 @@ const InterviewPage = ({
                 <p>
                   다음의 영상들 중{" "}
                   <strong>
-                    어느 영상부터 {videoQuestions.question}(위험운전)이라
+                    <span className="text-red-600">어느 영상부터</span> {videoQuestions.question}(위험운전)이라
                     생각되십니까?
                   </strong>
                 </p>
                 <p>
                   위험운전이라 생각되는 영상들에{" "}
-                  <strong>1 ~ 5점 사이의 위험운전 점수를 부여</strong>
+                  <strong>1 ~ {videoQuestions.selectives.length}점 사이의 위험운전 점수를 부여</strong>
                   해주십시오.
                 </p>
               </section>
