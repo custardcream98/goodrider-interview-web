@@ -73,7 +73,7 @@ const Navbar = ({
     <header className="fixed top-2 z-50 w-full">
       <nav className="m-auto flex w-95% flex-col justify-between overflow-hidden rounded-xl bg-[#c8fff326] py-2 px-4 backdrop-blur-md md:w-920 md:flex-row md:items-center">
         <h1 className="mb-1 text-[1rem] font-[600] md:mb-0 md:text-[1.5rem]">
-          이륜차 착한운전 평기를 위한 설문조사
+          이륜차 착한운전 평가를 위한 설문조사
         </h1>
         <ol className="flex justify-end md:mt-1">
           {React.Children.toArray(
