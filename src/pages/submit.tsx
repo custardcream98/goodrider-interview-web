@@ -108,8 +108,6 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
       return;
     }
 
-    console.log(questionnaireData);
-
     removeLocalAnswer();
     removeLocalisOnGoing();
     setIsEndedLocalStorage();

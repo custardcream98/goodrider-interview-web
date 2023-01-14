@@ -23,7 +23,6 @@ function getTargetMatrixComparison(matrixComparison: number[][]): {
   flag: CrPassCheck;
 } {
   const { weight: originalWeight, Cr: originalCr } = calAhp(matrixComparison);
-  console.log(originalCr);
 
   if (originalCr < CR_PASS) {
     /*
