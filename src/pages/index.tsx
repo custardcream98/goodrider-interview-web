@@ -75,7 +75,7 @@ const LandingPage = () => {
 
   return (
     <Layout>
-      <h1 className="keep-all my-4 text-center text-title-mobile font-bold leading-normal text-gray-900 md:text-title">
+      <h1 className="keep-all my-4 mx-auto p-4 text-center text-title-mobile font-bold leading-normal text-gray-900 md:w-920 md:p-0 md:text-title">
         이륜차 착한운전 평가를 위한{" "}
         <span className="block md:inline">설문조사</span>
       </h1>
