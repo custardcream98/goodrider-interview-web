@@ -127,7 +127,7 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
             <div className="question-bundle keep-all p-4">
               <p className="text-lg">
                 설문에 참여해주셔서 감사합니다. <br />
-                이메일 또는 전화번호를 기입해주시면 추첨을 통해{" "}
+                이메일 또는 핸드폰 번호를 기입해주시면 추첨을 통해{" "}
                 <strong>기프티콘</strong>을 보내드릴 예정이오니, 원하시는 경우
                 아래에 적고 제출하기를 눌러주세요. <br /> <br />
                 (원치 않으시는 경우 빈 칸으로 두고 제출하기를 눌러주세요.)
@@ -139,7 +139,7 @@ const Submitted = ({ sliderQuestions, selectiveQuestions }: IProps) => {
               >
                 <div className="flex w-full flex-col md:flex-row">
                   <label className="mb-2 md:mb-0" htmlFor="email">
-                    이메일 또는 전화번호를 적어주세요:
+                    이메일 또는 핸드폰 번호를 적어주세요:
                   </label>
                   <input
                     id="email"
