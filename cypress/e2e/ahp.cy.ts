@@ -65,7 +65,7 @@ describe("AHP 테스트", () => {
         })
         .then((_) => {
           cy.wait(20);
-          cy.contains<HTMLButtonElement>("틀린 문제로 이동").should(
+          cy.contains<HTMLButtonElement>("오류 문항으로 이동").should(
             "be.hidden"
           );
           cy.get("a.outline").should("have.class", "dark");

@@ -174,7 +174,7 @@ const Slider = ({ pageIndex, questionIndex, criteria1, criteria2 }: IProps) => {
         }`}
         onClick={scrollToWrongQuestion}
       >
-        틀린 문제로 이동
+        오류 문항으로 이동
       </button>
     </>
   );
